@@ -23,7 +23,7 @@
       let min = date.format('mm');
 
       if (min === '00') {
-        min = `o'clock`;
+        min = "o'clock";
       } else {
         min = `${min.indexOf('0') === 0 ? "o'" : ''}${window.xyz.NumberText.format(min)}`;
       }
