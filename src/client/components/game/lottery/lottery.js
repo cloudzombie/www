@@ -25,6 +25,10 @@
 
     addEntries: function(entries) {
       _.each(entries, (entry) => {
+        if (!entry.at) {
+          return;
+        }
+
         entry.value = new BigNumber(this.config.price).times(entry.tickets).toString();
 
         for (let idx = 0; idx < this.entries.length; idx++) {
