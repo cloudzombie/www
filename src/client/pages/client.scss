@@ -1,0 +1,118 @@
+@import "../base";
+
+html {
+}
+
+body {
+  background: $color-bg-body;
+  color: $color-font-base;
+  font-family: $font-default;
+
+  margin: 0;
+  -webkit-text-size-adjust: 100%;
+
+  background-image: url('/images/bg-blocks-bw-2.jpg') !important;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+body[unresolved] {
+  display: none;
+}
+
+.hero {
+  font-size: $font-size-medium;
+  text-align: center;
+
+  @include span-columns(8);
+  @include shift(2);
+}
+
+.quip {
+  text-align: right;
+}
+
+.games {
+  text-align: center;
+
+  .game {
+    height: 250px;
+    border-radius: 1em;
+    text-align: center;
+
+    @include span-columns(4);
+
+    a.line {
+      color: inherit;
+      cursor: pointer;
+      display: inline-block;
+      width: 100%;
+
+      @include vertical-align;
+
+      paper-button {
+        vertical-align: middle;
+        width: 100%;
+        text-align: right;
+        text-transform: none;
+
+        span {
+          display: inline-block;
+          line-height: 24px;
+          vertical-align: middle;
+          margin: 0 5px;
+        }
+      }
+    }
+
+    &[disabled] {
+      a.line {
+        color: rgba(238, 238, 238, 0.5);
+        cursor: default;
+
+        paper-button {
+          color: rgba(238, 238, 238, 0.5);
+        }
+      }
+    }
+
+    &.lottery {
+      background-image: url('/images/pig-cash-250x-bw-trans-50.png');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
+
+    &.cards {
+      background-image: url('/images/playing-cards-250x-bw-trans.png');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
+
+    &.dice {
+      background-image: url('/images/cube-dice-210x-bw-trans.png');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
+  }
+}
+
+img {
+  &[opacity] {
+    opacity: 0.25;
+  }
+
+  &.right {
+    float: right;
+    margin: 0 0 0 2em;
+  }
+
+  &.left {
+    float: left;
+    margin: 0 2em 0 0;
+  }
+}
+
+.center {
+  text-align: center;
+}

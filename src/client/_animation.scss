@@ -1,0 +1,12 @@
+@mixin animate-opacity($name, $opacity) {
+  @include keyframes($name) {
+    from {
+      opacity: 0;
+    }
+    to {
+      color: $opacity;
+    }
+  }
+
+  @include animation($name $anim-duration);
+}

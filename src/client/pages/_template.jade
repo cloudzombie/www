@@ -1,0 +1,25 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+    
+    block title
+      title the.looney.farm
+    
+    link(rel="import" href="/components/page/page.html")
+    block imports
+      
+    link(rel="stylesheet" type="text/css" href="/client.css")
+  
+  body(unresolved)
+    xyz-page
+      block menu
+        xyz-page-menu(pages='[\
+          {"name":"the.looney.farm","url":"/","color":"blue-gray"},\
+          {"name":"lottery","url":"/game/lottery","color":"blue"}\
+        ]')
+      
+      block content
+      
+    script(src="/client.js")
