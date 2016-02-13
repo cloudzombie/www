@@ -50,10 +50,12 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
 
   echo "Creating wwwgeth.service"
   printf "$SERVICE_TMPL$SERVICE_EXEC_GETH\n" > /lib/systemd/system/wwwgeth.service
+  systemctl daemon-reload
   echo
 
   echo "Creating wwwnode.service"
   printf "$SERVICE_TMPL$SERVICE_EXEC_NODE\n" > /lib/systemd/system/wwwnode.service
+  systemctl daemon-reload
   echo
 
   echo "Changing to /www/dist"
