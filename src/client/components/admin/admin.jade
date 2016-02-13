@@ -1,0 +1,32 @@
+link(rel="import" href="/components/bower/polymer/polymer.html")
+link(rel="import" href="/components/bower/paper-button/paper-button.html")
+link(rel="import" href="/components/bower/paper-input/paper-input.html")
+
+link(rel="import" href="/components/3rdparty/lodash.html")
+link(rel="import" href="/components/api/api.html")
+
+dom-module#xyz-admin-login
+  template
+    style !{readCompiled('login/login.css')}
+
+    xyz-api#api
+
+    .inputs
+      paper-input(label="username" value="{{username}}")
+      paper-input(label="password" type="password" value="{{password}}")
+    
+    .buttons
+      paper-button(raised on-click="doLogin") Login
+
+  script !{readCompiled('login/login.js')}
+
+dom-module#xyz-admin-session
+  template
+    style !{readCompiled('session/session.css')}
+    
+    xyz-api#api
+      
+    div(class$="status {{status}}")
+      content
+        
+  script !{readCompiled('session/session.js')}

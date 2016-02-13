@@ -1,0 +1,9 @@
+@import "../../base";
+
+.status{
+  display:none;
+
+  &.ok{
+    display:block;
+  }
+}
