@@ -1,0 +1,16 @@
+h3 {
+  margin: 0;
+}
+
+li+li {
+  margin-top: 0.5em;
+}
+
+p {
+  margin: 0;
+  -webkit-margin: 0em;
+}
+
+p+p {
+  margin-top: 1.5em;
+}

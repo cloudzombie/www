@@ -1,0 +1,36 @@
+link(rel="import" href="/components/bower/polymer/polymer.html")
+link(rel="import" href="/components/bower/paper-styles/color.html")
+link(rel="import" href="/components/bower/paper-tabs/paper-tabs.html")
+  
+link(rel="import" href="/components/3rdparty/lodash.html")
+
+dom-module#xyz-page
+  template
+    style !{readCompiled('page.css')}
+    
+    content
+    
+  script !{readCompiled('page.js')}
+
+dom-module#xyz-page-section
+  template
+    style !{readCompiled('section/section.css')}
+    
+    .content
+      content
+    
+  script !{readCompiled('section/section.js')}
+  
+dom-module#xyz-page-menu
+  template
+    style !{readCompiled('menu/menu.css')}
+    
+    div(color$="{{color}}" opacity)
+      paper-tabs(selected="{{selected}}")
+        template(is="dom-repeat" items="{{pages}}")
+          paper-tab
+            a(href$="{{item.url}}" class="link") {{item.name}}
+        
+    content
+      
+  script !{readCompiled('menu/menu.js')}

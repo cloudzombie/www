@@ -1,0 +1,35 @@
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
+tr.visible {
+  display: table-row;
+}
+
+.normal {
+  font-size: $font-size-default;
+}
+
+.large {
+  font-size: $font-size-large;
+}
+
+.small {
+  font-size: $font-size-small;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.right {
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}

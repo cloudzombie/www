@@ -1,0 +1,38 @@
+link(rel="import" href="/components/bower/polymer/polymer.html")
+
+link(rel="import" href="/components/3rdparty/lodash.html")
+link(rel="import" href="/components/3rdparty/moment.html")
+link(rel="import" href="/components/number/number.html")
+  
+dom-module#xyz-datetime
+  template {{datestr}}
+  
+  script !{readCompiled('datetime.js')}
+
+dom-module#xyz-datetime-countdown
+  template
+    xyz-datetime(format="{{ dtformat }}" datetime="{{ timer }}")
+  
+  script !{readCompiled('countdown/countdown.js')}
+
+dom-module#xtz-datetime-date
+  template
+    xyz-datetime(format="{{ dtformat }}" datetime="{{ datetime }}")
+  
+  script !{readCompiled('date/date.js')}
+  
+dom-module#xyz-datetime-time
+  template
+    xyz-datetime(format="{{ dtformat }}" datetime="{{ datetime }}")
+  
+  script !{readCompiled('time/time.js')}
+
+dom-module#xyz-datetime-elapsed
+  template {{datestr}}
+  
+  script !{readCompiled('elapsed/elapsed.js')}
+
+dom-module#xyz-datetime-remaining
+  template {{datestr}}
+  
+  script !{readCompiled('remaining/remaining.js')}

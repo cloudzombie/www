@@ -1,0 +1,142 @@
+$opacity: 0.9;
+
+*[color="white"] {
+  color: $color-font-base;
+
+  &[opacity] {
+    color: $color-font-gray;
+    background: rgba(255, 255, 255, $opacity);
+  }
+}
+
+*[color="blue"] {
+  color: $color-font-white;
+  background: rgb(33, 150, 243);
+
+  &[opacity] {
+    background: rgba(33, 150, 243, $opacity);
+  }
+}
+
+*[color="blue-dark"] {
+  color: $color-font-white;
+  background: rgb(30, 136, 229);
+
+  &[opacity] {
+    background: rgba(30, 136, 229, $opacity);
+  }
+}
+
+*[color="blue-gray"] {
+  color: $color-font-white;
+  background: rgb(59, 70, 85); // rgb(38, 49, 55);
+
+  &[opacity] {
+    background: rgba(59, 70, 85, $opacity);
+  }
+}
+
+*[color="blue-gray-dark"] {
+  color: $color-font-white;
+  background: rgb(48, 57, 70); //rgb(84, 110, 122);
+
+  &[opacity] {
+    background: rgba(48, 57, 70, $opacity);
+  }
+}
+
+*[color="brown"] {
+  color: $color-font-white;
+  background: rgb(85, 74, 59);
+
+  &[opacity] {
+    background: rgba(85, 74, 59, $opacity);
+  }
+}
+
+*[color="brown-dark"] {
+  color: $color-font-white;
+  background: rgb(70, 61, 49);
+
+  &[opacity] {
+    background: rgba(70, 61, 49, $opacity);
+  }
+}
+
+*[color="gray"] {
+  color: $color-font-gray;
+  background: rgb(238, 238, 238);
+
+  &[opacity] {
+    background: rgba(238, 238, 238, $opacity);
+  }
+}
+
+*[color="gray-dark"] {
+  color: $color-font-white;
+  background: var(--paper-grey-700);
+}
+
+*[color="green"] {
+  color: $color-font-white;
+  background: rgb(76, 175, 80);
+
+  &[opacity] {
+    background: rgba(76, 175, 80, $opacity);
+  }
+}
+
+*[color="green-dark"] {
+  color: $color-font-white;
+  background: rgb(68, 157, 72);
+
+  &[opacity] {
+    background: rgba(68, 157, 72, $opacity);
+  }
+}
+
+*[color="indigo"] {
+  color: $color-font-white;
+  background: rgb(53, 73, 162);
+
+  &[opacity] {
+    background: rgba(53, 73, 162, $opacity);
+  }
+}
+
+*[color="indigo-dark"] {
+  color: $color-font-white;
+  background: rgb(43, 56, 124);
+
+  &[opacity] {
+    background: rgba(43, 56, 124, $opacity);
+  }
+}
+
+*[color="orange"] {
+  color: $color-font-white;
+  background: rgb(255, 152, 0);
+
+  &[opacity] {
+    background: rgba(255, 152, 0, $opacity);
+  }
+}
+
+*[color="orange-light"] {
+  color: $color-font-gray;
+  background: var(--paper-orange-100);
+}
+
+*[color="orange-dark"] {
+  color: $color-font-white;
+  background: rgb(255, 134, 0);
+
+  &[opacity] {
+    background: rgba(255, 134, 0, $opacity * 0.8);
+  }
+}
+
+*[color="red"] {
+  color: $color-font-white;
+  background: var(--paper-red-500);
+}

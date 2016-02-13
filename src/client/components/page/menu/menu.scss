@@ -1,0 +1,19 @@
+@import "../../base";
+
+:root {
+  --paper-tab-ink: var(--paper-blue-100);
+  //--paper-tabs-selection-bar-color: var(--paper-blue-500);
+}
+
+:host {
+  display: block;
+}
+
+paper-tabs {
+  display: inline-block;
+}
+
+.link, .link:visited, .link:hover {
+  color: $color-font-white;
+  text-decoration: none;
+}

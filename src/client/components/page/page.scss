@@ -1,0 +1,12 @@
+@import "../../base";
+
+:host {
+  display: block;
+}
+
+::content {
+  @import "attr";
+  @import "classes";
+  @import "colors";
+  @import "tags";
+}
