@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const admincfg = require('../../config/admin');
-const jwtcfg = require('../../config/jwt');
-const errors = require('../../lib/errors');
+const admincfg = require('../../../config/admin');
+const jwtcfg = require('../../../config/jwt');
+const errors = require('../../../lib/errors');
 
 module.exports = function(req, res, next) {
   const throwAuth = function() {
