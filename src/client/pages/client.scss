@@ -21,6 +21,11 @@ body[unresolved] {
   display: none;
 }
 
+.github {
+  text-align: right;
+  opacity: 0.5;
+}
+
 .hero {
   font-size: $font-size-medium;
   text-align: center;
