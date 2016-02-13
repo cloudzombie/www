@@ -5,6 +5,10 @@
   "main": "README.md",
   "scripts": {
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thelooneyfarm/www.git"
+  },
   "author": "Xavier Yvez <xavieryvez@gmail.com>",
   "license": "ISC",
   "devDependencies": {
