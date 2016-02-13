@@ -6,4 +6,4 @@ node_modules/
 .password.*
 .setenv.sh
 UTC--*
-src/images.unused
+img/unused

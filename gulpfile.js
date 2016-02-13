@@ -142,7 +142,7 @@ gulp.task('copy-components', () => {
 
 gulp.task('copy-images', () => {
   return gulp
-    .src(['src/images/**/*'])
+    .src(['img/**/*'])
     .pipe(gulp.dest('dist/public/images/'));
 });
 
@@ -284,7 +284,7 @@ gulp.task('default', ['client', 'server', 'contracts', 'infrastructure']);
 
 gulp.task('watch', ['default'], () => {
   gulp.watch(['node_modules/contracts/**/*'], ['solc-contracts']);
-  gulp.watch(['src/images/**/*'], ['copy-images']);
+  gulp.watch(['img/**/*'], ['copy-images']);
   gulp.watch(['src/client/components/**/*'], ['html-components']);
   gulp.watch(['src/client/pages/**/*.jade'], ['html-pages']);
   gulp.watch(['src/client/pages/**/*.js'], ['js-pages']);
