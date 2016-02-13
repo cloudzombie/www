@@ -9,7 +9,7 @@
   text-align: center;
 
   .entries, .round, .time, .pool {
-    @include span-columns(3);
+    @include span-columns(4);
   }
 }
 

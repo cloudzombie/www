@@ -14,7 +14,7 @@ export ADDR_COINBASE_TST=$ADDR_COINBASE_DEV
 export ADDR_COINBASE_LVE=$ADDR_COINBASE_TST
 
 export ADDR_LOTTERY_DEV=0x905b2ea4789b38742cc9f86eb54417130f8f7eee
-export ADDR_LOTTERY_TST=0xa7099e3a181ef7b2150d25fb39037e397bb72ee6
+export ADDR_LOTTERY_TST=0x751c109aee4eb08363f5ea7b78d9b315b9f7baac
 export ADDR_LOTTERY_LVE=$ADDR_LOTTERY_TST
 
 export SERVICE_TMPL="[Unit]\nDescription=www service\n\n[Install]\nWantedBy=multi-user.target\n\n[Service]\nKillMode=process\nRestart=on-failure\nRestartSec=15s\nExecReload=/bin/kill -HUP \\\$MAINPID\n"

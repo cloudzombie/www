@@ -21,7 +21,7 @@ dom-module#xyz-game-lottery
         .round
           .large {{current.round}}
           .normal rounds
-        .entries
+        //.entries
           .large {{current.tickets}}
           .normal tickets
         .pool
@@ -65,7 +65,7 @@ dom-module#xyz-game-lottery
               td.value
                 iron-icon(icon="icons:input")
                 xyz-number-wei(number="{{item.value}}")
-              td.tickets
+              //td.tickets
                 iron-icon(icon="icons:content-copy")
                 span {{item.tickets}}
               td.round
