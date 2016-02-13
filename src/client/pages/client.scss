@@ -42,7 +42,7 @@ body[unresolved] {
   text-align: center;
 
   .game {
-    height: 250px;
+    height: 150px;
     border-radius: 1em;
     text-align: center;
 
@@ -83,7 +83,13 @@ body[unresolved] {
     }
 
     &.lottery {
-      background-image: url('/images/pig-cash-250x-bw-trans-50.png');
+      background-image: url('/images/pig-cash-150-bw-trans-50.png');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
+
+    &.next {
+      background-image: url('/images/question-150-bw-trans.png');
       background-repeat: no-repeat;
       background-position: 50% 50%;
     }
