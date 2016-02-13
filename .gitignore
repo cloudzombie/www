@@ -1,0 +1,7 @@
+bower_components/
+dist/
+dist.zip
+node_modules/
+.node-xmlhttprequest*
+.password.*
+.setenv.sh
