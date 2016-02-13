@@ -25,7 +25,7 @@ PASSFILE=".password.$ADDR_COINBASE"
 SERVICE_EXEC_GETH="ExecStart=/usr/bin/geth --rpc --datadir /root/.ethereum --unlock $ADDR_COINBASE --password /root/$PASSFILE --testnet"
 SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-lottery $ADDR_LOTTERY"
 
-source bin/ssh-copydist.sh
+source bin/scp-dist.sh
 
 echo "Executing remote commands"
 ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
