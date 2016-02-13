@@ -279,7 +279,7 @@ gulp.task('pages', ['css-pages', 'html-pages', 'js-pages']);
 gulp.task('contracts', ['solc-contracts']);
 gulp.task('client', ['components', 'pages']);
 gulp.task('server', ['js-server']);
-gulp.task('infrastructure', ['copy-packagejson', 'copy-favicon', 'copy-images']);
+gulp.task('infrastructure', ['copy-packagejson', 'copy-images']);
 gulp.task('default', ['client', 'server', 'contracts', 'infrastructure']);
 
 gulp.task('watch', ['default'], () => {
