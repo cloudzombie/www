@@ -69,7 +69,20 @@ const toTime = function(number) {
   return number.toNumber() * 1000;
 };
 
-const init = function init() {
+const watch = function(type, eventFunc, handlerFunc) {
+  eventFunc({}, { fromBlock: blocknumber - 5000 }).watch((error, data) => {
+    if (error) {
+      logger.error('Geth', `watch${type}`, error);
+      return;
+    }
+
+    logger.log('Geth', `watch${type}`, data);
+
+    handlerFunc(data);
+  });
+};
+
+const init = function() {
   const waitGeth = function(callback) {
     if (web3.isConnected()) {
       callback();
@@ -79,6 +92,18 @@ const init = function init() {
     setTimeout(() => {
       waitGeth(callback);
     }, 1000);
+  };
+
+  const monitor = function() {
+    if (web3.isConnected()) {
+      setTimeout(monitor, 30000);
+      return;
+    }
+
+    logger.log('Geth', 'init', 'connection lost, re-initializing');
+
+    // we should really roll everything back, but... state is state, just start all over
+    process.exit(1);
   };
 
   return new Promise((resolve) => {
@@ -91,22 +116,11 @@ const init = function init() {
       coinbase = web3.eth.coinbase;
       blocknumber = web3.eth.blockNumber;
 
+      monitor();
+
       logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
       resolve();
     });
-  });
-};
-
-const watch = function(type, eventFunc, handlerFunc) {
-  eventFunc({}, { fromBlock: blocknumber - 5000 }).watch((error, data) => {
-    if (error) {
-      logger.error('Geth', `watch${type}`, error);
-      return;
-    }
-
-    logger.log('Geth', `watch${type}`, data);
-
-    handlerFunc(data);
   });
 };
 
