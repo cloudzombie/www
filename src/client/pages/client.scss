@@ -124,6 +124,22 @@ img {
   }
 }
 
+p {
+  line-height: 1.5em;
+}
+
+h3 {
+  margin-bottom: 1em;
+}
+
 .center {
   text-align: center;
+
+  &.img-left {
+    margin-left: 250px;
+  }
+
+  &.img-right {
+    margin-right: 250px;
+  }
 }
