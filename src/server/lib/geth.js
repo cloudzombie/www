@@ -91,12 +91,12 @@ const init = function() {
 
     setTimeout(() => {
       waitGeth(callback);
-    }, 1000);
+    }, 1000 + Math.ceil(Math.random() * 1000));
   };
 
   const monitor = function() {
     if (web3.isConnected()) {
-      setTimeout(monitor, 30000);
+      setTimeout(monitor, 20000 + Math.ceil(Math.random() * 20000));
       return;
     }
 
