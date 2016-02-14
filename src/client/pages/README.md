@@ -1,3 +1,3 @@
-## src/client/pages
+# src/client/pages
 
 Pages, available on server from root

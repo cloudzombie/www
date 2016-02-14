@@ -1,8 +1,8 @@
-## scripts
+# scripts
 
 These are the current scripts for deployment & checking. See the FIXME...
 
-### FIXME
+## FIXME
 
 This approach is really horribly broken. Doing all this stuff locally and then pushing is just not the way things should be done. There are reasons why there are actual proper deployment procedures in place. There are reasons why tools that does exactly this type of stuff exists. So... this will be fixed and done properly.
 

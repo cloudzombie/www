@@ -1,3 +1,3 @@
-## src/client
+# src/client
 
 The client component
