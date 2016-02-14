@@ -49,14 +49,13 @@ const getRound = function() {
 };
 
 const getWinner = function() {
-  const [addr, at, round, tickets, result] = lottery.winner();
+  const [addr, at, round, tickets] = lottery.winner();
 
   return {
     addr: addr,
     at: geth.toTime(at),
     round: round.toNumber(),
-    tickets: tickets.toNumber(),
-    result: geth.toHex(result)
+    tickets: tickets.toNumber()
   };
 };
 
@@ -142,7 +141,6 @@ const init = function() {
       at: geth.toTime(data.args.at),
       round: data.args.round.toNumber(),
       tickets: data.args.tickets.toNumber(),
-      result: geth.toHex(data.args.result),
       txhash: data.transactionHash
     };
 
