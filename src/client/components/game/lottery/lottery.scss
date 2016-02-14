@@ -111,6 +111,10 @@ iron-icon+iron-icon {
       text-align: left;
       padding: 0.25em 0;
 
+      * {
+        vertical-align: middle;
+      }
+
       &.addr {
         text-align: right;
       }
