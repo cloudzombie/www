@@ -1,5 +1,3 @@
-'use strict';
-
 const router = require('express').Router(); // eslint-disable-line new-cap
 const os = require('os');
 
@@ -46,7 +44,6 @@ router.get('/', (req, res) => {
 
   responder.success(res, {
     process: {
-      hostname: req.hostname,
       uptime: fmtTime(process.uptime()),
       mem: {
         rss: fmtMb(mem.rss),
@@ -55,7 +52,6 @@ router.get('/', (req, res) => {
       }
     },
     os: {
-      hostname: os.hostname(),
       uptime: fmtTime(os.uptime()),
       mem: {
         total: fmtMb(os.totalmem()),
