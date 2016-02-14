@@ -2,12 +2,7 @@
 
 source bin/_setenv.sh
 
-if [ "$1" == "dev" ]; then
-  ADDR_COINBASE=$ADDR_COINBASE_DEV
-  ADDR_LOTTERY=$ADDR_LOTTERY_DEV
-  GETH_PASS=$GETH_PASS_DEV
-  GETH_NET="--dev"
-elif [ "$1" == "test" ]; then
+if [ "$1" == "test" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_TST
   ADDR_LOTTERY=$ADDR_LOTTERY_TST
   GETH_PASS=$GETH_PASS_TST
