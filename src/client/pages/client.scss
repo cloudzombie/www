@@ -28,6 +28,7 @@ body[unresolved] {
 
 .hero {
   font-size: $font-size-medium;
+  line-height: 1.5em;
   text-align: center;
 
   @include span-columns(8);

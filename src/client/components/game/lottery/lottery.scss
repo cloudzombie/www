@@ -13,7 +13,7 @@
   }
 
   .round, .pool {
-    margin-top: 1em;
+    //margin-top: ($font-size-large - $font-size-medium) / 2;
     @include span-columns(3);
   }
 }
