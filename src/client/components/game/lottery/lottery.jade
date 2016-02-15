@@ -50,24 +50,26 @@ dom-module#xyz-game-lottery
         iron-icon(icon="icons:history")
         xyz-datetime-elapsed(datetime="{{winner.at}}")
       
-    xyz-page-section.hidden(size="small-top" class$="[[visibleClass(config, 'price')]]")
-      .entries: table
-        tbody
-          template(is="dom-repeat" items="{{entries}}")
-            tr.entry
-              td.addr
-                iron-icon(icon="icons:perm-identity")
-                span {{item.addr}}
-              td.value
-                iron-icon(icon="icons:input")
-                xyz-number-wei(number="{{item.value}}")
-              td.round
-                iron-icon(icon="icons:donut-large")
-                span round {{item.round}}
-              td.when
-                iron-icon(icon="icons:history")
-                xyz-datetime-elapsed(datetime="{{item.at}}")
-      
+    xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
+      .entries.center
+        h2 recent entries
+        table
+          tbody
+            template(is="dom-repeat" items="{{entries}}")
+              tr.entry
+                td.addr
+                  iron-icon(icon="icons:perm-identity")
+                  span {{item.addr}}
+                td.value
+                  iron-icon(icon="icons:input")
+                  xyz-number-wei(number="{{item.value}}")
+                td.round
+                  iron-icon(icon="icons:donut-large")
+                  span round {{item.round}}
+                td.when
+                  iron-icon(icon="icons:history")
+                  xyz-datetime-elapsed(datetime="{{item.at}}")
+        
     xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
       h2 operation and rules
       ol
