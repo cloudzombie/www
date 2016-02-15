@@ -63,9 +63,13 @@ dom-module#xyz-game-fifty
         h2 recent plays
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
-            td.addr(colspan="4")
+            td.addr(colspan="3")
               iron-icon(icon="icons:perm-identity")
               span {{item.addr}}
+            td.max(rowspan="2")
+              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
+                iron-icon(icon="icons:open-in-new")
+                span etherscan
             td.when(rowspan="2")
               iron-icon(icon="icons:history")
               xyz-datetime-elapsed(datetime="{{item.at}}")
@@ -76,7 +80,6 @@ dom-module#xyz-game-fifty
             td.win
               iron-icon(icon="icons:timeline")
               span {{item.pwins}}/{{item.ptxs}}
-            td.ratio {{item.pratio}}
             td.output
               iron-icon(icon="icons:account-balance")
               xyz-number-wei(number="{{item.output}}" max)

@@ -67,6 +67,10 @@ dom-module#xyz-game-lottery
             td.addr(colspan="3")
               iron-icon(icon="icons:perm-identity")
               span {{item.addr}}
+            td.max(rowspan="2")
+              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
+                iron-icon(icon="icons:open-in-new")
+                span etherscan
             td.when(rowspan="2")
               iron-icon(icon="icons:history")
               xyz-datetime-elapsed(datetime="{{item.at}}")
