@@ -1,0 +1,14 @@
+@import "../../../base";
+
+:host {
+  display: block;
+}
+
+.stats {
+  @include outer-container;
+  text-align: center;
+
+  .pool, .entries {
+    @include span-columns(4);
+  }
+}

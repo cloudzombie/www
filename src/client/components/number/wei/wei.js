@@ -3,6 +3,18 @@
 
   const UNITS = ['wei', 'Kwei', 'Mwei', 'Gwei', 'szabo', 'finney', 'ether'];
 
+  const formatMax = function(number) {
+    let unitidx = 0;
+    let value = number;
+
+    while (value.length > 3 && unitidx < UNITS.length - 1) {
+      value = value.substr(0, value.length - 3);
+      unitidx++;
+    }
+
+    return { value: value, unit: UNITS[unitidx] };
+  };
+
   const format = function(number) {
     let unitidx = 0;
     let exhausted = false;
@@ -40,7 +52,8 @@
       this.wei = format(this.number);
     },
 
-    format: format
+    format: format,
+    formatMax: formatMax
   };
 
   Polymer({ // eslint-disable-line new-cap

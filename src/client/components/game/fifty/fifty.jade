@@ -17,6 +17,11 @@ dom-module#xyz-game-fifty
     xyz-pubsub#pubsub
     
     xyz-page-section(color="brown" opacity)
+      .stats
+        .entries
+        .pool
+          .large {{current.poolval}}
+          .normal {{current.poolunit}}
         
     xyz-page-section(color="brown-dark" opacity size="small" shadow)
       .hidden(class$="[[visibleClass(config, 'price')]]")
