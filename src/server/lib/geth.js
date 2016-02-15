@@ -69,8 +69,10 @@ const toTime = function(number) {
   return number.toNumber() * 1000;
 };
 
-const watch = function(type, eventFunc, handlerFunc) {
-  eventFunc({}, { fromBlock: blocknumber - 5000 }).watch((error, data) => {
+const watch = function(type, eventFunc, handlerFunc, reconnect) {
+  logger.log('Geth', `watch${type}`, `${reconnect ? 're-' : ''}connecting`);
+
+  (reconnect ? eventFunc() : eventFunc({}, { fromBlock: blocknumber - 5000 })).watch((error, data) => {
     if (error) {
       logger.error('Geth', `watch${type}`, error);
       return;
@@ -80,6 +82,17 @@ const watch = function(type, eventFunc, handlerFunc) {
 
     handlerFunc(data);
   });
+
+  const monitor = function() {
+    if (web3.isConnected()) {
+      setTimeout(monitor, 30000 + Math.ceil(Math.random() * 30000));
+      return;
+    }
+
+    watch(type, eventFunc, handlerFunc, true);
+  };
+
+  setTimeout(monitor, 10000 + Math.ceil(Math.random() * 10000));
 };
 
 const init = function() {
@@ -94,7 +107,7 @@ const init = function() {
     }, 1000 + Math.ceil(Math.random() * 1000));
   };
 
-  const monitor = function() {
+  /* const monitor = function() {
     if (web3.isConnected()) {
       setTimeout(monitor, 20000 + Math.ceil(Math.random() * 20000));
       return;
@@ -104,7 +117,7 @@ const init = function() {
 
     // we should really roll everything back, but... state is state, just start all over
     process.exit(1);
-  };
+  }; */
 
   return new Promise((resolve) => {
     const connection = `http://${config.host}:${config.port}`;
@@ -116,7 +129,7 @@ const init = function() {
       coinbase = web3.eth.coinbase;
       blocknumber = web3.eth.blockNumber;
 
-      monitor();
+      // monitor();
 
       logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
       resolve();
