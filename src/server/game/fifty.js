@@ -20,9 +20,9 @@ const init = function() {
     const player = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
-      input: data.args.input.toNumber(),
-      output: data.args.output.toNumber(),
-      pool: data.args.pool.toNumber(),
+      input: data.args.input.toString(),
+      output: data.args.output.toString(),
+      pool: data.args.pool.toString(),
       txhash: data.transactionHash
     };
 
