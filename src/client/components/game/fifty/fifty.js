@@ -1,14 +1,6 @@
 (function() {
   window.xyz = window.xyz || {};
 
-  const web3 = new Web3();
-
-  const toWei = function(number) {
-    const [numstr, unit] = number.split(' ');
-
-    return web3.toWei(numstr, unit);
-  };
-
   window.xyz.GameFifty = {
     properties: {
       config: Object,
@@ -36,14 +28,16 @@
           player.isWinner = true;
         }
 
-        if (player.txs > this.current.txs) {
+        if (!this.current || player.txs > this.current.txs) {
           const turnover = new BigNumber(player.txs).times(this.config.min).toString();
           const wei = window.xyz.NumberWei.format(turnover);
 
-          this.set('current.wins', player.wins);
-          this.set('current.txs', player.txs);
-          this.set('current.turnover', wei);
-          this.set('current.ratio', player.ratio);
+          this.current = {
+            wins: player.wins,
+            txs: player.txs,
+            turnover: wei,
+            ratio: player.ratio
+          };
         }
 
         if (player.isWinner) {
@@ -71,6 +65,8 @@
       if (this.players.length > 10) {
         this.splice('players', 10, this.players.length - 10);
       }
+
+      console.log(this.current);
     },
 
     setConfig: function(config) {
@@ -90,8 +86,6 @@
     },
 
     ready: function() {
-      this.current = { txs: 0, precent: 0 };
-
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
         if (!_.isNumber(player.at)) {
           return;

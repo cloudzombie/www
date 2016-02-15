@@ -16,7 +16,7 @@ dom-module#xyz-game-fifty
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section(color="brown" opacity)
+    xyz-page-section.hidden(color="brown" opacity class$="[[visibleClass(current, 'ratio')]]")
       .stats
         .stat
           .large {{current.wins}}
@@ -37,7 +37,7 @@ dom-module#xyz-game-fifty
           iron-icon(icon="icons:input")
           span {{config.addr}}
           
-    xyz-page-section(color$="{{lastColor(last)}}" size="small")
+    xyz-page-section.hidden(color$="{{lastColor(last)}}" size="small" class$="[[visibleClass(last, 'ptxs')]]")
       .center.winner
         iron-icon(icon="icons:timeline")
         span {{last.pwins}}/{{last.ptxs}} {{last.pratio}}
@@ -49,7 +49,7 @@ dom-module#xyz-game-fifty
         iron-icon(icon="icons:history")
         xyz-datetime-elapsed(datetime="{{last.at}}")
           
-    xyz-page-section
+    xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
       .about(color="gray")
         h2 about
         p.
