@@ -17,12 +17,23 @@ const init = function() {
       return;
     }
 
+    const pwins = data.args.pwins.toNumber();
+    const plosses = data.args.plosses.toNumber();
+    const ptxs = pwins + plosses;
+    const wins = data.args.wins.toNumber();
+    const txs = data.args.txs.toNumber();
+
     const player = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
       input: data.args.input.toString(),
       output: data.args.output.toString(),
-      pool: data.args.pool.toString(),
+      pwins: pwins,
+      ptxs: ptxs,
+      pratio: `${((pwins * 100) / ptxs).toFixed(2)}%`,
+      wins: wins,
+      txs: txs,
+      ratio: `${((wins * 100) / txs).toFixed(2)}%`,
       txhash: data.transactionHash
     };
 

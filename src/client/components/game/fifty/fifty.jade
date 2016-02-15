@@ -18,10 +18,15 @@ dom-module#xyz-game-fifty
     
     xyz-page-section(color="brown" opacity)
       .stats
-        .entries
-        .pool
-          .large {{current.poolval}}
-          .normal {{current.poolunit}}
+        .stat
+          .large {{current.wins}}
+          .normal wins
+        .stat
+          .large {{current.ratio}}
+          .normal won
+        .stat
+          .large {{current.txs}}
+          .normal plays
         
     xyz-page-section(color="brown-dark" opacity size="small" shadow)
       .hidden(class$="[[visibleClass(config, 'price')]]")
@@ -31,6 +36,15 @@ dom-module#xyz-game-fifty
           xyz-number-wei(number="{{config.max}}")
           iron-icon(icon="icons:input")
           span {{config.addr}}
+          
+    xyz-page-section(color$="{{lastColor(last)}}" size="small")
+      .center.winner
+        iron-icon(icon="icons:timeline")
+        span {{last.pwins}}/{{last.ptxs}} {{last.pratio}}
+        iron-icon(icon="icons:perm-identity")
+        span {{last.addr}}
+        iron-icon(icon="icons:history")
+        xyz-datetime-elapsed(datetime="{{last.at}}")
           
     xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
       h2 operation and rules

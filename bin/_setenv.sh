@@ -17,6 +17,6 @@ export ADDR_LOTTERY_DEV=0x2850a646d9382469eb8357bdc12f6372e54bb689
 export ADDR_LOTTERY_TST=0xa6f0e7bd469c00776cd783650851fb43b8763716
 export ADDR_LOTTERY_LVE=0xfe147b94a4ee2285db73d7897438a94a97be64c2
 
-export ADDR_FIFTY_DEV=0x5263a93563b2413b11a73b7f93c3a41fc024de59
+export ADDR_FIFTY_DEV=0x5fc41d7248c2ba63692042af8ece9b20e7965173
 
 export SERVICE_TMPL="[Unit]\nDescription=www service\n\n[Install]\nWantedBy=multi-user.target\n\n[Service]\nKillMode=process\nRestart=on-failure\nRestartSec=15s\nExecReload=/bin/kill -HUP \\\$MAINPID\n"

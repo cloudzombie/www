@@ -22,19 +22,30 @@
       }
     },
 
+    lastColor: function(last) {
+      return last && last.isWinner ? 'green' : 'red';
+    },
+
     ready: function() {
-      this.current = {};
+      this.current = { txs: 0, precent: 0 };
 
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
+        if (!_.isNumber(player.at)) {
+          return;
+        }
+
         console.log('NextPlayer', player);
 
-        const wei = window.xyz.NumberWei.formatMax(player.pool);
-        console.log(`pool=${wei.value} ${wei.unit}`);
+        if (player.txs > this.current.txs) {
+          this.set('current.wins', player.wins);
+          this.set('current.txs', player.txs);
+          this.set('current.ratio', player.ratio);
+        }
 
-        this.set('current.pool', player.pool);
-        this.set('current.poolval', wei.value);
-        this.set('current.poolunit', wei.unit);
+        const input = new BigNumber(player.input);
+        const output = new BigNumber(player.output);
 
+        player.isWinner = output.gt(input);
         this.last = player;
       });
     }

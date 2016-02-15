@@ -1,4 +1,5 @@
 @import "../../../base";
+@import "../style";
 
 :host {
   display: block;
@@ -15,41 +16,6 @@
   .round, .pool {
     //margin-top: ($font-size-large - $font-size-medium) / 2;
     @include span-columns(3);
-  }
-}
-
-iron-icon {
-  color: $color-font-gray-light;
-  margin: 0 0.35em 0 1em;
-
-  &.minpad {
-    margin: 0 0.35em 0 0.35em;
-  }
-}
-
-iron-icon+iron-icon {
-  margin: 0 0.35em 0 0.65em;
-}
-
-.contract {
-  text-align: right;
-
-  * {
-    vertical-align: middle;
-  }
-
-  iron-icon {
-    margin: 0 1em;
-  }
-
-  xyz-number-wei {
-    @include user-select(none);
-  }
-}
-
-.winner {
-  * {
-    vertical-align: middle;
   }
 }
 
