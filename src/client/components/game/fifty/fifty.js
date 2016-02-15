@@ -26,8 +26,7 @@
         player.result = output.minus(input).toString();
 
         if (!this.current || player.txs > this.current.txs) {
-          const turnover = new BigNumber(player.txs).times(this.config.min).toString();
-          const wei = window.xyz.NumberWei.format(turnover);
+          const wei = window.xyz.NumberWei.format(player.played);
 
           this.current = {
             wins: player.wins,

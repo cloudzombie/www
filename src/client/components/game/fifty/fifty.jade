@@ -53,7 +53,7 @@ dom-module#xyz-game-fifty
       .about(color="gray")
         h2 about
         p.
-          Send in multiple tickets (one ticket equals the minimum fee), each having a <span class="bold">50% chance</span> of winning. Winning means adding <span class="bold">50% of the available pool</span> to the ticket, losing means the ticket gets added to the pool.
+          Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. Winning means adding <span class="bold">50% of the pool</span> to the ticket, where a pool exists for digit position. Losing means the ticket gets added to the relevant digit pool.
         p.
           The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
         p.
@@ -88,10 +88,17 @@ dom-module#xyz-game-fifty
       h2 operation and rules
       ol
         li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
-        li Every <xyz-number-wei number="{{config.price}}" class="bold"></xyz-number-wei> you send equals one ticket, any value not a multiple of this will be returned
-        li Ecah ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
+        li
+          |Every <span class="bold">digit position plays a pool</span> with 1/10 of the position euqalling a ticket, e.g
+          ul
+            li 0.05 ether will but 5 tickets
+            li 0.6 ether will buy 6
+            li 0.31 ether will buy 4 (3 + 1)
+        li A maxium <span class="bold">bet of <xyz-number-wei number="{{config.max}}"></xyz-number-wei> is 27 tickets</span>, allocated from 3 different pools and evaluated as such.
+        li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
+        li Each ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
         li A win allocates <span class="bold">50% of the available pool</span> to your returns, at the same time returning the value of one ticket
-        li A lose <span class="bold">returns the value</span> of the ticket to the pool, this new pool value is used in subsequent calculations
+        li A loss <span class="bold">returns the value</span> of the ticket to the pool, this new pool value is used in subsequent calculations
         li Winning &gt;50% of tickets may result in an <span class="bold">overall loss</span>, losing &gt;50% of tickets may result in an <span class="bold">overall win</span>
         li You can <span class="bold">play as many times</span> as you like, with as many tickets as you like
         li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount won by each ticket

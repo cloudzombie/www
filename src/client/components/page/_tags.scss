@@ -3,7 +3,7 @@ h2, h3 {
   margin: 0 0 1em 0;
 }
 
-li+li {
+li+li, li>ol, li>ul {
   margin-top: 0.75em;
 }
 

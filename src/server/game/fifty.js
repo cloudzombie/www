@@ -65,6 +65,7 @@ const init = function() {
       pratio: `${((pwins * 100) / ptxs).toFixed(2)}%`,
       wins: wins,
       txs: txs,
+      played: data.args.played.toString(),
       ratio: `${((wins * 100) / txs).toFixed(2)}%`,
       txhash: data.transactionHash
     };
