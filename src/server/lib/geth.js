@@ -72,7 +72,9 @@ const toTime = function(number) {
 const watch = function(type, eventFunc, handlerFunc, reconnect) {
   logger.log('Geth', `watch${type}`, `${reconnect ? 're-' : ''}connecting`);
 
-  (reconnect ? eventFunc() : eventFunc({}, { fromBlock: blocknumber - 5000 })).watch((error, data) => {
+  const fromBlock = Math.max(0, blocknumber - 5000);
+
+  (reconnect ? eventFunc() : eventFunc({}, { fromBlock: fromBlock })).watch((error, data) => {
     if (error) {
       logger.error('Geth', `watch${type}`, error);
       return;
