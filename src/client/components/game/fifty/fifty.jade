@@ -37,17 +37,17 @@ dom-module#xyz-game-fifty
           iron-icon(icon="icons:input")
           span {{config.addr}}
           
-    xyz-page-section.hidden(color$="{{lastColor(last)}}" size="small" class$="[[visibleClass(last, 'ptxs')]]")
+    xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'ptxs')]]")
       .center.winner
         iron-icon(icon="icons:timeline")
-        span {{last.pwins}}/{{last.ptxs}} {{last.pratio}}
+        span {{winner.pwins}}/{{winner.ptxs}} {{winner.pratio}}
         iron-icon(icon="icons:account-balance")
-        xyz-number-wei(number="{{last.output}}" max)
+        xyz-number-wei(number="{{winner.output}}" max)
         iron-icon(icon="icons:trending-flat")
         iron-icon(icon="icons:perm-identity")
-        span {{last.addr}}
+        span {{winner.addr}}
         iron-icon(icon="icons:history")
-        xyz-datetime-elapsed(datetime="{{last.at}}")
+        xyz-datetime-elapsed(datetime="{{winner.at}}")
           
     xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
       .about(color="gray")

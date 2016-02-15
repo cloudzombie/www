@@ -5,7 +5,7 @@
     properties: {
       config: Object,
       current: Object,
-      last: Object,
+      winner: Object,
       players: {
         type: Array,
         value: function() {
@@ -14,8 +14,8 @@
       }
     },
 
-    lastColor: function(last) {
-      return last && last.isWinner ? 'green' : 'red';
+    lastColor: function(winner) {
+      return winner && winner.winner ? 'green' : 'red';
     },
 
     addPlayers: function(players) {
@@ -23,10 +23,7 @@
         const input = new BigNumber(player.input);
         const output = new BigNumber(player.output);
 
-        if (output.gt(input)) {
-          player.result = output.minus(input).toString();
-          player.isWinner = true;
-        }
+        player.result = output.minus(input).toString();
 
         if (!this.current || player.txs > this.current.txs) {
           const turnover = new BigNumber(player.txs).times(this.config.min).toString();
@@ -40,11 +37,13 @@
           };
         }
 
-        if (player.isWinner) {
-          if (!this.last || player.txs > this.last.txs) {
-            this.last = player;
+        if (player.winner) {
+          if (!this.winner || player.txs > this.winner.txs) {
+            this.winner = player;
           }
         }
+
+        console.log(player);
 
         for (let idx = 0; idx < this.players.length; idx++) {
           const _player = this.players[idx];
@@ -66,7 +65,7 @@
         this.splice('players', 10, this.players.length - 10);
       }
 
-      console.log(this.current);
+      console.log(this.last);
     },
 
     setConfig: function(config) {
@@ -79,6 +78,8 @@
         .get('game/fifty')
         .then((game) => {
           console.log('game', game);
+
+          this.winner = game.winner;
 
           this.setConfig(game.config);
           this.addPlayers(game.players);

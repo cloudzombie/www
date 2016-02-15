@@ -21,9 +21,14 @@ const CONFIG = {
   edge: CONFIG_FEES_EDGE
 };
 
+let winner;
 let players = [];
 
 const addPlayer = function(player) {
+  if (player.winner && (!winner || player.txs > winner.txs)) {
+    winner = player;
+  }
+
   players.unshift(player);
   players = players.slice(0, 10);
 };
@@ -31,6 +36,7 @@ const addPlayer = function(player) {
 const get = function() {
   return {
     config: CONFIG,
+    winner: winner,
     players: players
   };
 };
@@ -46,12 +52,14 @@ const init = function() {
     const ptxs = pwins + plosses;
     const wins = data.args.wins.toNumber();
     const txs = data.args.txs.toNumber();
+    const _winner = data.args.output.gt(data.args.input);
 
     const player = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
       input: data.args.input.toString(),
       output: data.args.output.toString(),
+      winner: _winner,
       pwins: pwins,
       ptxs: ptxs,
       pratio: `${((pwins * 100) / ptxs).toFixed(2)}%`,
