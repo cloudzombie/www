@@ -13,3 +13,13 @@
     @include span-columns(4);
   }
 }
+
+.about {
+  color: $color-font-gray;
+
+  @include span-columns(4);
+}
+
+.entries {
+  @include span-columns(8);
+}

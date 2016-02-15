@@ -41,6 +41,7 @@
 
   window.xyz.NumberWei = {
     properties: {
+      max: Boolean,
       number: {
         type: Number,
         observer: '_setWei'
@@ -49,7 +50,7 @@
     },
 
     _setWei: function() {
-      this.wei = format(this.number);
+      this.wei = this.max ? formatMax(this.number) : format(this.number);
     },
 
     format: format,

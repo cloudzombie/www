@@ -46,6 +46,31 @@ dom-module#xyz-game-fifty
         iron-icon(icon="icons:history")
         xyz-datetime-elapsed(datetime="{{last.at}}")
           
+    xyz-page-section
+      .center
+        .entries
+          h2 recent entries
+          table: tbody: template(is="dom-repeat" items="{{players}}")
+            tr.entry
+              td.addr
+                iron-icon(icon="icons:perm-identity")
+                span {{item.addr}}
+              td.value
+                iron-icon(icon="icons:input")
+                xyz-number-wei(number="{{item.output}}" max)
+              td.when
+                iron-icon(icon="icons:history")
+                xyz-datetime-elapsed(datetime="{{item.at}}")
+        .about
+          h2 about
+          p.
+            Each transaction generates a number of entry tickets (the minum entry value equals one ticket), with each ticket having a <span class="bold">50% chance</span> of winning. Winning means taking home <span class="bold">50% of the available pool</span> in addition to the ticket fee, losing means the ticket fee gets added to the pool.
+          p.
+            The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
+          p.
+            The most looney game this side of playing chicken.
+            
+        
     xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
       h2 operation and rules
       ol

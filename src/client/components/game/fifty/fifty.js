@@ -14,7 +14,7 @@
       config: Object,
       current: Object,
       last: Object,
-      entries: {
+      players: {
         type: Array,
         value: function() {
           return [];
@@ -24,6 +24,31 @@
 
     lastColor: function(last) {
       return last && last.isWinner ? 'green' : 'red';
+    },
+
+    addPlayers: function(players) {
+      _.each(players, (player) => {
+        this.splice('players', 0, 0, player);
+      });
+
+      if (this.players.length > 10) {
+        this.splice('players', 10, this.players.length - 10);
+      }
+    },
+
+    setConfig: function(config) {
+      this.config = config;
+    },
+
+    getGame: function() {
+      this.$.api
+        .get('game/fifty')
+        .then((game) => {
+          console.log('game', game);
+
+          this.setConfig(game.config);
+          this.addPlayers(game.players);
+        });
     },
 
     ready: function() {
@@ -47,7 +72,11 @@
 
         player.isWinner = output.gt(input);
         this.last = player;
+
+        this.addPlayers([player]);
       });
+
+      this.getGame();
     }
   };
 

@@ -5,10 +5,22 @@ const pubsub = require('../route/pubsub');
 
 const fifty = geth.getContract(contract);
 
-const players = [];
+const CONFIG = {
+  addr: contract.addr
+};
+
+let players = [];
 
 const addPlayer = function(player) {
-  players.push(player);
+  players.unshift(player);
+  players = players.slice(0, 10);
+};
+
+const get = function() {
+  return {
+    config: CONFIG,
+    players: players
+  };
 };
 
 const init = function() {
@@ -44,5 +56,6 @@ const init = function() {
 };
 
 module.exports = {
-  init: init
+  init: init,
+  get: get
 };

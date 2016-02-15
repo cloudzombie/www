@@ -19,7 +19,18 @@
   }
 }
 
+.expanded {
+
+}
+
+.about {
+  color: $color-font-gray;
+  @include span-columns(4);
+}
+
 .entries {
+  @include span-columns(8);
+
   table {
     border-collapse: collapse;
     margin: 0 auto;
