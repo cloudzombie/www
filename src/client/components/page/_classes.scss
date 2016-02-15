@@ -18,6 +18,10 @@ tr.visible {
   font-size: $font-size-large;
 }
 
+.medium {
+  font-size: $font-size-medium;
+}
+
 .small {
   font-size: $font-size-small;
 }
@@ -32,4 +36,8 @@ tr.visible {
 
 .center {
   text-align: center;
+}
+
+.border {
+  border-bottom: 1px solid $color-font-white;
 }

@@ -28,6 +28,7 @@ body[unresolved] {
 
 .hero {
   font-size: $font-size-medium;
+  line-height: 1.5em;
   text-align: center;
 
   @include span-columns(8);
@@ -36,6 +37,20 @@ body[unresolved] {
 
 .quip {
   text-align: right;
+}
+
+.bg-zocchi {
+  background-image: url('/images/zocchi-250-bw-trans.jpg');
+  background-repeat: no-repeat;
+  background-position: 0% 50%;
+  padding-left: 270px;
+}
+
+.bg-nobrain {
+  background-image: url('/images/no-brain-250-bw-trans-inv.jpg');
+  background-repeat: no-repeat;
+  background-position: 100% 50%;
+  padding-right: 270px;
 }
 
 .games {
@@ -106,24 +121,4 @@ body[unresolved] {
       background-position: 50% 50%;
     }
   }
-}
-
-img {
-  &[opacity] {
-    opacity: 0.25;
-  }
-
-  &.right {
-    float: right;
-    margin: 0 0 0 2em;
-  }
-
-  &.left {
-    float: left;
-    margin: 0 2em 0 0;
-  }
-}
-
-.center {
-  text-align: center;
 }

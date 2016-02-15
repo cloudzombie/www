@@ -1,12 +1,14 @@
-h3 {
-  margin: 0;
+h2, h3 {
+  color: $color-font-gray;
+  margin: 0 0 1em 0;
 }
 
 li+li {
-  margin-top: 0.5em;
+  margin-top: 0.75em;
 }
 
 p {
+  line-height: 1.75em;
   margin: 0;
   -webkit-margin: 0em;
 }

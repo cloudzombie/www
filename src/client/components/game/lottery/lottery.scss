@@ -8,8 +8,13 @@
   @include outer-container;
   text-align: center;
 
-  .entries, .round, .time, .pool {
-    @include span-columns(4);
+  .time {
+    @include span-columns(6);
+  }
+
+  .round, .pool {
+    //margin-top: ($font-size-large - $font-size-medium) / 2;
+    @include span-columns(3);
   }
 }
 
@@ -49,8 +54,6 @@ iron-icon+iron-icon {
 }
 
 .entries {
-  text-align: center;
-
   table {
     border-collapse: collapse;
     margin: 0 auto;
