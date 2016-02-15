@@ -1,5 +1,5 @@
 const channels = require('../config/channels').fifty;
-const contract = require('../config/contracts').lottery;
+const contract = require('../config/contracts').fifty;
 const geth = require('../lib/geth');
 const pubsub = require('../route/pubsub');
 
@@ -12,7 +12,7 @@ const addPlayer = function(player) {
 };
 
 const init = function() {
-  /* geth.watch('LooneyFifty', fifty.NewPlay, (data) => {
+  geth.watch('Fifty', fifty.NextPlayer, (data) => {
     if (!data.args.at) {
       return;
     }
@@ -29,7 +29,7 @@ const init = function() {
     addPlayer(player);
 
     pubsub.publish(channels.player, player);
-  }); */
+  });
 };
 
 module.exports = {
