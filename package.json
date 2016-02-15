@@ -18,7 +18,7 @@
     "bourbon": "^4.2.6",
     "bourbon-neat": "^1.7.2",
     "chai": "^3.4.1",
-    "contracts": "thelooneyfarm/contracts#xyz-looney-50",
+    "contracts": "thelooneyfarm/contracts",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-cssmin": "^0.1.7",
