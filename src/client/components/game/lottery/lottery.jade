@@ -19,14 +19,14 @@ dom-module#xyz-game-lottery
     xyz-page-section.hidden(color="blue" opacity class$="[[visibleClass(current, 'round')]]")
       .stats
         .round
-          .medium {{current.round}}
+          .large {{current.round}}
           .normal rounds
         .time
           .large
             xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
           .normal time remaining
         .pool
-          .medium {{current.poolval}}
+          .large {{current.poolval}}
           .normal {{current.poolunit}}
         
     xyz-page-section(color="blue-dark" opacity size="small" shadow)
