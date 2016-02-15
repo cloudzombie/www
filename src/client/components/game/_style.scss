@@ -32,3 +32,52 @@ iron-icon+iron-icon {
     vertical-align: middle;
   }
 }
+
+.about {
+  text-align: left;
+  padding: 3em 1em 2em 1em;
+  margin: -3em 0 0 0;
+
+  @include span-columns(4);
+}
+
+.entries {
+  @include span-columns(8);
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    tr {
+      td {
+        text-align: left;
+        padding: 0 0;
+
+        * {
+          vertical-align: middle;
+        }
+
+        &.addr {
+          text-align: left;
+        }
+
+        &.when {
+          color: $color-font-gray-light;
+          vertical-align: middle;
+          padding-bottom: 1em;
+        }
+      }
+
+      &.data {
+        td {
+          padding-bottom: 1em;
+          text-align: left;
+        }
+
+        td:first-child {
+          padding-left: 2em;
+        }
+      }
+    }
+  }
+}

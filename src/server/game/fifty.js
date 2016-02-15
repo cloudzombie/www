@@ -9,12 +9,16 @@ const CONFIG_PRICE = fifty.CONFIG_PRICE(); // eslint-disable-line new-cap
 const CONFIG_MIN_VALUE = fifty.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
 const CONFIG_MAX_VALUE = fifty.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
 const CONFIG_MAX_PLAYS = fifty.CONFIG_MAX_PLAYS(); // eslint-disable-line new-cap
+const CONFIG_FEES_MUL = fifty.CONFIG_FEES_MUL(); // eslint-disable-line new-cap
+const CONFIG_FEES_DIV = fifty.CONFIG_FEES_DIV(); // eslint-disable-line new-cap
+const CONFIG_FEES_EDGE = CONFIG_FEES_MUL.toNumber() / CONFIG_FEES_DIV.toNumber();
 const CONFIG = {
   addr: contract.addr,
   price: CONFIG_PRICE.toString(),
   min: CONFIG_MIN_VALUE.toString(),
   max: CONFIG_MAX_VALUE.toString(),
-  tickets: CONFIG_MAX_PLAYS.toNumber()
+  tickets: CONFIG_MAX_PLAYS.toNumber(),
+  edge: CONFIG_FEES_EDGE
 };
 
 let players = [];

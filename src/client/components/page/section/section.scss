@@ -3,23 +3,23 @@
 :host {
   display: block;
   margin: 0;
-  padding: 3em 2em;
+  padding: 3em 0;
   background: white;
 
   &[size="small"] {
-    padding: 1.75em 2em;
+    padding: 1.75em 0;
   }
 
   &[size="small-top"] {
-    padding: 1.75em 2em 3em 2em;
+    padding: 1.75em 0 3em 0;
   }
 
   &[size="tiny"] {
-    padding: 1.25em 2em;
+    padding: 1.25em 0;
   }
 
   &[size="none"] {
-    padding: 0 2em;
+    padding: 0 0;
   }
 }
 

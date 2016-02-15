@@ -103,6 +103,12 @@ body[unresolved] {
       background-position: 50% 50%;
     }
 
+    &.fifty {
+      background-image: url('/images/50-150-bw-trans.png');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
+
     &.next {
       background-image: url('/images/question-150-bw-trans.png');
       background-repeat: no-repeat;

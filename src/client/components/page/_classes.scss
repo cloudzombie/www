@@ -10,6 +10,10 @@ tr.visible {
   display: table-row;
 }
 
+span.visible {
+  display: inline-block;
+}
+
 .normal {
   font-size: $font-size-default;
 }

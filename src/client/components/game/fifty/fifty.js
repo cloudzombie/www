@@ -28,7 +28,44 @@
 
     addPlayers: function(players) {
       _.each(players, (player) => {
-        this.splice('players', 0, 0, player);
+        const input = new BigNumber(player.input);
+        const output = new BigNumber(player.output);
+
+        if (output.gt(input)) {
+          player.result = output.minus(input).toString();
+          player.isWinner = true;
+        }
+
+        if (player.txs > this.current.txs) {
+          const turnover = new BigNumber(player.txs).times(this.config.min).toString();
+          const wei = window.xyz.NumberWei.format(turnover);
+
+          this.set('current.wins', player.wins);
+          this.set('current.txs', player.txs);
+          this.set('current.turnover', wei);
+          this.set('current.ratio', player.ratio);
+        }
+
+        if (player.isWinner) {
+          if (!this.last || player.txs > this.last.txs) {
+            this.last = player;
+          }
+        }
+
+        for (let idx = 0; idx < this.players.length; idx++) {
+          const _player = this.players[idx];
+
+          if (player.addr === _player.addr && player.txhash === _player.txhash) {
+            return;
+          }
+
+          if (player.txs > _player.txs) {
+            this.splice('players', idx, 0, player);
+            return;
+          }
+        }
+
+        this.splice('players', this.players.length, 0, player);
       });
 
       if (this.players.length > 10) {
@@ -37,6 +74,7 @@
     },
 
     setConfig: function(config) {
+      config.edge = (config.edge * 100).toFixed(2);
       this.config = config;
     },
 
@@ -60,18 +98,6 @@
         }
 
         console.log('NextPlayer', player);
-
-        if (player.txs > this.current.txs) {
-          this.set('current.wins', player.wins);
-          this.set('current.txs', player.txs);
-          this.set('current.ratio', player.ratio);
-        }
-
-        const input = new BigNumber(player.input);
-        const output = new BigNumber(player.output);
-
-        player.isWinner = output.gt(input);
-        this.last = player;
 
         this.addPlayers([player]);
       });

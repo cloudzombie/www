@@ -25,8 +25,8 @@ dom-module#xyz-game-fifty
           .large {{current.ratio}}
           .normal won
         .stat
-          .large {{current.txs}}
-          .normal plays
+          .large {{current.turnover.value}}
+          .normal {{current.turnover.unit}} played
         
     xyz-page-section(color="brown-dark" opacity size="small" shadow)
       .hidden(class$="[[visibleClass(config, 'price')]]")
@@ -41,46 +41,56 @@ dom-module#xyz-game-fifty
       .center.winner
         iron-icon(icon="icons:timeline")
         span {{last.pwins}}/{{last.ptxs}} {{last.pratio}}
+        iron-icon(icon="icons:account-balance")
+        xyz-number-wei(number="{{last.output}}" max)
+        iron-icon(icon="icons:trending-flat")
         iron-icon(icon="icons:perm-identity")
         span {{last.addr}}
         iron-icon(icon="icons:history")
         xyz-datetime-elapsed(datetime="{{last.at}}")
           
     xyz-page-section
-      .center
-        .entries
-          h2 recent plays
-          table: tbody: template(is="dom-repeat" items="{{players}}")
-            tr.entry
-              td.addr
-                iron-icon(icon="icons:perm-identity")
-                span {{item.addr}}
-              td.value
-                iron-icon(icon="icons:input")
-                xyz-number-wei(number="{{item.output}}" max)
-              td.when
-                iron-icon(icon="icons:history")
-                xyz-datetime-elapsed(datetime="{{item.at}}")
-        .about
-          h2 about
-          p.
-            Each transaction generates a number of entry tickets (the minum entry value equals one ticket), with each ticket having a <span class="bold">50% chance</span> of winning. Winning means taking home <span class="bold">50% of the available pool</span> in addition to the ticket fee, losing means the ticket fee gets added to the pool.
-          p.
-            The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
-          p.
-            The most looney game this side of playing chicken.
-            
+      .about(color="gray")
+        h2 about
+        p.
+          Send in multiple tickets (one ticket equals the minimum fee), each having a <span class="bold">50% chance</span> of winning. Winning means adding <span class="bold">50% of the available pool</span> to the ticket, losing means the ticket gets added to the pool.
+        p.
+          The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
+        p.
+          The most looney game this side of playing chicken.
+          
+      .entries
+        h2 recent plays
+        table: tbody: template(is="dom-repeat" items="{{players}}")
+          tr.entry
+            td.addr(colspan="4")
+              iron-icon(icon="icons:perm-identity")
+              span {{item.addr}}
+            td.when(rowspan="2")
+              iron-icon(icon="icons:history")
+              xyz-datetime-elapsed(datetime="{{item.at}}")
+          tr.data
+            td.input
+              iron-icon(icon="icons:input")
+              xyz-number-wei(number="{{item.input}}" max)
+            td.win
+              iron-icon(icon="icons:timeline")
+              span {{item.pwins}}/{{item.ptxs}}
+            td.ratio {{item.pratio}}
+            td.output
+              iron-icon(icon="icons:account-balance")
+              xyz-number-wei(number="{{item.output}}" max)
         
     xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
       h2 operation and rules
       ol
         li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
-        li There is only <span class="bold">one winner per round</span>, the randomly selected address collects the full pool minus the applicable commission
-        li Every <xyz-number-wei number="{{config.price}}" class="bold"></xyz-number-wei> you send (an entry) buys one ticket, any value not a multiple of this will be returned
-        li You can <span class="bold">enter as many times</span> as you like, with as many tickets per entry as you like
-        li Tickets are automatically <span class="bold">allocated based on the value</span> you have sent
-        li The game will finish a round when the timer expires and <span class="bold">at least {{config.minentries}} entries</span> are made
-        li When <span class="bold">the maxiumum {{config.maxentries}} entries/transactions</span> are received the round will finish, regardless of the number of tickets per entry or time elapsed
-        li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount paid to the winner at the end of each round
+        li Every <xyz-number-wei number="{{config.price}}" class="bold"></xyz-number-wei> you send equals one ticket, any value not a multiple of this will be returned
+        li Ecah ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
+        li A win allocates <span class="bold">50% of the available pool</span> to your returns, at the same time returning the value of one ticket
+        li A lose <span class="bold">returns the value</span> of the ticket to the pool, this new pool value is used in subsequent calculations
+        li Winning &gt;50% of tickets may result in an <span class="bold">overall loss</span>, losing &gt;50% of tickets may result in an <span class="bold">overall win</span>
+        li You can <span class="bold">play as many times</span> as you like, with as many tickets as you like
+        li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount won by each ticket
         
   script !{readCompiled('fifty.js')}
