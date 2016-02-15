@@ -37,7 +37,6 @@ dom-module#xyz-game-lottery
           xyz-number-wei(number="{{config.max}}")
           iron-icon(icon="icons:input")
           span {{config.addr}}
-          //span ({{config.edge}}% commission)
           
     xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'round')]]")
       .center.winner
@@ -62,9 +61,6 @@ dom-module#xyz-game-lottery
               td.value
                 iron-icon(icon="icons:input")
                 xyz-number-wei(number="{{item.value}}")
-              //td.tickets
-                iron-icon(icon="icons:content-copy")
-                span {{item.tickets}}
               td.round
                 iron-icon(icon="icons:donut-large")
                 span round {{item.round}}
@@ -84,5 +80,4 @@ dom-module#xyz-game-lottery
         li The game will finish a round when the timer expires and <span class="bold">at least {{config.minentries}} entries</span> are made
         li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount paid to the winner at the end of each round
         
-    
   script !{readCompiled('lottery.js')}
