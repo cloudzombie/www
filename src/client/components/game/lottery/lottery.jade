@@ -69,7 +69,7 @@ dom-module#xyz-game-lottery
                 xyz-datetime-elapsed(datetime="{{item.at}}")
       
     xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
-      h3 operation and rules
+      h2 operation and rules
       ol
         li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
         li There is only <span class="bold">one winner per round</span>, the randomly selected address collects the full pool minus the applicable commission
