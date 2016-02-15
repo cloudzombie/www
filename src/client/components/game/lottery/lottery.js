@@ -33,6 +33,11 @@
 
         for (let idx = 0; idx < this.entries.length; idx++) {
           const _entry = this.entries[idx];
+
+          if (entry.addr === _entry.addr && entry.txhash === _entry.txhash) {
+            return;
+          }
+
           const newround = entry.round > _entry.round;
           const newentry = (entry.round === _entry.round) && (entry.total > _entry.total);
 
