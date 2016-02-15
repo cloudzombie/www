@@ -5,8 +5,16 @@ const pubsub = require('../route/pubsub');
 
 const fifty = geth.getContract(contract);
 
+const CONFIG_PRICE = fifty.CONFIG_PRICE(); // eslint-disable-line new-cap
+const CONFIG_MIN_VALUE = fifty.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
+const CONFIG_MAX_VALUE = fifty.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
+const CONFIG_MAX_PLAYS = fifty.CONFIG_MAX_PLAYS(); // eslint-disable-line new-cap
 const CONFIG = {
-  addr: contract.addr
+  addr: contract.addr,
+  price: CONFIG_PRICE.toString(),
+  min: CONFIG_MIN_VALUE.toString(),
+  max: CONFIG_MAX_VALUE.toString(),
+  tickets: CONFIG_MAX_PLAYS.toNumber()
 };
 
 let players = [];
