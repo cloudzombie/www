@@ -1,0 +1,42 @@
+link(rel="import" href="/components/bower/polymer/polymer.html")
+link(rel="import" href="/components/bower/iron-icons/iron-icons.html")
+
+link(rel="import" href="/components/3rdparty/lodash.html")
+link(rel="import" href="/components/3rdparty/web3.html")
+link(rel="import" href="/components/api/api.html")
+link(rel="import" href="/components/datetime/datetime.html")
+link(rel="import" href="/components/number/number.html")
+link(rel="import" href="/components/page/page.html")
+link(rel="import" href="/components/pubsub/pubsub.html")
+  
+dom-module#xyz-game-fifty
+  template
+    style !{readCompiled('fifty.css')}
+    
+    xyz-api#api
+    xyz-pubsub#pubsub
+    
+    xyz-page-section(color="brown" opacity)
+        
+    xyz-page-section(color="brown-dark" opacity size="small" shadow)
+      .hidden(class$="[[visibleClass(config, 'price')]]")
+        .contract.right
+          xyz-number-wei(number="{{config.min}}")
+          span &nbsp;-&nbsp;
+          xyz-number-wei(number="{{config.max}}")
+          iron-icon(icon="icons:input")
+          span {{config.addr}}
+          
+    xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
+      h2 operation and rules
+      ol
+        li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
+        li There is only <span class="bold">one winner per round</span>, the randomly selected address collects the full pool minus the applicable commission
+        li Every <xyz-number-wei number="{{config.price}}" class="bold"></xyz-number-wei> you send (an entry) buys one ticket, any value not a multiple of this will be returned
+        li You can <span class="bold">enter as many times</span> as you like, with as many tickets per entry as you like
+        li Tickets are automatically <span class="bold">allocated based on the value</span> you have sent
+        li The game will finish a round when the timer expires and <span class="bold">at least {{config.minentries}} entries</span> are made
+        li When <span class="bold">the maxiumum {{config.maxentries}} entries/transactions</span> are received the round will finish, regardless of the number of tickets per entry or time elapsed
+        li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount paid to the winner at the end of each round
+        
+  script !{readCompiled('fifty.js')}

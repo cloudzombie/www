@@ -1,6 +1,6 @@
 const logger = require('../lib/logger');
 
-const lottery = require('./fifty');
+const fifty = require('./fifty');
 const lottery = require('./lottery');
 
 const init = function() {

@@ -12,7 +12,7 @@ const addPlayer = function(player) {
 };
 
 const init = function() {
-  geth.watch('LooneyFifty', fifty.NewPlay, (data) => {
+  /* geth.watch('LooneyFifty', fifty.NewPlay, (data) => {
     if (!data.args.at) {
       return;
     }
@@ -29,7 +29,7 @@ const init = function() {
     addPlayer(player);
 
     pubsub.publish(channels.player, player);
-  });
+  }); */
 };
 
 module.exports = {
