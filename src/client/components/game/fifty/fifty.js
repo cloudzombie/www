@@ -87,7 +87,7 @@
 
     ready: function() {
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
-        if (!_.isNumber(player.at)) {
+        if (!player.txs) {
           return;
         }
 

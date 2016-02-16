@@ -25,7 +25,7 @@
 
     addEntries: function(entries) {
       _.each(entries, (entry) => {
-        if (!_.isNumber(entry.at)) {
+        if (!entry.total) {
           return;
         }
 

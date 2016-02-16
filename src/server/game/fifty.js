@@ -43,7 +43,9 @@ const get = function() {
 
 const init = function() {
   geth.watch('Fifty', fifty.NextPlayer, (data) => {
-    if (!data.args.at) {
+    const txs = data.args.txs && data.args.txs.toNumber();
+
+    if (!txs) {
       return;
     }
 
@@ -51,7 +53,6 @@ const init = function() {
     const plosses = data.args.plosses.toNumber();
     const ptxs = pwins + plosses;
     const wins = data.args.wins.toNumber();
-    const txs = data.args.txs.toNumber();
     const _winner = data.args.output.gt(data.args.input);
 
     const player = {

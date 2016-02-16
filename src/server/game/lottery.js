@@ -113,7 +113,9 @@ const addEntry = function(entry) {
 
 const init = function() {
   geth.watch('Lottery', lottery.NewEntry, (data) => {
-    if (!data.args.at) {
+    const total = data.args.total && data.args.total.toNumber();
+
+    if (total) {
       return;
     }
 
@@ -122,7 +124,7 @@ const init = function() {
       at: geth.toTime(data.args.at),
       round: data.args.round.toNumber(),
       tickets: data.args.tickets.toNumber(),
-      total: data.args.total.toNumber(),
+      total: total,
       txhash: data.transactionHash
     };
 
