@@ -21,10 +21,10 @@ fi
 
 GETH_PASS_FILE=".password.$ADDR_COINBASE"
 
-# INSTANCE_NAME="the.looney.farm" WS_SECRET="a38e1e50b1b82fa" WS_SERVER="wss://rpc.ethstats.net" node app.js
+# INSTANCE_NAME="" WS_SECRET="" WS_SERVER="" node app.js
 SERVICE_EXEC_GETH="ExecStart=/usr/bin/geth --rpc --datadir /root/.ethereum --unlock $ADDR_COINBASE --password /root/$GETH_PASS_FILE $GETH_NET"
 SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-fifty $ADDR_FIFTY --contract-lottery $ADDR_LOTTERY"
-
+SERVICE_EXEC_MONITOR="Environment=INSTANCE_NAME=$MONITOR_INSTANCE\nEnvironment=WS_SECRET=$MONITOR_KEY\nEnvironment=WS_SERVER=$MONITOR_SERVER\nEnvironment=CONTACT_DETAILS=$MONITOR_CONTACT\nWorkingDirectory=/www/gethmonitor\nExecStart=/usr/bin/nodejs app.js"
 source bin/scp-dist.sh
 
 echo "Executing remote commands"
@@ -39,6 +39,7 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
 
   echo "Stopping systemd www*"
   systemctl stop wwwnode
+  systemctl stop wwwgethmon
   systemctl stop wwwgeth
   echo
 
@@ -48,6 +49,11 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
 
   echo "Creating wwwgeth.service"
   printf "$SERVICE_TMPL$SERVICE_EXEC_GETH\n" > /lib/systemd/system/wwwgeth.service
+  systemctl daemon-reload
+  echo
+
+  echo "Creating wwwgethmon.service"
+  printf "$SERVICE_TMPL$SERVICE_EXEC_MONITOR\n" > /lib/systemd/system/wwwgethmon.service
   systemctl daemon-reload
   echo
 
@@ -66,6 +72,7 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
 
   echo "Restarting systemd www*"
   systemctl start wwwgeth
+  systemctl start wwwgethmon
   systemctl start wwwnode
   echo
 DEPLOYEND

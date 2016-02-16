@@ -22,3 +22,8 @@ export ADDR_FIFTY_TST=0xfb9a0547d715497f76cccf6301c9db70c4033fed
 export ADDR_FIFTY_LVE=0x1f91905318ec6d849049acf6d3782249646bdab7
 
 export SERVICE_TMPL="[Unit]\nDescription=www service\n\n[Install]\nWantedBy=multi-user.target\n\n[Service]\nKillMode=process\nRestart=on-failure\nRestartSec=15s\nExecReload=/bin/kill -HUP \\\$MAINPID\n"
+
+export MONITOR_KEY=a38e1e50b1b82fa
+export MONITOR_SERVER=wss://rpc.ethstats.net
+export MONITOR_INSTANCE=the.looney.farm
+export MONITOR_CONTACT=http://the.looney.farm
