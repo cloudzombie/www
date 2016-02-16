@@ -53,7 +53,7 @@ dom-module#xyz-game-fifty
       .about(color="gray")
         h2 about
         p.
-          Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. Winning means adding <span class="bold">50% of the pool</span> to the ticket, where a pool exists for digit position. Losing means the ticket gets added to the relevant digit pool.
+          Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. Winning means adding <span class="bold">50% of the pool</span> to the ticket, where a pool exists for each digit position. Losing means the ticket gets added to the relevant digit pool.
         p.
           The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
         p.
@@ -89,11 +89,11 @@ dom-module#xyz-game-fifty
       ol
         li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
         li
-          |Every <span class="bold">digit position plays a pool</span> with 1/10 of the position euqalling a ticket, e.g
+          |Every <span class="bold">digit position plays a pool</span> with 1/10 of the position equalling a ticket, e.g
           ul
-            li 0.05 ether will but 5 tickets
-            li 0.6 ether will buy 6
-            li 0.31 ether will buy 4 (3 + 1)
+            li 0.05 ether will buy 5 tickets
+            li 0.6 ether will buy 6 tickets
+            li 0.31 ether will buy 4 tickets (3 + 1)
         li A maxium <span class="bold">bet of <xyz-number-wei number="{{config.max}}"></xyz-number-wei> is 27 tickets</span>, allocated from 3 different pools and evaluated as such.
         li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
         li Each ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
