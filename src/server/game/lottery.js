@@ -76,7 +76,7 @@ const get = function() {
   };
 };
 
-const getAdmin = function() {
+const getBalance = function() {
   const balance = geth.getBalance(contract.addr);
   const returns = CONFIG_RETURN.times(lottery.numtickets());
 
@@ -154,7 +154,7 @@ module.exports = {
   deploy: deploy,
   enter: enter,
   get: get,
-  getAdmin: getAdmin,
+  getBalance: getBalance,
   getRound: getRound,
   getWinner: getWinner,
   init: init

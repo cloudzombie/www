@@ -77,7 +77,16 @@ const init = function() {
   });
 };
 
+const getBalance = function() {
+  const balance = geth.getBalance(contract.addr);
+
+  return {
+    balance: balance
+  };
+};
+
 module.exports = {
   init: init,
-  get: get
+  get: get,
+  getBalance: getBalance
 };
