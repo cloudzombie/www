@@ -4,7 +4,11 @@ const Web3 = require('web3');
 const config = require('../config/geth');
 const logger = require('./logger');
 
+const WATCH_MONITOR = 20000;
+
 const web3 = new Web3();
+const watchtypes = {};
+
 let coinbase;
 let blocknumber;
 
@@ -84,17 +88,6 @@ const watch = function(type, eventFunc, handlerFunc, reconnect) {
 
     handlerFunc(data);
   });
-
-  const monitor = function() {
-    if (web3.isConnected()) {
-      setTimeout(monitor, 30000 + Math.ceil(Math.random() * 30000));
-      return;
-    }
-
-    watch(type, eventFunc, handlerFunc, true);
-  };
-
-  setTimeout(monitor, 10000 + Math.ceil(Math.random() * 10000));
 };
 
 const init = function() {
@@ -109,17 +102,18 @@ const init = function() {
     }, 1000 + Math.ceil(Math.random() * 1000));
   };
 
-  /* const monitor = function() {
+  const monitor = function() {
     if (web3.isConnected()) {
-      setTimeout(monitor, 20000 + Math.ceil(Math.random() * 20000));
+      setTimeout(monitor, WATCH_MONITOR + Math.ceil(Math.random() * WATCH_MONITOR));
       return;
     }
 
     logger.log('Geth', 'init', 'connection lost, re-initializing');
 
-    // we should really roll everything back, but... state is state, just start all over
     process.exit(1);
-  }; */
+  };
+
+  monitor();
 
   return new Promise((resolve) => {
     const connection = `http://${config.host}:${config.port}`;
