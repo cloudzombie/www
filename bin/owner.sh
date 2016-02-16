@@ -3,9 +3,7 @@
 source bin/_setenv.sh
 
 usage() {
-  echo "Usage: $0 <dev|test|live> <fifty|lottery> [command]"
-  echo "  [command] is pushed to --exec parameter"
-  exit
+  echo "Usage: $0 <dev|test|live> <fifty|lottery> [exec]"
 }
 
 if [ "$1" == "test" ]; then
@@ -22,9 +20,15 @@ elif [ "$1" == "dev" ]; then
   ADDR_LOTTERY=$ADDR_LOTTERY_DEV
 else
   usage
+  exit
 fi
 
 if [ "$2" == "" ]; then
+  usage
+  exit
+fi
+
+if [ "$3" == "" ]; then
   usage
 fi
 

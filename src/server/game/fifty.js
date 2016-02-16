@@ -78,7 +78,7 @@ const init = function() {
 };
 
 const getBalance = function() {
-  const balance = geth.getBalance(contract.addr);
+  const balance = geth.getBalance(contract.addr).toString();
 
   return {
     balance: balance
