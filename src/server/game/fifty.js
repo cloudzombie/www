@@ -1,6 +1,7 @@
 const channels = require('../config/channels').fifty;
 const contract = require('../config/contracts').fifty;
 const geth = require('../lib/geth');
+const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
 const fifty = geth.getContract(contract);
@@ -42,7 +43,7 @@ const get = function() {
 };
 
 const init = function() {
-  geth.watch('Fifty', fifty.NextPlayer, (data) => {
+  const eventNextPlayer = function(data) {
     const txs = data.args.txs && data.args.txs.toNumber();
 
     if (!txs) {
@@ -74,6 +75,19 @@ const init = function() {
     addPlayer(player);
 
     pubsub.publish(channels.player, player);
+  };
+
+  fifty.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
+    if (error) {
+      logger.log('Fifty', 'watch', error);
+      return;
+    }
+
+    switch (data.event) {
+      case 'NextPlayer': eventNextPlayer(data); break;
+      default:
+        logger.error('Fifty', 'watch', `Unknown event ${data.event}`);
+    }
   });
 };
 

@@ -40,6 +40,10 @@ const getBlockNumber = function() {
   return blocknumber;
 };
 
+const getEventBlock = function() {
+  return Math.max(0, blocknumber - 8640);
+};
+
 const getBalance = function(address) {
   return web3.eth.getBalance(address || coinbase);
 };
@@ -70,23 +74,6 @@ const toWei = function(number, unit) {
 
 const toTime = function(number) {
   return number.toNumber() * 1000;
-};
-
-const watch = function(type, eventFunc, handlerFunc, reconnect) {
-  logger.log('Geth', `watch${type}`, `${reconnect ? 're-' : ''}connecting`);
-
-  const fromBlock = Math.max(0, blocknumber - 8640);
-
-  (reconnect ? eventFunc() : eventFunc({}, { fromBlock: fromBlock })).watch((error, data) => {
-    if (error) {
-      logger.error('Geth', `watch${type}`, error);
-      return;
-    }
-
-    logger.log('Geth', `watch${type}`, data);
-
-    handlerFunc(data);
-  });
 };
 
 const init = function() {
@@ -135,12 +122,12 @@ module.exports = {
   call: call,
   deployContract: deployContract,
   getBlockNumber: getBlockNumber,
+  getEventBlock: getEventBlock,
   getContract: getContract,
   sendTransaction: sendTransaction,
   getCoinbase: getCoinbase,
   getBalance: getBalance,
   toHex: toHex,
   toWei: toWei,
-  toTime: toTime,
-  watch: watch
+  toTime: toTime
 };

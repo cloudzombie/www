@@ -1,6 +1,7 @@
 const channels = require('../config/channels').lottery;
 const contract = require('../config/contracts').lottery;
 const geth = require('../lib/geth');
+const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
 const lottery = geth.getContract(contract);
@@ -112,7 +113,7 @@ const addEntry = function(entry) {
 };
 
 const init = function() {
-  geth.watch('Lottery', lottery.NewEntry, (data) => {
+  const eventNewEntry = function(data) {
     const total = data.args.total && data.args.total.toNumber();
 
     if (!total) {
@@ -131,22 +132,38 @@ const init = function() {
     addEntry(entry);
 
     pubsub.publish(channels.entry, entry);
-  });
+  };
 
-  geth.watch('Lottery', lottery.NewWinner, (data) => {
-    if (!data.args.at) {
+  const eventNewWinner = function(data) {
+    const round = data.args.round && data.args.round.toNumber();
+
+    if (!round) {
       return;
     }
 
     const winner = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
-      round: data.args.round.toNumber(),
+      round: round,
       tickets: data.args.tickets.toNumber(),
       txhash: data.transactionHash
     };
 
     pubsub.publish(channels.winner, winner);
+  };
+
+  lottery.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
+    if (error) {
+      logger.log('Lottery', 'watch', error);
+      return;
+    }
+
+    switch (data.event) {
+      case 'NewEntry': eventNewEntry(data); break;
+      case 'NewWinner': eventNewWinner(data); break;
+      default:
+        logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
+    }
   });
 };
 

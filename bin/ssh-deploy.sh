@@ -21,6 +21,7 @@ fi
 
 GETH_PASS_FILE=".password.$ADDR_COINBASE"
 
+# INSTANCE_NAME="the.looney.farm" WS_SECRET="a38e1e50b1b82fa" WS_SERVER="wss://rpc.ethstats.net" node app.js
 SERVICE_EXEC_GETH="ExecStart=/usr/bin/geth --rpc --datadir /root/.ethereum --unlock $ADDR_COINBASE --password /root/$GETH_PASS_FILE $GETH_NET"
 SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-fifty $ADDR_FIFTY --contract-lottery $ADDR_LOTTERY"
 
