@@ -98,7 +98,7 @@ const init = function() {
 
     setTimeout(() => {
       waitGeth(callback);
-    }, 1000 + Math.ceil(Math.random() * 1000));
+    }, 500 + Math.ceil(Math.random() * 500));
   };
 
   const monitor = function() {
@@ -112,8 +112,6 @@ const init = function() {
     process.exit(1);
   };
 
-  monitor();
-
   return new Promise((resolve) => {
     const connection = `http://${config.host}:${config.port}`;
 
@@ -124,7 +122,7 @@ const init = function() {
       coinbase = web3.eth.coinbase;
       blocknumber = web3.eth.blockNumber;
 
-      // monitor();
+      monitor();
 
       logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
       resolve();
