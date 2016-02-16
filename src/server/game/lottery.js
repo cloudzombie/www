@@ -115,7 +115,7 @@ const init = function() {
   geth.watch('Lottery', lottery.NewEntry, (data) => {
     const total = data.args.total && data.args.total.toNumber();
 
-    if (total) {
+    if (!total) {
       return;
     }
 
