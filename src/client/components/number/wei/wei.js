@@ -1,18 +1,20 @@
 (function() {
   window.xyz = window.xyz || {};
 
-  const UNITS = ['wei', 'Kwei', 'Mwei', 'Gwei', 'szabo', 'finney', 'ether'];
+  const UNITS = ['wei', 'ada', 'babbage', 'shannon', 'szabo', 'finney', 'ether', 'kether', 'mether', 'gether', 'tether'];
 
   const formatMax = function(number) {
     let unitidx = 0;
     let value = number;
+    let decimal = '0';
 
     while (value.length > 3 && unitidx < UNITS.length - 1) {
+      decimal = value.substr(value.length - 3);
       value = value.substr(0, value.length - 3);
       unitidx++;
     }
 
-    return { value: value, unit: UNITS[unitidx] };
+    return { value: parseFloat(`${value}.${decimal}`).toFixed(2), unit: UNITS[unitidx] };
   };
 
   const format = function(number) {
