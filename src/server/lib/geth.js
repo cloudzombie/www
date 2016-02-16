@@ -4,10 +4,9 @@ const Web3 = require('web3');
 const config = require('../config/geth');
 const logger = require('./logger');
 
-const WATCH_MONITOR = 20000;
+const WATCH_MONITOR = 30000;
 
 const web3 = new Web3();
-const watchtypes = {};
 
 let coinbase;
 let blocknumber;
