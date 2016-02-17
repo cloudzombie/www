@@ -37,13 +37,16 @@ const execFifty = function(owner) {
         balance: {
           value: balance.balance,
           wei: toWei(balance.balance)
-        },
-        feetx: balance.feetx
+        }
       });
       break;
 
+    case 'withdraw':
+      logger.log('Fifty', 'withdraw', game.ownerWithdraw());
+      break;
+
     default:
-      logger.error('Fifty', 'exec', '--exec <balance|fees|withdraw>');
+      logger.error('Fifty', 'exec', '--exec <balance|withdraw>');
       break;
   }
 };
@@ -70,6 +73,10 @@ const execLottery = function(owner) {
           wei: toWei(balance.fees)
         }
       });
+      break;
+
+    case 'withdraw':
+      logger.log('Lottery', 'withdraw', game.ownerWithdraw());
       break;
 
     default:

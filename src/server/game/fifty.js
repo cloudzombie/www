@@ -91,18 +91,21 @@ const init = function() {
   });
 };
 
-const getBalance = function(owner) {
+const ownerWithdraw = function(owner) {
+  return fifty.ownerWithdraw.sendTransaction({ from: owner, to: contract.addr });
+};
+
+const getBalance = function() {
   const balance = geth.getBalance(contract.addr).toString();
-  const feetx = fifty.ownerFees.sendTransaction({ from: owner, to: contract.addr });
 
   return {
-    balance: balance,
-    feetx: feetx
+    balance: balance
   };
 };
 
 module.exports = {
   init: init,
   get: get,
-  getBalance: getBalance
+  getBalance: getBalance,
+  ownerWithdraw: ownerWithdraw
 };

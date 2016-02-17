@@ -112,6 +112,10 @@ const addEntry = function(entry) {
   entries = entries.slice(0, 10);
 };
 
+const ownerWithdraw = function(owner) {
+  return lottery.ownerWithdraw.sendTransaction({ from: owner, to: contract.addr });
+};
+
 const init = function() {
   const eventNewEntry = function(data) {
     const total = data.args.total && data.args.total.toNumber();
@@ -174,5 +178,6 @@ module.exports = {
   getBalance: getBalance,
   getRound: getRound,
   getWinner: getWinner,
+  ownerWithdraw: ownerWithdraw,
   init: init
 };
