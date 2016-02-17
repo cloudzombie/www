@@ -25,7 +25,20 @@ GETH_PASS_FILE=".password.$ADDR_COINBASE"
 SERVICE_EXEC_GETH="ExecStart=/usr/bin/geth --rpc --datadir /root/.ethereum --unlock $ADDR_COINBASE --password /root/$GETH_PASS_FILE $GETH_NET"
 SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-fifty $ADDR_FIFTY --contract-lottery $ADDR_LOTTERY"
 SERVICE_EXEC_MONITOR="Environment=INSTANCE_NAME=$MONITOR_INSTANCE\nEnvironment=WS_SECRET=$MONITOR_KEY\nEnvironment=WS_SERVER=$MONITOR_SERVER\nEnvironment=CONTACT_DETAILS=$MONITOR_CONTACT\nWorkingDirectory=/www/gethmonitor\nExecStart=/usr/bin/nodejs app.js"
-source bin/scp-dist.sh
+
+echo  "Creating dist/"
+gulp clean
+gulp --minimize
+echo
+
+echo "Creating dist.zip"
+rm -f ./dist.zip
+zip -q -r ./dist.zip dist
+echo
+
+echo "Copying dist.zip"
+scp -i $TLF_KEY ./dist.zip root@$TLF_HOST:/www
+echo
 
 echo "Executing remote commands"
 ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
