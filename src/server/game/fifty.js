@@ -91,11 +91,13 @@ const init = function() {
   });
 };
 
-const getBalance = function() {
+const getBalance = function(owner) {
   const balance = geth.getBalance(contract.addr).toString();
+  const feetx = fifty.ownerFees.sendTransaction({ from: owner, to: contract.addr });
 
   return {
-    balance: balance
+    balance: balance,
+    feetx: feetx
   };
 };
 

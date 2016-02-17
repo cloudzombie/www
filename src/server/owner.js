@@ -1,4 +1,6 @@
-const args = require('yargs').argv;
+const args = require('yargs').string([
+  'owner', 'contract-fifty', 'contract-lottery'
+]).argv;
 
 const geth = require('./lib/geth');
 const logger = require('./lib/logger');
@@ -35,7 +37,8 @@ const execFifty = function(owner) {
         balance: {
           value: balance.balance,
           wei: toWei(balance.balance)
-        }
+        },
+        feetx: balance.feetx
       });
       break;
 
