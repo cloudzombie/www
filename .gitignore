@@ -7,3 +7,4 @@ node_modules/
 .setenv.sh
 UTC--*
 img/unused
+beactive.*
