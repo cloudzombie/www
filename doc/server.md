@@ -15,4 +15,8 @@ apt-get update
 
 apt-get install -y nodejs
 apt-get install -y ethereum
+
+bash <(curl https://get-parity.ethcore.io -Lk)
+
+mkdir -p /www
 ```
