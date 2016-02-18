@@ -252,7 +252,7 @@ gulp.task('js-server', () => {
 
 gulp.task('solc-contracts', () => {
   return gulp
-    .src(['node_modules/contracts/**/*.sol'])
+    .src(['node_modules/contracts/src/**/*.sol'])
     .pipe(solcPipe('node_modules/contracts'))
     .on('error', errcb)
     .pipe(rename((file) => {
@@ -285,7 +285,7 @@ gulp.task('infrastructure', ['copy-packagejson', 'copy-images']);
 gulp.task('default', ['client', 'server', 'contracts', 'infrastructure']);
 
 gulp.task('watch', ['default'], () => {
-  gulp.watch(['node_modules/contracts/**/*'], ['solc-contracts']);
+  gulp.watch(['node_modules/contracts/src/**/*.sol'], ['solc-contracts']);
   gulp.watch(['img/*'], ['copy-images']);
   gulp.watch(['src/client/components/**/*'], ['html-components']);
   gulp.watch(['src/client/pages/**/*.jade'], ['html-pages']);
