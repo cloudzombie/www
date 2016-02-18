@@ -79,7 +79,7 @@ const addPlayer = function(player) {
   for (let idx = 0; !found && idx < players.length; idx++) {
     const _player = players[idx];
     const newround = player.round > _player.round;
-    const newplayer = (player.round === _player.round) && (player.total > _player.total);
+    const newplayer = (player.round === _player.round) && (player.tktotal > _player.tktotal);
 
     if (newround || newplayer) {
       players.splice(idx, 0, player);
