@@ -25,24 +25,22 @@
 
         player.result = output.minus(input).toString();
 
-        if (!this.current || player.txs > this.current.txs) {
-          const wei = window.xyz.NumberWei.format(player.played);
+        if (!this.current || player.tkplays > this.current.tkplays) {
+          const wei = window.xyz.NumberWei.format(player.turnover);
 
           this.current = {
-            wins: player.wins,
-            txs: player.txs,
-            turnover: wei,
-            ratio: player.ratio
+            tkwins: player.tkwins,
+            tkplays: player.tkplays,
+            tkratio: player.tkratio,
+            turnover: wei
           };
         }
 
         if (player.winner) {
-          if (!this.winner || player.txs > this.winner.txs) {
+          if (!this.winner || player.tkplays > this.winner.tkplays) {
             this.winner = player;
           }
         }
-
-        console.log(player);
 
         for (let idx = 0; idx < this.players.length; idx++) {
           const _player = this.players[idx];
@@ -51,7 +49,7 @@
             return;
           }
 
-          if (player.txs > _player.txs) {
+          if (player.tkplays > _player.tkplays) {
             this.splice('players', idx, 0, player);
             return;
           }
@@ -63,8 +61,6 @@
       if (this.players.length > 10) {
         this.splice('players', 10, this.players.length - 10);
       }
-
-      console.log(this.last);
     },
 
     setConfig: function(config) {
@@ -87,11 +83,11 @@
 
     ready: function() {
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
-        if (!player.txs) {
+        if (!player.tkplays) {
           return;
         }
 
-        console.log('NextPlayer', player);
+        console.log('Player', player);
 
         this.addPlayers([player]);
       });

@@ -13,7 +13,7 @@
     properties: {
       config: Object,
       current: Object,
-      entries: {
+      players: {
         type: Array,
         value: function() {
           return [];
@@ -23,35 +23,35 @@
       winner: Object
     },
 
-    addEntries: function(entries) {
+    addPlayers: function(entries) {
       _.each(entries, (entry) => {
-        if (!entry.total) {
+        if (!entry || !entry.tickets) {
           return;
         }
 
         entry.value = new BigNumber(this.config.price).times(entry.tickets).toString();
 
-        for (let idx = 0; idx < this.entries.length; idx++) {
-          const _entry = this.entries[idx];
+        for (let idx = 0; idx < this.players.length; idx++) {
+          const _entry = this.players[idx];
 
           if (entry.addr === _entry.addr && entry.txhash === _entry.txhash) {
             return;
           }
 
           const newround = entry.round > _entry.round;
-          const newentry = (entry.round === _entry.round) && (entry.total > _entry.total);
+          const newentry = (entry.round === _entry.round) && (entry.tktotal > _entry.tktotal);
 
           if (newround || newentry) {
-            this.splice('entries', idx, 0, entry);
+            this.splice('players', idx, 0, entry);
             return;
           }
         }
 
-        this.splice('entries', this.entries.length, 0, entry);
+        this.splice('players', this.players.length, 0, entry);
       });
 
-      if (this.entries.length > 10) {
-        this.splice('entries', 10, this.entries.length - 10);
+      if (this.players.length > 10) {
+        this.splice('players', 10, this.players.length - 10);
       }
     },
 
@@ -61,8 +61,10 @@
     },
 
     setWinner: function(winner) {
-      winner.value = new BigNumber(this.config.price).times(winner.tickets).toString();
-      this.winner = winner;
+      if (winner) {
+        winner.value = new BigNumber(this.config.price).times(winner.numtickets).toString();
+        this.winner = winner;
+      }
     },
 
     setRound: function(round) {
@@ -83,7 +85,7 @@
           this.setConfig(game.config);
           this.setWinner(game.winner);
           this.setRound(game.round);
-          this.addEntries(game.entries);
+          this.addPlayers(game.players);
         });
     },
 
@@ -98,12 +100,12 @@
     },
 
     ready: function() {
-      this.$.pubsub.subscribe('game/lottery/entry', (entry) => {
-        console.log('NewEntry', entry);
+      this.$.pubsub.subscribe('game/lottery/player', (entry) => {
+        console.log('Player', entry);
 
         if (entry.round === this.current.round) {
           const prevval = new BigNumber(this.current.value);
-          const thisval = new BigNumber(this.config.price).times(entry.total);
+          const thisval = new BigNumber(this.config.price).times(entry.numtickets);
 
           if (thisval.gt(prevval)) {
             const wei = window.xyz.NumberWei.format(thisval.toString());
@@ -111,15 +113,15 @@
             this.set('current.poolval', wei.value);
             this.set('current.poolunit', wei.unit);
             this.set('current.value', thisval.toString());
-            this.set('current.tickets', entry.total);
+            this.set('current.numtickets', entry.numtickets);
           }
         }
 
-        this.addEntries([entry]);
+        this.addPlayers([entry]);
       });
 
       this.$.pubsub.subscribe('game/lottery/winner', (winner) => {
-        console.log('NewWinner', winner);
+        console.log('Winner', winner);
 
         this.setWinner(winner);
         this.getRound();

@@ -6,8 +6,8 @@ const pubsub = require('../route/pubsub');
 
 const lottery = geth.getContract(contract);
 
-const CONFIG_MIN_players = lottery.CONFIG_MIN_players(); // eslint-disable-line new-cap
-const CONFIG_MAX_players = lottery.CONFIG_MAX_players(); // eslint-disable-line new-cap
+const CONFIG_MIN_PLAYERS = lottery.CONFIG_MIN_PLAYERS(); // eslint-disable-line new-cap
+const CONFIG_MAX_PLAYERS = lottery.CONFIG_MAX_PLAYERS(); // eslint-disable-line new-cap
 const CONFIG_MAX_TICKETS = lottery.CONFIG_MAX_TICKETS(); // eslint-disable-line new-cap
 const CONFIG_PRICE = lottery.CONFIG_PRICE(); // eslint-disable-line new-cap
 const CONFIG_FEES = lottery.CONFIG_FEES(); // eslint-disable-line new-cap
@@ -23,8 +23,8 @@ const CONFIG = {
   min: CONFIG_MIN_VALUE.toString(),
   max: CONFIG_MAX_VALUE.toString(),
   duration: geth.toTime(CONFIG_DURATION),
-  minplayers: CONFIG_MIN_players.toNumber(),
-  maxplayers: CONFIG_MAX_players.toNumber(),
+  minplayers: CONFIG_MIN_PLAYERS.toNumber(),
+  maxplayers: CONFIG_MAX_PLAYERS.toNumber(),
   maxtickets: CONFIG_MAX_TICKETS.toNumber()
 };
 

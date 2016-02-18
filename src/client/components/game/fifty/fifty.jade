@@ -16,13 +16,13 @@ dom-module#xyz-game-fifty
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section.hidden(color="brown" opacity class$="[[visibleClass(current, 'ratio')]]")
+    xyz-page-section.hidden(color="brown" opacity class$="[[visibleClass(current, 'tkratio')]]")
       .stats
         .stat
-          .large {{current.wins}}
+          .large {{current.tkwins}}
           .normal wins
         .stat
-          .large {{current.ratio}}
+          .large {{current.tkratio}}
           .normal won
         .stat
           .large {{current.turnover.value}}
@@ -60,7 +60,7 @@ dom-module#xyz-game-fifty
           The most looney game this side of playing chicken.
           
       .entries
-        h2 recent plays
+        h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
             td.addr(colspan="3")
@@ -79,7 +79,7 @@ dom-module#xyz-game-fifty
               xyz-number-wei(number="{{item.input}}")
             td.win
               iron-icon(icon="icons:timeline")
-              span {{item.pwins}}/{{item.ptxs}}
+              span {{item.wins}}/{{item.plays}}
             td.output
               iron-icon(icon="icons:account-balance")
               xyz-number-wei(number="{{item.output}}" max)
