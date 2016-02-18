@@ -54,14 +54,16 @@ const solcPipe = function(basedir) {
         return;
       }
 
+      // FIXME: at this point we cannot get a consistent, provable output that matches to the online
+      // compiler - as such, contracts bytecode won't be generated locally (we do need the ABI)
       _.each(output.contracts, (contract, name) => {
         if (sources[file.relative].indexOf(`contract ${name} `) !== -1) {
           file.contents = new Buffer(JSON.stringify({
             // solidity: contract.solidity_interface,
             // runtime: contract.runtimeBytecode
-            size: contract.bytecode.length,
-            bytecode: contract.bytecode,
-            estimates: contract.gasEstimates,
+            // size: contract.bytecode.length,
+            // bytecode: contract.bytecode,
+            // estimates: contract.gasEstimates,
             interface: JSON.parse(contract.interface)
           }, null, 2), 'utf-8');
         }
