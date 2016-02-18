@@ -1,0 +1,93 @@
+link(rel="import" href="/components/bower/polymer/polymer.html")
+link(rel="import" href="/components/bower/iron-icons/iron-icons.html")
+
+link(rel="import" href="/components/3rdparty/lodash.html")
+link(rel="import" href="/components/3rdparty/web3.html")
+link(rel="import" href="/components/api/api.html")
+link(rel="import" href="/components/datetime/datetime.html")
+link(rel="import" href="/components/number/number.html")
+link(rel="import" href="/components/page/page.html")
+link(rel="import" href="/components/pubsub/pubsub.html")
+  
+dom-module#xyz-game-dice
+  template
+    style !{readCompiled('dice.css')}
+    
+    xyz-api#api
+    xyz-pubsub#pubsub
+    
+    xyz-page-section(color="indigo" opacity) 
+      // .hidden class$="[[visibleClass(current, 'tkratio')]]")
+      .stats
+        .stat
+          .large {{current.tkwins}}
+          .normal wins
+        .stat
+          .large {{current.tkratio}}
+          .normal won
+        .stat
+          .large {{current.turnover.value}}
+          .normal {{current.turnover.unit}} played
+        
+    xyz-page-section(color="indigo-dark" opacity size="small" shadow)
+      .hidden(class$="[[visibleClass(config, 'price')]]")
+        .contract.right
+          xyz-number-wei(number="{{config.min}}")
+          span &nbsp;-&nbsp;
+          xyz-number-wei(number="{{config.max}}")
+          iron-icon(icon="icons:input")
+          span {{config.addr}}
+          
+    xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
+      .center.winner
+        iron-icon(icon="icons:timeline")
+        span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
+        iron-icon(icon="icons:account-balance")
+        xyz-number-wei(number="{{winner.output}}" max)
+        iron-icon(icon="icons:trending-flat")
+        iron-icon(icon="icons:perm-identity")
+        span {{winner.addr}}
+        iron-icon(icon="icons:history")
+        xyz-datetime-elapsed(datetime="{{winner.at}}")
+          
+    xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
+      .about(color="gray")
+        h2 about
+        p.
+          Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. With a win, <span class="bold">50% of the pool</span> is returned along with the ticket, with a loss the ticket is added to the pool. A pool exists for each decimal position, with a ticket value equalling an increment in that position.
+        p.
+          The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
+        p.
+          The most looney game this side of playing chicken.
+          
+      .entries
+        h2 recent players
+        table: tbody: template(is="dom-repeat" items="{{players}}")
+          tr.entry
+            td.addr(colspan="3")
+              iron-icon(icon="icons:perm-identity")
+              span {{item.addr}}
+            td.max(rowspan="2")
+              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
+                iron-icon(icon="icons:open-in-new")
+                span etherscan
+            td.when(rowspan="2")
+              iron-icon(icon="icons:history")
+              xyz-datetime-elapsed(datetime="{{item.at}}")
+          tr.data
+            td.input
+              iron-icon(icon="icons:input")
+              xyz-number-wei(number="{{item.input}}")
+            td.win
+              iron-icon(icon="icons:timeline")
+              span {{item.wins}}/{{item.plays}}
+            td.output
+              iron-icon(icon="icons:account-balance")
+              xyz-number-wei(number="{{item.output}}" max)
+        
+    xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
+      h2 operation and rules
+      ol
+        li blah
+        
+  script !{readCompiled('dice.js')}
