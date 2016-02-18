@@ -109,6 +109,12 @@ body[unresolved] {
       background-position: 50% 50%;
     }
 
+    &.dice {
+      background-image: url('/images/cube-dice-210x-bw-trans.png');
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+    }
+
     &.next {
       background-image: url('/images/question-150-bw-trans.png');
       background-repeat: no-repeat;
@@ -117,12 +123,6 @@ body[unresolved] {
 
     &.cards {
       background-image: url('/images/playing-cards-250x-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.dice {
-      background-image: url('/images/cube-dice-210x-bw-trans.png');
       background-repeat: no-repeat;
       background-position: 50% 50%;
     }
