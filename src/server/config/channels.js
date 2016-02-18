@@ -3,7 +3,7 @@ module.exports = {
     player: 'game/fifty/player'
   },
   lottery: {
-    entry: 'game/lottery/entry',
+    player: 'game/lottery/player',
     winner: 'game/lottery/winner'
   }
 };

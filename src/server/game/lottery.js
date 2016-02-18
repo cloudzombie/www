@@ -6,8 +6,8 @@ const pubsub = require('../route/pubsub');
 
 const lottery = geth.getContract(contract);
 
-const CONFIG_MIN_ENTRIES = lottery.CONFIG_MIN_ENTRIES(); // eslint-disable-line new-cap
-const CONFIG_MAX_ENTRIES = lottery.CONFIG_MAX_ENTRIES(); // eslint-disable-line new-cap
+const CONFIG_MIN_players = lottery.CONFIG_MIN_players(); // eslint-disable-line new-cap
+const CONFIG_MAX_players = lottery.CONFIG_MAX_players(); // eslint-disable-line new-cap
 const CONFIG_MAX_TICKETS = lottery.CONFIG_MAX_TICKETS(); // eslint-disable-line new-cap
 const CONFIG_PRICE = lottery.CONFIG_PRICE(); // eslint-disable-line new-cap
 const CONFIG_FEES = lottery.CONFIG_FEES(); // eslint-disable-line new-cap
@@ -23,25 +23,26 @@ const CONFIG = {
   min: CONFIG_MIN_VALUE.toString(),
   max: CONFIG_MAX_VALUE.toString(),
   duration: geth.toTime(CONFIG_DURATION),
-  minentries: CONFIG_MIN_ENTRIES.toNumber(),
-  maxentries: CONFIG_MAX_ENTRIES.toNumber(),
+  minplayers: CONFIG_MIN_players.toNumber(),
+  maxplayers: CONFIG_MAX_players.toNumber(),
   maxtickets: CONFIG_MAX_TICKETS.toNumber()
 };
 
-let entries = [];
+let winner;
+let players = [];
 
 const getConfig = function() {
   return CONFIG;
 };
 
 const getRound = function() {
-  const numentries = lottery.numentries().toNumber();
+  const numplayers = lottery.numplayers().toNumber();
   const numtickets = lottery.numtickets().toNumber();
 
   return {
     txs: lottery.txs().toNumber(),
     round: lottery.round().toNumber(),
-    entries: numentries,
+    players: numplayers,
     tickets: numtickets,
     value: CONFIG_PRICE.times(numtickets).toString(),
     start: geth.toTime(lottery.start()),
@@ -50,29 +51,14 @@ const getRound = function() {
 };
 
 const getWinner = function() {
-  const [addr, at, round, tickets] = lottery.winner();
-
-  return {
-    addr: addr,
-    at: geth.toTime(at),
-    round: round.toNumber(),
-    tickets: tickets.toNumber()
-  };
-};
-
-const enter = function() {
-  return geth.sendTransaction({
-    to: contract.addr,
-    value: geth.toWei(500, 'finney'), // geth.toWei(100, 'finney') geth.toWei(1, 'ether')
-    gas: 500000
-  });
+  return winner;
 };
 
 const get = function() {
   return {
     config: getConfig(),
     round: getRound(),
-    entries: entries,
+    players: players,
     winner: getWinner()
   };
 };
@@ -87,29 +73,25 @@ const getBalance = function() {
   };
 };
 
-const deploy = function() {
-  return geth.deployContract(contract);
-};
-
-const addEntry = function(entry) {
+const addPlayer = function(player) {
   let found = false;
 
-  for (let idx = 0; !found && idx < entries.length; idx++) {
-    const _entry = entries[idx];
-    const newround = entry.round > _entry.round;
-    const newentry = (entry.round === _entry.round) && (entry.total > _entry.total);
+  for (let idx = 0; !found && idx < players.length; idx++) {
+    const _player = players[idx];
+    const newround = player.round > _player.round;
+    const newplayer = (player.round === _player.round) && (player.total > _player.total);
 
-    if (newround || newentry) {
-      entries.splice(idx, 0, entry);
+    if (newround || newplayer) {
+      players.splice(idx, 0, player);
       found = true;
     }
   }
 
   if (!found) {
-    entries.splice(entries.length, 0, entry);
+    players.splice(players.length, 0, player);
   }
 
-  entries = entries.slice(0, 10);
+  players = players.slice(0, 10);
 };
 
 const ownerWithdraw = function(owner) {
@@ -117,43 +99,50 @@ const ownerWithdraw = function(owner) {
 };
 
 const init = function() {
-  const eventNewEntry = function(data) {
-    const total = data.args.total && data.args.total.toNumber();
-
-    if (!total) {
-      return;
-    }
-
-    const entry = {
-      addr: data.args.addr,
-      at: geth.toTime(data.args.at),
-      round: data.args.round.toNumber(),
-      tickets: data.args.tickets.toNumber(),
-      total: total,
-      txhash: data.transactionHash
-    };
-
-    addEntry(entry);
-
-    pubsub.publish(channels.entry, entry);
-  };
-
-  const eventNewWinner = function(data) {
+  const eventPlayer = function(data) {
     const round = data.args.round && data.args.round.toNumber();
 
     if (!round) {
       return;
     }
 
-    const winner = {
+    const _player = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
       round: round,
       tickets: data.args.tickets.toNumber(),
+      numtickets: data.args.numtickets.toNumber(),
+      tktotal: data.args.tktotal.toNumber(),
+      turnover: data.args.turnover.toString(),
       txhash: data.transactionHash
     };
 
-    pubsub.publish(channels.winner, winner);
+    addPlayer(_player);
+
+    pubsub.publish(channels.player, _player);
+  };
+
+  const eventWinner = function(data) {
+    const round = data.args.round && data.args.round.toNumber();
+
+    if (!round) {
+      return;
+    }
+
+    const _winner = {
+      addr: data.args.addr,
+      at: geth.toTime(data.args.at),
+      round: round,
+      numtickets: data.args.numtickets.toNumber(),
+      output: data.args.output.toString(),
+      txhash: data.transactionHash
+    };
+
+    if (!winner || _winner.round > winner.round) {
+      winner = winner;
+    }
+
+    pubsub.publish(channels.winner, _winner);
   };
 
   lottery.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
@@ -163,8 +152,8 @@ const init = function() {
     }
 
     switch (data.event) {
-      case 'NewEntry': eventNewEntry(data); break;
-      case 'NewWinner': eventNewWinner(data); break;
+      case 'Player': eventPlayer(data); break;
+      case 'Winner': eventWinner(data); break;
       default:
         logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
     }
@@ -172,8 +161,6 @@ const init = function() {
 };
 
 module.exports = {
-  deploy: deploy,
-  enter: enter,
   get: get,
   getBalance: getBalance,
   getRound: getRound,

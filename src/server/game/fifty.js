@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const channels = require('../config/channels').fifty;
 const contract = require('../config/contracts').fifty;
 const geth = require('../lib/geth');
@@ -26,7 +28,7 @@ let winner;
 let players = [];
 
 const addPlayer = function(player) {
-  if (player.winner && (!winner || player.txs > winner.txs)) {
+  if (player.winner && (!winner || player.tkplays > winner.tkplays)) {
     winner = player;
   }
 
@@ -43,32 +45,35 @@ const get = function() {
 };
 
 const init = function() {
-  const eventNextPlayer = function(data) {
-    const txs = data.args.txs && data.args.txs.toNumber();
+  const eventPlayer = function(data) {
+    const tkwins = data.args.tkwins.toNumber();
+    const tklosses = data.args.tklosses.toNumber();
+    const tkplays = tkwins + tklosses;
 
-    if (!txs) {
+    if (!_.isNumber(tkplays) || !tkplays) {
       return;
     }
 
-    const pwins = data.args.pwins.toNumber();
-    const plosses = data.args.plosses.toNumber();
-    const ptxs = pwins + plosses;
     const wins = data.args.wins.toNumber();
+    const losses = data.args.losses.toNumber();
+    const plays = wins + losses;
     const _winner = data.args.output.gt(data.args.input);
 
     const player = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
+      wins: wins,
+      losses: losses,
+      plays: plays,
+      ratio: `${((wins * 100) / plays).toFixed(2)}%`,
+      winner: _winner,
       input: data.args.input.toString(),
       output: data.args.output.toString(),
-      winner: _winner,
-      pwins: pwins,
-      ptxs: ptxs,
-      pratio: `${((pwins * 100) / ptxs).toFixed(2)}%`,
-      wins: wins,
-      txs: txs,
-      played: data.args.played.toString(),
-      ratio: `${((wins * 100) / txs).toFixed(2)}%`,
+      tkwins: tkwins,
+      tklosses: tklosses,
+      tkplays: tkplays,
+      tkratio: `${((tkwins * 100) / tkplays).toFixed(2)}%`,
+      turnover: data.args.turnover.toString(),
       txhash: data.transactionHash
     };
 
@@ -84,7 +89,7 @@ const init = function() {
     }
 
     switch (data.event) {
-      case 'NextPlayer': eventNextPlayer(data); break;
+      case 'Player': eventPlayer(data); break;
       default:
         logger.error('Fifty', 'watch', `Unknown event ${data.event}`);
     }
