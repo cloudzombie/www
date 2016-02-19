@@ -2,7 +2,7 @@
 
 source bin/_setenv.sh
 
-$MINE="--mine --minerthreads 1"
+MINE="--mine --minerthreads 1"
 
 if [ "$1" == "dev" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_DEV
