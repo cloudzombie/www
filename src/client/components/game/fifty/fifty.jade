@@ -28,7 +28,7 @@ dom-module#xyz-game-fifty
           .large {{current.turnover.value}}
           .normal {{current.turnover.unit}} played
         
-    xyz-page-section(color="brown" opacity size="small" shadow)
+    xyz-page-section(color="brown" opacity size="small")
       .hidden(class$="[[visibleClass(config, 'price')]]")
         .contract.right
           xyz-number-wei(number="{{config.min}}")

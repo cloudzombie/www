@@ -29,7 +29,7 @@ dom-module#xyz-game-lottery
           .large {{current.poolval}}
           .normal {{current.poolunit}}
         
-    xyz-page-section(color="blue-dark" opacity size="small" shadow)
+    xyz-page-section(color="blue-dark" opacity size="small")
       .hidden(class$="[[visibleClass(config, 'price')]]")
         .contract.right
           xyz-number-wei(number="{{config.min}}")
