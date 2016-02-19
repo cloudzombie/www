@@ -16,7 +16,7 @@ dom-module#xyz-game-lottery
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section.hidden(color="blue" opacity class$="[[visibleClass(current, 'round')]]")
+    xyz-page-section.hidden(color="blue-dark" opacity class$="[[visibleClass(current, 'round')]]")
       .stats
         .round
           .large {{current.round}}
@@ -29,7 +29,7 @@ dom-module#xyz-game-lottery
           .large {{current.poolval}}
           .normal {{current.poolunit}}
         
-    xyz-page-section(color="blue-dark" opacity size="small" shadow)
+    xyz-page-section(color="blue-dark" opacity size="small")
       .hidden(class$="[[visibleClass(config, 'price')]]")
         .contract.right
           xyz-number-wei(number="{{config.min}}")
@@ -61,7 +61,7 @@ dom-module#xyz-game-lottery
           The most looney way to try and make a large fortune from a small one.
       
       .entries
-        h2 recent players
+        //h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
             td.addr(colspan="3")

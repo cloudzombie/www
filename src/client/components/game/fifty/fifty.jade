@@ -28,7 +28,7 @@ dom-module#xyz-game-fifty
           .large {{current.turnover.value}}
           .normal {{current.turnover.unit}} played
         
-    xyz-page-section(color="brown-dark" opacity size="small" shadow)
+    xyz-page-section(color="brown" opacity size="small")
       .hidden(class$="[[visibleClass(config, 'price')]]")
         .contract.right
           xyz-number-wei(number="{{config.min}}")
@@ -60,7 +60,7 @@ dom-module#xyz-game-fifty
           The most looney game this side of playing chicken.
           
       .entries
-        h2 recent players
+        //h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
             td.addr(colspan="3")
