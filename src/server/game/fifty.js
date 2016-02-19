@@ -44,44 +44,44 @@ const get = function() {
   };
 };
 
-const init = function() {
-  const eventPlayer = function(data) {
-    const tkwins = data.args.tkwins.toNumber();
-    const tklosses = data.args.tklosses.toNumber();
-    const tkplays = tkwins + tklosses;
+const eventPlayer = function(data) {
+  const tkwins = data.args.tkwins.toNumber();
+  const tklosses = data.args.tklosses.toNumber();
+  const tkplays = tkwins + tklosses;
 
-    if (!_.isNumber(tkplays) || !tkplays) {
-      return;
-    }
+  if (!_.isNumber(tkplays) || !tkplays) {
+    return;
+  }
 
-    const wins = data.args.wins.toNumber();
-    const losses = data.args.losses.toNumber();
-    const plays = wins + losses;
-    const _winner = data.args.output.gt(data.args.input);
+  const wins = data.args.wins.toNumber();
+  const losses = data.args.losses.toNumber();
+  const plays = wins + losses;
+  const _winner = data.args.output.gt(data.args.input);
 
-    const player = {
-      addr: data.args.addr,
-      at: geth.toTime(data.args.at),
-      wins: wins,
-      losses: losses,
-      plays: plays,
-      ratio: `${((wins * 100) / plays).toFixed(2)}%`,
-      winner: _winner,
-      input: data.args.input.toString(),
-      output: data.args.output.toString(),
-      tkwins: tkwins,
-      tklosses: tklosses,
-      tkplays: tkplays,
-      tkratio: `${((tkwins * 100) / tkplays).toFixed(2)}%`,
-      turnover: data.args.turnover.toString(),
-      txhash: data.transactionHash
-    };
-
-    addPlayer(player);
-
-    pubsub.publish(channels.player, player);
+  const player = {
+    addr: data.args.addr,
+    at: geth.toTime(data.args.at),
+    wins: wins,
+    losses: losses,
+    plays: plays,
+    ratio: `${((wins * 100) / plays).toFixed(2)}%`,
+    winner: _winner,
+    input: data.args.input.toString(),
+    output: data.args.output.toString(),
+    tkwins: tkwins,
+    tklosses: tklosses,
+    tkplays: tkplays,
+    tkratio: `${((tkwins * 100) / tkplays).toFixed(2)}%`,
+    turnover: data.args.turnover.toString(),
+    txhash: data.transactionHash
   };
 
+  addPlayer(player);
+
+  pubsub.publish(channels.player, player);
+};
+
+const init = function() {
   fifty.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
     if (error) {
       logger.log('Fifty', 'watch', error);

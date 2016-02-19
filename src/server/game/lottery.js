@@ -98,53 +98,53 @@ const ownerWithdraw = function(owner) {
   return lottery.ownerWithdraw.sendTransaction({ from: owner, to: contract.addr });
 };
 
+const eventPlayer = function(data) {
+  const round = data.args.round && data.args.round.toNumber();
+
+  if (!round) {
+    return;
+  }
+
+  const _player = {
+    addr: data.args.addr,
+    at: geth.toTime(data.args.at),
+    round: round,
+    tickets: data.args.tickets.toNumber(),
+    numtickets: data.args.numtickets.toNumber(),
+    tktotal: data.args.tktotal.toNumber(),
+    turnover: data.args.turnover.toString(),
+    txhash: data.transactionHash
+  };
+
+  addPlayer(_player);
+
+  pubsub.publish(channels.player, _player);
+};
+
+const eventWinner = function(data) {
+  const round = data.args.round && data.args.round.toNumber();
+
+  if (!round) {
+    return;
+  }
+
+  const _winner = {
+    addr: data.args.addr,
+    at: geth.toTime(data.args.at),
+    round: round,
+    numtickets: data.args.numtickets.toNumber(),
+    output: data.args.output.toString(),
+    txhash: data.transactionHash
+  };
+
+  if (!winner || _winner.round > winner.round) {
+    winner = winner;
+  }
+
+  pubsub.publish(channels.winner, _winner);
+};
+
 const init = function() {
-  const eventPlayer = function(data) {
-    const round = data.args.round && data.args.round.toNumber();
-
-    if (!round) {
-      return;
-    }
-
-    const _player = {
-      addr: data.args.addr,
-      at: geth.toTime(data.args.at),
-      round: round,
-      tickets: data.args.tickets.toNumber(),
-      numtickets: data.args.numtickets.toNumber(),
-      tktotal: data.args.tktotal.toNumber(),
-      turnover: data.args.turnover.toString(),
-      txhash: data.transactionHash
-    };
-
-    addPlayer(_player);
-
-    pubsub.publish(channels.player, _player);
-  };
-
-  const eventWinner = function(data) {
-    const round = data.args.round && data.args.round.toNumber();
-
-    if (!round) {
-      return;
-    }
-
-    const _winner = {
-      addr: data.args.addr,
-      at: geth.toTime(data.args.at),
-      round: round,
-      numtickets: data.args.numtickets.toNumber(),
-      output: data.args.output.toString(),
-      txhash: data.transactionHash
-    };
-
-    if (!winner || _winner.round > winner.round) {
-      winner = winner;
-    }
-
-    pubsub.publish(channels.winner, _winner);
-  };
-
   lottery.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
     if (error) {
       logger.log('Lottery', 'watch', error);
