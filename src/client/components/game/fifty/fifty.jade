@@ -1,5 +1,6 @@
 link(rel="import" href="/components/bower/polymer/polymer.html")
 link(rel="import" href="/components/bower/iron-icons/iron-icons.html")
+link(rel="import" href="/components/bower/paper-button/paper-button.html")
 
 link(rel="import" href="/components/3rdparty/lodash.html")
 link(rel="import" href="/components/3rdparty/web3.html")
@@ -36,6 +37,10 @@ dom-module#xyz-game-fifty
           xyz-number-wei(number="{{config.max}}")
           iron-icon(icon="icons:input")
           span {{config.addr}}
+          
+          paper-button(raised color="brown" opacity)
+            span about
+            iron-icon(icon="icons:arrow-drop-down-circle")
           
     xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
       .center.winner

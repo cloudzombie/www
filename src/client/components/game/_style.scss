@@ -22,6 +22,15 @@ iron-icon+iron-icon {
     margin: 0 1em;
   }
 
+  paper-button {
+    margin: 0 1em;
+
+    iron-icon {
+      color: inherit;
+      margin: 0 0 0 0.5em;
+    }
+  }
+
   xyz-number-wei {
     @include user-select(none);
   }

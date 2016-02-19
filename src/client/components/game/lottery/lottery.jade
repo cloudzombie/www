@@ -1,5 +1,6 @@
 link(rel="import" href="/components/bower/polymer/polymer.html")
 link(rel="import" href="/components/bower/iron-icons/iron-icons.html")
+link(rel="import" href="/components/bower/paper-button/paper-button.html")
 
 link(rel="import" href="/components/3rdparty/lodash.html")
 link(rel="import" href="/components/3rdparty/web3.html")
@@ -37,6 +38,10 @@ dom-module#xyz-game-lottery
           xyz-number-wei(number="{{config.max}}")
           iron-icon(icon="icons:input")
           span {{config.addr}}
+          
+          paper-button(raised color="blue-dark" opacity)
+            span about
+            iron-icon(icon="icons:arrow-drop-down-circle")
           
     xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'round')]]")
       .center.winner
