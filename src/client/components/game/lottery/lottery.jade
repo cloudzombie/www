@@ -39,9 +39,11 @@ dom-module#xyz-game-lottery
           iron-icon(icon="icons:input")
           span {{config.addr}}
           
-          paper-button(raised color="blue-dark" opacity)
+          //paper-button(raised color="blue-dark" opacity on-click="toggleAbout(config.about)")
             span about
             iron-icon(icon="icons:arrow-drop-down-circle")
+              
+    //xyz-page-section.hidden(color="gray" class$="[[visibleClass(config, 'about')]]")
           
     xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'round')]]")
       .center.winner

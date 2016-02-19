@@ -139,7 +139,7 @@ const init = function() {
     };
 
     if (!winner || _winner.round > winner.round) {
-      winner = winner;
+      winner = _winner;
     }
 
     pubsub.publish(channels.winner, _winner);
