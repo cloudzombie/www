@@ -29,7 +29,7 @@ dom-module#xyz-game-dice
           .large {{current.turnover.value}}
           .normal {{current.turnover.unit}} played
         
-    xyz-page-section(color="indigo-dark" opacity size="small" shadow)
+    xyz-page-section(color="indigo" opacity size="small")
       .hidden(class$="[[visibleClass(config, 'price')]]")
         .contract.right
           xyz-number-wei(number="{{config.min}}")
