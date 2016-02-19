@@ -42,17 +42,18 @@ iron-icon+iron-icon {
   }
 }
 
-.about {
-  text-align: left;
-  padding: 3em 1em 2em 1em;
-  margin: -3em 0 0 0;
+.has-about {
+  display: none;
+  cursor: pointer;
+}
 
-  @include span-columns(4);
+:host.about {
+  .has-about {
+    display: block;
+  }
 }
 
 .entries {
-  @include span-columns(8);
-
   table {
     width: 100%;
     border-collapse: collapse;
@@ -60,16 +61,18 @@ iron-icon+iron-icon {
     tr {
       td {
         text-align: left;
-        padding: 0 0;
+        padding: 0;
         white-space: nowrap;
 
         * {
           vertical-align: middle;
         }
 
-        &.max {
+        &.when {
           width: 100%;
-          padding-bottom: 1em;
+        }
+
+        &.external {
           text-align: center;
 
           a {
@@ -88,23 +91,12 @@ iron-icon+iron-icon {
         &.addr {
           text-align: left;
         }
-
-        &.when {
-          color: $color-font-gray-light;
-          vertical-align: middle;
-          padding-bottom: 1em;
-        }
       }
+    }
 
-      &.data {
-        td {
-          padding-bottom: 1em;
-          text-align: left;
-        }
-
-        td:first-child {
-          padding-left: 2em;
-        }
+    tr+tr {
+      td {
+        padding-top: 1em;
       }
     }
   }

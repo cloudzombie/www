@@ -3,6 +3,7 @@
 
   window.xyz.GameFifty = {
     properties: {
+      about: Boolean,
       config: Object,
       current: Object,
       winner: Object,
@@ -12,6 +13,11 @@
           return [];
         }
       }
+    },
+
+    toggleAbout: function() {
+      this.about = !this.about;
+      this.toggleClass('about', this.about);
     },
 
     lastColor: function(winner) {

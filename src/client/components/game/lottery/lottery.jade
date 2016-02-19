@@ -39,11 +39,18 @@ dom-module#xyz-game-lottery
           iron-icon(icon="icons:input")
           span {{config.addr}}
           
-          //paper-button(raised color="blue-dark" opacity on-click="toggleAbout(config.about)")
+          paper-button(raised color="blue-dark" on-click="toggleAbout")
             span about
-            iron-icon(icon="icons:arrow-drop-down-circle")
+            iron-icon(icon="icons:swap-vertical-circle")
               
-    //xyz-page-section.hidden(color="gray" class$="[[visibleClass(config, 'about')]]")
+    xyz-page-section.has-about(color="gray" on-click="toggleAbout")
+      h2 about
+      p.
+        Send multiple tickets (one ticket equals the minimum fee), and each ticket gives you one chance to <span class="bold">win the overall available pool</span> at the end of the draw.
+      p.
+        The more transactions sent, the larger the pool becomes (<span class="bold">maximizing the winnings</span>), however it also means there are a larger the number of opposition (<span class="bold">minimizing the chances</span>).
+      p.
+        The most looney way to try and make a large fortune from a small one.
           
     xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'round')]]")
       .center.winner
@@ -58,30 +65,13 @@ dom-module#xyz-game-lottery
         xyz-datetime-elapsed(datetime="{{winner.at}}")
       
     xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
-      .about(color="gray")
-        h2 about
-        p.
-          Send multiple tickets (one ticket equals the minimum fee), and each ticket gives you one chance to <span class="bold">win the overall available pool</span> at the end of the draw.
-        p.
-          The more transactions sent, the larger the pool becomes (<span class="bold">maximizing the winnings</span>), however it also means there are a larger the number of opposition (<span class="bold">minimizing the chances</span>).
-        p.
-          The most looney way to try and make a large fortune from a small one.
-      
       .entries
         //h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
-            td.addr(colspan="3")
+            td.addr
               iron-icon(icon="icons:perm-identity")
               span {{item.addr}}
-            td.max(rowspan="2")
-              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
-                iron-icon(icon="icons:open-in-new")
-                span etherscan
-            td.when(rowspan="2")
-              iron-icon(icon="icons:history")
-              xyz-datetime-elapsed(datetime="{{item.at}}")
-          tr.data
             td.value
               iron-icon(icon="icons:input")
               xyz-number-wei(number="{{item.value}}")
@@ -91,7 +81,14 @@ dom-module#xyz-game-lottery
             td.tickets
               iron-icon(icon="icons:content-copy")
               span {{item.tickets}} tickets
-            
+            td.when
+              iron-icon(icon="icons:history")
+              xyz-datetime-elapsed(datetime="{{item.at}}")
+            td.external
+              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
+                iron-icon(icon="icons:open-in-new")
+                span etherscan
+                
     xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
       h2 operation and rules
       ol
