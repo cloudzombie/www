@@ -13,6 +13,7 @@ iron-icon+iron-icon {
 
 .contract {
   text-align: right;
+  position: relative;
 
   * {
     vertical-align: middle;
@@ -22,12 +23,21 @@ iron-icon+iron-icon {
     margin: 0 1em;
   }
 
-  paper-button {
-    margin: 0 1em;
+  .btnbar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
 
-    iron-icon {
-      color: inherit;
-      margin: 0 0 0 0.5em;
+    paper-button {
+      margin: 0 1em;
+      vertical-align: middle;
+      text-transform: none;
+
+      iron-icon {
+        color: inherit; //#ffff8d;
+        vertical-align: middle;
+        margin: 0 0 0 0.5em;
+      }
     }
   }
 
@@ -45,6 +55,10 @@ iron-icon+iron-icon {
 .has-about {
   display: none;
   cursor: pointer;
+
+  .overview, .details {
+    @include span-columns(6);
+  }
 }
 
 :host.about {
@@ -59,6 +73,8 @@ iron-icon+iron-icon {
     border-collapse: collapse;
 
     tr {
+      @include animFadeIn;
+
       td {
         text-align: left;
         padding: 0;

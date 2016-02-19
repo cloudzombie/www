@@ -30,7 +30,7 @@ dom-module#xyz-game-fifty
           .normal {{current.turnover.unit}} played
         
     xyz-page-section(color="brown" opacity size="small")
-      .hidden(class$="[[visibleClass(config, 'price')]]")
+      .hidden(class$="[[visibleClass(config, 'price')]]")  
         .contract.right
           xyz-number-wei(number="{{config.min}}")
           span &nbsp;-&nbsp;
@@ -38,19 +38,29 @@ dom-module#xyz-game-fifty
           iron-icon(icon="icons:input")
           span {{config.addr}}
           
-          paper-button(raised color="brown" on-click="toggleAbout")
-            span about
-            iron-icon(icon="icons:swap-vertical-circle")
+          .btnbar
+            paper-button(raised color="brown" on-click="toggleAbout")
+              span about
+              iron-icon(icon="icons:swap-vertical-circle")
               
     xyz-page-section.has-about(color="gray" on-click="toggleAbout")
-      h2 about
-      p.
-        Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. With a win, <span class="bold">50% of the pool</span> is returned along with the ticket, with a loss the ticket is added to the pool. A pool exists for each decimal position, with a ticket value equalling an increment in that position.
-      p.
-        The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
-      p.
-        The most looney game this side of playing chicken.
-          
+      .overview
+        h2 about
+        p.
+          Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. With a win, <span class="bold">50% of the pool</span> is returned along with the ticket, with a loss the ticket is added to the pool. A pool exists for each decimal position, with a ticket value equalling an increment in that position.
+        p.
+          The caveat? You need to be lucky and time your wins to <span class="bold">grab the largest pot available</span>. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
+        p.
+          The most looney game this side of playing chicken.
+      .details
+        h2 details
+        p.
+          Each transaction received, with a value not an exact multiple of the <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> minium fee, will be returned. Each entry can contain multiple plays and the results are randomly and automatically calculated.
+        p.
+          The game operates on 3 pools, one for multiples of <span class="bold">1 ether</span>, one for multiples of <span class="bold">100 finney</span> and one for multiples of <span class="bold">10 finney</span>. Sending 3.21 ether, will play the first pool 3 times, the second pool twice and the third pool once with the results combined for your return.
+        p.
+          Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.
+    
     xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
       .center.winner
         iron-icon(icon="icons:timeline")
@@ -99,7 +109,7 @@ dom-module#xyz-game-fifty
             li 0.6 ether will buy 6 tickets from the 100 finney pool
             li 3 ether will buy 3 tickets from the 1 ether pool
             li 0.31 ether will buy 4 tickets (3 + 1), each playing against the relevant pools
-        li A maxium <span class="bold">bet of <xyz-number-wei number="{{config.max}}"></xyz-number-wei> is 27 tickets</span>, allocated from 3 different pools and evaluated as such.
+        li A maximum bet of <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> is <span class="bold">27 tickets</span>, allocated from 3 different pools and evaluated as such.
         li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
         li Each ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
         li A win allocates <span class="bold">50% of the available pool</span> to your returns, at the same time returning the value of one ticket
