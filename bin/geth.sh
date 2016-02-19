@@ -7,13 +7,13 @@ MINE="--mine --minerthreads 1"
 if [ "$1" == "dev" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_DEV
   OPTS="--dev $MINE"
-elif [ "$2" == "test" ]; then
+elif [ "$1" == "test" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_TST
   OPTS="--testnet $MINE"
-elif [ "$2" == "live" ]; then
+elif [ "$1" == "live" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_LVE
   OPTS=
-elif [ "$2" == "owner" ]; then
+elif [ "$1" == "owner" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_OWN
   OPTS=
 else
