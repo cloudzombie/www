@@ -17,33 +17,40 @@ dom-module#xyz-game-fifty
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section.hidden(color="brown" opacity class$="[[visibleClass(current, 'tkratio')]]")
+    xyz-page-section(color="brown" opacity)
       .stats
         .stat
-          .large {{current.tkwins}}
+          .large {{getValue(current.tkwins)}}
           .normal wins
         .stat
-          .large {{current.tkratio}}
+          .large {{getValue(current.tkratio)}}
           .normal won
         .stat
-          .large {{current.turnover.value}}
-          .normal {{current.turnover.unit}} played
+          .large {{getValue(current.turnover.value)}}
+          .normal {{getValue(current.turnover.unit, '')}} played
+          
+    xyz-page-section(color="green" opacity size="small")
+      .center.winner
+        iron-icon(icon="icons:timeline")
+        span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
+        iron-icon(icon="icons:account-balance")
+        xyz-number-wei(number="{{winner.output}}" max)
+        iron-icon(icon="icons:trending-flat")
+        iron-icon(icon="icons:perm-identity")
+        span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
+        iron-icon(icon="icons:history")
+        xyz-datetime-elapsed(datetime="{{winner.at}}")
         
     xyz-page-section(color="brown" opacity size="small")
-      .hidden(class$="[[visibleClass(config, 'price')]]")  
-        .contract.right
-          xyz-number-wei(number="{{config.min}}")
-          span &nbsp;-&nbsp;
-          xyz-number-wei(number="{{config.max}}")
-          iron-icon(icon="icons:input")
-          span {{config.addr}}
-          
-          .btnbar
-            paper-button(raised color="brown" on-click="toggleAbout")
-              span about
-              iron-icon(icon="icons:swap-vertical-circle")
+      .contract.right
+        xyz-number-wei(number="{{getValue(config.min, '0')}}")
+        span &nbsp;-&nbsp;
+        xyz-number-wei(number="{{getValue(config.max, '0')}}")
+        iron-icon(icon="icons:input")
+        span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}
               
     xyz-page-section.has-about(color="gray" on-click="toggleAbout")
+      iron-icon.close(icon="icons:cancel")
       .overview
         h2 about
         p.
@@ -60,22 +67,9 @@ dom-module#xyz-game-fifty
           The game operates on 3 pools, one for multiples of <span class="bold">1 ether</span>, one for multiples of <span class="bold">100 finney</span> and one for multiples of <span class="bold">10 finney</span>. Sending 3.21 ether, will play the first pool 3 times, the second pool twice and the third pool once with the results combined for your return.
         p.
           Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.
-    
-    xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
-      .center.winner
-        iron-icon(icon="icons:timeline")
-        span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
-        iron-icon(icon="icons:account-balance")
-        xyz-number-wei(number="{{winner.output}}" max)
-        iron-icon(icon="icons:trending-flat")
-        iron-icon(icon="icons:perm-identity")
-        span {{winner.addr}}
-        iron-icon(icon="icons:history")
-        xyz-datetime-elapsed(datetime="{{winner.at}}")
           
     xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
       .entries
-        //h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
             td.addr

@@ -29,6 +29,10 @@
       this.toggleClass('about', this.about);
     },
 
+    getValue: function(val, def) {
+      return val || def || '-';
+    },
+
     addPlayers: function(entries) {
       _.each(entries, (entry) => {
         if (!entry || !entry.tickets) {
@@ -107,6 +111,13 @@
     },
 
     ready: function() {
+      this.toggleAbout();
+
+      this.end = 0;
+      this.config = null;
+      this.current = null;
+      this.winner = null;
+
       this.$.pubsub.subscribe('game/lottery/player', (entry) => {
         console.log('Player', entry);
 

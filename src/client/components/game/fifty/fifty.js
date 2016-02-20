@@ -20,6 +20,10 @@
       this.toggleClass('about', this.about);
     },
 
+    getValue: function(val, def) {
+      return val || def || '-';
+    },
+
     lastColor: function(winner) {
       return winner && winner.winner ? 'green' : 'red';
     },
@@ -88,6 +92,12 @@
     },
 
     ready: function() {
+      this.config = null;
+      this.current = null;
+      this.winner = null;
+
+      this.toggleAbout();
+
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
         if (!player.tkplays) {
           return;

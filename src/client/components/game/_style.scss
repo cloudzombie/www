@@ -55,15 +55,24 @@ iron-icon+iron-icon {
 .has-about {
   display: none;
   cursor: pointer;
+  position: relative;
 
   .overview, .details {
     @include span-columns(6);
+  }
+
+  .close {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    color: inherit;
   }
 }
 
 :host.about {
   .has-about {
     display: block;
+    @include animFadeIn;
   }
 }
 

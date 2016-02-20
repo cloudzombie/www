@@ -17,34 +17,41 @@ dom-module#xyz-game-lottery
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section.hidden(color="blue-dark" opacity class$="[[visibleClass(current, 'round')]]")
+    xyz-page-section(color="blue-dark" opacity)
       .stats
         .round
-          .large {{current.round}}
+          .large {{getValue(current.round)}}
           .normal rounds
         .time
           .large
             xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
           .normal time remaining
         .pool
-          .large {{current.poolval}}
-          .normal {{current.poolunit}}
+          .large {{getValue(current.poolval)}}
+          .normal {{getValue(current.poolunit, '')}}
+          
+    xyz-page-section(color="green" opacity size="small")
+      .center.winner
+        iron-icon(icon="icons:donut-large")
+        span round {{getValue(winner.round)}}
+        iron-icon(icon="icons:account-balance")
+        xyz-number-wei(number="{{getValue(winner.value, '0')}}")
+        iron-icon(icon="icons:trending-flat")
+        iron-icon(icon="icons:perm-identity")
+        span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
+        iron-icon(icon="icons:history")
+        xyz-datetime-elapsed(datetime="{{getValue(winner.at, '-')}}")
         
     xyz-page-section(color="blue-dark" opacity size="small")
-      .hidden(class$="[[visibleClass(config, 'price')]]")
-        .contract.right
-          xyz-number-wei(number="{{config.min}}")
-          span &nbsp;-&nbsp;
-          xyz-number-wei(number="{{config.max}}")
-          iron-icon(icon="icons:input")
-          span {{config.addr}}
-        
-          .btnbar  
-            paper-button(raised color="blue-dark" on-click="toggleAbout")
-              span about
-              iron-icon(icon="icons:swap-vertical-circle")
+      .contract.right
+        xyz-number-wei(number="{{getValue(config.min, '0')}}")
+        span &nbsp;-&nbsp;
+        xyz-number-wei(number="{{getValue(config.max, '0')}}")
+        iron-icon(icon="icons:input")
+        span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}
               
     xyz-page-section.has-about(color="gray" on-click="toggleAbout")
+      iron-icon.close(icon="icons:cancel")
       .overview
         h2 about
         p.
@@ -61,22 +68,9 @@ dom-module#xyz-game-lottery
           When the round is over, <span class="bold">one winner</span> will be randomly chosen from the tickets and a new round with automatically start.
         p.
           Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.
-          
-    xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'round')]]")
-      .center.winner
-        iron-icon(icon="icons:donut-large")
-        span round {{winner.round}}
-        iron-icon(icon="icons:account-balance")
-        xyz-number-wei(number="{{winner.value}}")
-        iron-icon(icon="icons:trending-flat")
-        iron-icon(icon="icons:perm-identity")
-        span {{winner.addr}}
-        iron-icon(icon="icons:history")
-        xyz-datetime-elapsed(datetime="{{winner.at}}")
       
     xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
       .entries
-        //h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
             td.addr
