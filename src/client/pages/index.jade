@@ -6,32 +6,33 @@ block imports
   link(rel="import" href="/components/quip/quip.html")
 
 block content
-  xyz-page-section(color="blue-gray" opacity)
-    .hero.
-      <span class="bold">the.looney.farm</span> is a collection of smart contract games using Ether tokens, all playable on a distributed network in an open manner
+  xyz-page-section(color="blue-gray")
+    .hero
+      .blurb.
+        <span class="bold">the.looney.farm</span> is a collection of smart contract games using Ether tokens, all playable on a distributed network in an open manner
   
-  xyz-page-section(color="blue-gray" opacity size="small")
+  xyz-page-section(color="blue-gray" size="small")
     .quip.right
       xyz-quip
         
   xyz-page-section
     .games
-      .game.lottery
+      .game
         a(href="/game/lottery").line
-          paper-button(raised color="blue-light")
+          paper-button.bg.lottery(raised color="blue-light")
             span lottery
             iron-icon(icon="icons:exit-to-app")
-      .game.fifty
+      .game
         a(href="/game/fifty").line
-          paper-button(raised color="brown-light")
+          paper-button.bg.fifty(raised color="brown-light")
             span fifty
             iron-icon(icon="icons:exit-to-app")
-      .game.dice(disabled)
+      .game
         a.line
-          paper-button(raised color="gray" disabled)
+          paper-button.bg.dice(raised color="gray" disabled)
             span soon
       
-  xyz-page-section.border(size="small-top")
+  xyz-page-section(size="small-top")
     .bg.bg-right.chemist
       h2 about our games
       p.
@@ -41,7 +42,7 @@ block content
       p.
         Most importantly, we are all here to <span class="bold">have fun</span>. And yes, that includes you. If you are not having fun, move along. You may win some, you may lose some, but it will <span class="bold">always be fair</span>.
     
-  xyz-page-section
+  xyz-page-section(color="red")
     .bg.bg-left.shock
       h2 warning
       p.

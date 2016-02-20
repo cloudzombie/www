@@ -23,11 +23,17 @@ body[unresolved] {
 
 .hero {
   font-size: $font-size-medium;
-  line-height: 1.5em;
+  line-height: $golden-ratio;
   text-align: center;
 
-  @include span-columns(8);
-  @include shift(2);
+  .icon {
+    @include span-columns(4);
+  }
+
+  .blurb {
+    @include shift(4);
+    @include span-columns(8);
+  }
 }
 
 .quip {
@@ -37,6 +43,7 @@ body[unresolved] {
 .bg {
   background-repeat: no-repeat;
   background-position: 50% 50%;
+  min-height: 140px;
 
   &.bg-left {
     background-position: 0% 50%;
@@ -50,6 +57,14 @@ body[unresolved] {
 
   &.chemist {
     background-image: url('/images/chemist-trans-75-140x140.png');
+  }
+
+  &.looney {
+    background-image: url('/images/looney-inv-140x140.jpg');
+  }
+
+  &.lottery {
+    background-image: url('/images/ticket.png')
   }
 
   &.rules {
@@ -85,10 +100,6 @@ body[unresolved] {
         text-align: right;
         text-transform: none;
 
-        // iron-icon {
-        //   color: #ffff8d;
-        // }
-
         span {
           display: inline-block;
           line-height: 150px; // 24px;
@@ -108,30 +119,6 @@ body[unresolved] {
         paper-button {
           color: inherit;
         }
-      }
-    }
-
-    &.lottery {
-      paper-button {
-        background-image: url('/images/ticket-inv-trans-25-700x200.png');
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-      }
-    }
-
-    &.fifty {
-      paper-button {
-        background-image: url('/images/kick-inv-trans-25-700x200.png');
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-      }
-    }
-
-    &.dice {
-      paper-button {
-        background-image: url('/images/dice-inv-trans-25-700x200.png');
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
       }
     }
   }
