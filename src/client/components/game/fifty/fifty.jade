@@ -82,8 +82,9 @@ dom-module#xyz-game-fifty
               iron-icon(icon="icons:timeline")
               span {{item.wins}}/{{item.plays}}
             td.output
-              iron-icon(icon="icons:account-balance")
-              xyz-number-wei(number="{{item.output}}" max)
+              span(class$="[[hideZero(item.output)]]")
+                iron-icon(icon="icons:account-balance")
+                xyz-number-wei(number="{{item.output}}" max)
             td.when
               iron-icon(icon="icons:history")
               xyz-datetime-elapsed(datetime="{{item.at}}")

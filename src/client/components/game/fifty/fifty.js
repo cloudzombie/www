@@ -24,6 +24,10 @@
       return val || def || '-';
     },
 
+    hideZero: function(val) {
+      return (!val || val === '0') ? 'hidden' : '';
+    },
+
     lastColor: function(winner) {
       return winner && winner.winner ? 'green' : 'red';
     },
