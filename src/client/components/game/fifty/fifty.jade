@@ -18,14 +18,14 @@ dom-module#xyz-game-fifty
     xyz-pubsub#pubsub
     
     xyz-page-section(color="brown")
-      .bg.bg-left.fifty
-        .stats
-          .stat
-            .large {{getValue(current.tkwins)}}
-            .normal wins
-          .stat
-            .large {{getValue(current.turnover.value)}}
-            .normal {{getValue(current.turnover.unit, '')}} played
+      .stats
+        .icon.bg.fifty
+        .stat
+          .large {{getValue(current.tkwins)}}
+          .normal wins
+        .stat
+          .large {{getValue(current.turnover.value)}}
+          .normal {{getValue(current.turnover.unit, '')}} played
           
     xyz-page-section(color="green" size="small")
       .center.winner

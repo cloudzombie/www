@@ -1,3 +1,20 @@
+:host {
+  display: block;
+}
+
+.stats {
+  @include outer-container;
+  text-align: center;
+
+  .icon {
+    @include span-columns(4);
+  }
+
+  .stat {
+    @include span-columns(4);
+  }
+}
+
 iron-icon {
   color: $color-font-gray-light;
   margin: 0 0.35em 0 1em;

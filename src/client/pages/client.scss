@@ -25,6 +25,16 @@ body[unresolved] {
   font-size: $font-size-medium;
   line-height: $golden-ratio;
   text-align: center;
+
+  @include outer-container;
+
+  .icon {
+    @include span-columns(4);
+  }
+
+  .blurb {
+    @include span-columns(8);
+  }
 }
 
 .quip {
@@ -47,31 +57,31 @@ body[unresolved] {
   }
 
   &.chemist {
-    background-image: url('/images/chemist.png');
+    background-image: url('/images/chemist-50.png');
   }
 
   &.dice {
-    background-image: url('/images/dice-inv.png')
+    background-image: url('/images/dice-25.png')
   }
 
   &.fifty {
-    background-image: url('/images/kick-inv.png')
+    background-image: url('/images/slots-inv-50.png')
   }
 
   &.looney {
-    background-image: url('/images/looney-inv.png');
+    background-image: url('/images/looney-inv-50.png');
   }
 
   &.lottery {
-    background-image: url('/images/ticket-inv.png')
+    background-image: url('/images/ticket-inv-50.png')
   }
 
   &.rules {
-    background-image: url('/images/whiteboard.png');
+    background-image: url('/images/whiteboard-50.png');
   }
 
   &.shock {
-    background-image: url('/images/shock-inv.png');
+    background-image: url('/images/shock-inv-50.png');
   }
 }
 
@@ -111,9 +121,7 @@ body[unresolved] {
     &[disabled] {
       a.line {
         opacity: 0.5;
-        // color: rgba(238, 238, 238, 0.5);
         cursor: default;
-
 
         paper-button {
           color: inherit;
