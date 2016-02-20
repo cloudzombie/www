@@ -42,45 +42,62 @@ body[unresolved] {
 }
 
 .bg {
-  background-repeat: no-repeat !important;
-  background-position: 50% 50% !important;
-  min-height: 140px;
+  position: relative;
+  min-height: 1px;
+
+  &::before {
+    content: " ";
+    position: absolute;
+    right: 1em;
+    width: 140px;
+    height: 140px;
+    background-repeat: no-repeat !important;
+    background-position: 0 0 !important;
+  }
 
   &.bg-left {
-    background-position: 0% 50% !important;
     padding-left: 220px;
+
+    &::before {
+      right: auto;
+      left: 1em;
+    }
   }
 
   &.bg-right {
-    background-position: 100% 50% !important;
     padding-right: 220px;
+
+    &::before {
+      left: auto;
+      right: 1em;
+    }
   }
 
-  &.chemist {
+  &.chemist::before {
     background-image: url('/images/chemist-50.png');
   }
 
-  &.dice {
+  &.dice::before {
     background-image: url('/images/dice-25.png')
   }
 
-  &.fifty {
+  &.fifty::before {
     background-image: url('/images/slots-inv-50.png')
   }
 
-  &.looney {
+  &.looney::before {
     background-image: url('/images/looney-inv-50.png');
   }
 
-  &.lottery {
+  &.lottery::before {
     background-image: url('/images/ticket-inv-50.png')
   }
 
-  &.rules {
+  &.rules::before {
     background-image: url('/images/whiteboard-50.png');
   }
 
-  &.warning {
+  &.warning::before {
     background-image: url('/images/look-inv-50.png');
   }
 }
@@ -91,7 +108,7 @@ body[unresolved] {
   .game {
     height: 150px;
     border-radius: 1em;
-    text-align: center;
+    text-align: left;
 
     @include span-columns(4);
 
@@ -106,8 +123,8 @@ body[unresolved] {
       paper-button {
         vertical-align: middle;
         width: 100%;
-        text-align: right;
         text-transform: none;
+        text-align: left;
 
         span {
           display: inline-block;
