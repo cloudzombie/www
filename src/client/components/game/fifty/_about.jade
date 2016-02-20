@@ -1,0 +1,21 @@
+extends ../_template_about.jade
+
+block about
+  p.
+    Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. With a win, <span class="bold">50% of the pool</span> is returned along with the ticket, with a loss the ticket is added to the pool. A pool exists for each decimal position, with a ticket value equalling an increment in that position.
+  
+  p.
+    The caveat? You need to be lucky and time your wins to <span class="bold">grab the largest pot available</span>. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
+  
+  p.
+    The most looney game this side of playing chicken.
+  
+block details
+  p.
+    Each transaction received, with a value not an exact multiple of the <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> minium fee, will be returned. Each entry can contain multiple plays and the results are randomly and automatically calculated.
+  
+  p.
+    The game operates on 3 pools, one for multiples of <span class="bold">1 ether</span>, one for multiples of <span class="bold">100 finney</span> and one for multiples of <span class="bold">10 finney</span>. Sending 3.21 ether, will play the first pool 3 times, the second pool twice and the third pool once with the results combined for your return.
+  
+  p.
+    Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.

@@ -17,92 +17,9 @@ dom-module#xyz-game-lottery
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section(color="blue-dark")
-      .stats
-        .icon.bg.lottery
-        .stat
-          .large
-            xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
-          .normal remaining
-        .stat
-          .large {{getValue(current.poolval)}}
-          .normal {{getValue(current.poolunit, '')}} pool
-          
-    xyz-page-section(color="green" size="small")
-      .center.winner
-        iron-icon(icon="icons:donut-large")
-        span round {{getValue(winner.round)}}
-        iron-icon(icon="icons:account-balance")
-        xyz-number-wei(number="{{getValue(winner.value, '0')}}")
-        iron-icon(icon="icons:trending-flat")
-        iron-icon(icon="icons:perm-identity")
-        span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
-        iron-icon(icon="icons:history")
-        xyz-datetime-elapsed(datetime="{{getValue(winner.at, '-')}}")
-        
-    xyz-page-section(color="blue-dark" size="small")
-      .contract.right
-        xyz-number-wei(number="{{getValue(config.min, '0')}}")
-        span &nbsp;-&nbsp;
-        xyz-number-wei(number="{{getValue(config.max, '0')}}")
-        iron-icon(icon="icons:input")
-        span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}
-              
-    xyz-page-section.has-about(color="gray" on-click="toggleAbout")
-      iron-icon.close(icon="icons:cancel")
-      .overview
-        h2 about
-        p.
-          Send multiple tickets where one ticket equals the minimum fee, and each ticket gives you a single chance to <span class="bold">win the overall available pool</span> at the end of the draw. The winner takes all.
-        p.
-          The more transactions sent, the larger the pool becomes (<span class="bold">maximizing the winnings</span>), however it also means there are a larger the number of opposition (<span class="bold">minimizing the chances</span>).
-        p.
-          The most looney way to try and make a large fortune from a small one.
-      .details
-        h2 details
-        p.
-          Any value that is not an exact multiple of the <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> minimum fee, will be returned to the sender. Since allocation is done on the basis of tickets, this is the fairest way to make sure players have a chance equal to the number of tickets in-hand.
-        p.
-          When the round is over, <span class="bold">one winner</span> will be randomly chosen from the tickets and a new round with automatically start.
-        p.
-          Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.
-      
-    xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
-      .entries
-        table
-          tbody: template(is="dom-repeat" items="{{players}}")
-            tr.entry
-              td.addr
-                iron-icon(icon="icons:perm-identity")
-                span {{item.addr}}
-              td.value
-                iron-icon(icon="icons:input")
-                xyz-number-wei(number="{{item.value}}")
-              td.round
-                iron-icon(icon="icons:donut-large")
-                span round {{item.round}}
-              td.tickets
-                iron-icon(icon="icons:content-copy")
-                span {{item.tickets}} tickets
-              td.when
-                iron-icon(icon="icons:history")
-                xyz-datetime-elapsed(datetime="{{item.at}}")
-              td.external
-                a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
-                  iron-icon(icon="icons:open-in-new")
-                  span etherscan
-                
-    xyz-page-section.hidden(color="gray" class$="[[visibleClass(config, 'price')]]")
-      .bg.bg-right.rules
-        h2 operation and rules
-        ol
-          li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
-          li There is only <span class="bold">one winner per round</span>, the randomly selected address collects the full pool minus the applicable commission
-          li Every <xyz-number-wei number="{{config.price}}" class="bold"></xyz-number-wei> you send (an entry) buys one ticket, any value not a multiple of this will be returned
-          li You can <span class="bold">enter as many times</span> as you like, with as many tickets per entry as you like
-          li Tickets are automatically <span class="bold">allocated based on the value</span> you have sent
-          li The game will finish a round when the timer expires and <span class="bold">at least {{config.minentries}} entries</span> are made
-          li When <span class="bold">the maxiumum {{config.maxentries}} entries/transactions</span> are received the round will finish, regardless of the number of tickets per entry or time elapsed
-          li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount paid to the winner at the end of each round
+    include _top.jade
+    include _about.jade
+    include _entries.jade
+    include _rules.jade
         
   script !{readCompiled('lottery.js')}

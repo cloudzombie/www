@@ -1,0 +1,21 @@
+extends ../_template_about.jade
+
+block about
+  p.
+    Send multiple tickets where one ticket equals the minimum fee, and each ticket gives you a single chance to <span class="bold">win the overall available pool</span> at the end of the draw. The winner takes all.
+  
+  p.
+    The more transactions sent, the larger the pool becomes (<span class="bold">maximizing the winnings</span>), however it also means there are a larger the number of opposition (<span class="bold">minimizing the chances</span>).
+  
+  p.
+    The most looney way to try and make a large fortune from a small one.
+  
+block details
+  p.
+    Any value that is not an exact multiple of the <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> minimum fee, will be returned to the sender. Since allocation is done on the basis of tickets, this is the fairest way to make sure players have a chance equal to the number of tickets in-hand.
+  
+  p.
+    When the round is over, <span class="bold">one winner</span> will be randomly chosen from the tickets and a new round with automatically start.
+  
+  p.
+    Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.
