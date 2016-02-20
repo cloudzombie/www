@@ -25,10 +25,10 @@ dom-module#xyz-game-lottery
         .time
           .large
             xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
-          .normal time remaining
+          .normal remaining
         .pool
           .large {{getValue(current.poolval)}}
-          .normal {{getValue(current.poolunit, '')}}
+          .normal {{getValue(current.poolunit, '')}} pool
           
     xyz-page-section(color="green" opacity size="small")
       .center.winner
