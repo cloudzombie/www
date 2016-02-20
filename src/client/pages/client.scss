@@ -126,5 +126,13 @@ body[unresolved] {
         background-position: 50% 50%;
       }
     }
+
+    &.dice {
+      paper-button {
+        background-image: url('/images/crazy-dice-bw-inv-trans-25-140.png');
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+      }
+    }
   }
 }
