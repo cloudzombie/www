@@ -25,7 +25,7 @@ dom-module#xyz-page-menu
   template
     style !{readCompiled('menu/menu.css')}
     
-    div(color$="{{color}}" opacity)
+    div(color$="{{color}}")
       paper-tabs(selected="{{selected}}")
         template(is="dom-repeat" items="{{pages}}")
           paper-tab

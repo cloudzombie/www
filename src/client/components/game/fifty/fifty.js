@@ -3,6 +3,7 @@
 
   window.xyz.GameFifty = {
     properties: {
+      about: Boolean,
       config: Object,
       current: Object,
       winner: Object,
@@ -12,6 +13,19 @@
           return [];
         }
       }
+    },
+
+    toggleAbout: function() {
+      this.about = !this.about;
+      this.toggleClass('about', this.about);
+    },
+
+    getValue: function(val, def) {
+      return val || def || '-';
+    },
+
+    hideZero: function(val) {
+      return (!val || val === '0') ? 'hidden' : '';
     },
 
     lastColor: function(winner) {
@@ -82,6 +96,12 @@
     },
 
     ready: function() {
+      this.config = null;
+      this.current = null;
+      this.winner = null;
+
+      this.toggleAbout();
+
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
         if (!player.tkplays) {
           return;

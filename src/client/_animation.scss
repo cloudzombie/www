@@ -4,9 +4,22 @@
       opacity: 0;
     }
     to {
-      color: $opacity;
+      opacity: $opacity;
     }
   }
 
   @include animation($name $anim-duration);
+}
+
+@include keyframes(fadeIn) {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@mixin animFadeIn {
+  @include animation(fadeIn $anim-duration);
 }

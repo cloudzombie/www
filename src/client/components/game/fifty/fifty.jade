@@ -1,5 +1,6 @@
 link(rel="import" href="/components/bower/polymer/polymer.html")
 link(rel="import" href="/components/bower/iron-icons/iron-icons.html")
+link(rel="import" href="/components/bower/paper-button/paper-button.html")
 
 link(rel="import" href="/components/3rdparty/lodash.html")
 link(rel="import" href="/components/3rdparty/web3.html")
@@ -16,28 +17,17 @@ dom-module#xyz-game-fifty
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section.hidden(color="brown" opacity class$="[[visibleClass(current, 'tkratio')]]")
+    xyz-page-section(color="brown")
       .stats
+        .icon.bg.fifty
         .stat
-          .large {{current.tkwins}}
+          .large {{getValue(current.tkwins)}}
           .normal wins
         .stat
-          .large {{current.tkratio}}
-          .normal won
-        .stat
-          .large {{current.turnover.value}}
-          .normal {{current.turnover.unit}} played
-        
-    xyz-page-section(color="brown" opacity size="small")
-      .hidden(class$="[[visibleClass(config, 'price')]]")
-        .contract.right
-          xyz-number-wei(number="{{config.min}}")
-          span &nbsp;-&nbsp;
-          xyz-number-wei(number="{{config.max}}")
-          iron-icon(icon="icons:input")
-          span {{config.addr}}
+          .large {{getValue(current.turnover.value)}}
+          .normal {{getValue(current.turnover.unit, '')}} played
           
-    xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
+    xyz-page-section(color="green" size="small")
       .center.winner
         iron-icon(icon="icons:timeline")
         span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
@@ -45,35 +35,44 @@ dom-module#xyz-game-fifty
         xyz-number-wei(number="{{winner.output}}" max)
         iron-icon(icon="icons:trending-flat")
         iron-icon(icon="icons:perm-identity")
-        span {{winner.addr}}
+        span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
         iron-icon(icon="icons:history")
         xyz-datetime-elapsed(datetime="{{winner.at}}")
-          
-    xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
-      .about(color="gray")
+        
+    xyz-page-section(color="brown" size="small")
+      .contract.right
+        xyz-number-wei(number="{{getValue(config.min, '0')}}")
+        span &nbsp;-&nbsp;
+        xyz-number-wei(number="{{getValue(config.max, '0')}}")
+        iron-icon(icon="icons:input")
+        span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}
+              
+    xyz-page-section.has-about(color="gray" on-click="toggleAbout")
+      iron-icon.close(icon="icons:cancel")
+      .overview
         h2 about
         p.
           Send in multiple tickets, each having a <span class="bold">50% chance</span> of winning. With a win, <span class="bold">50% of the pool</span> is returned along with the ticket, with a loss the ticket is added to the pool. A pool exists for each decimal position, with a ticket value equalling an increment in that position.
         p.
-          The caveat? You need to be lucky and time your wins to grab the largest pot available. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
+          The caveat? You need to be lucky and time your wins to <span class="bold">grab the largest pot available</span>. Even when unlucky, you could be lucky and when you are lucky, you could be unlucky.
         p.
           The most looney game this side of playing chicken.
+      .details
+        h2 details
+        p.
+          Each transaction received, with a value not an exact multiple of the <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> minium fee, will be returned. Each entry can contain multiple plays and the results are randomly and automatically calculated.
+        p.
+          The game operates on 3 pools, one for multiples of <span class="bold">1 ether</span>, one for multiples of <span class="bold">100 finney</span> and one for multiples of <span class="bold">10 finney</span>. Sending 3.21 ether, will play the first pool 3 times, the second pool twice and the third pool once with the results combined for your return.
+        p.
+          Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.
           
+    xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
       .entries
-        //h2 recent players
         table: tbody: template(is="dom-repeat" items="{{players}}")
           tr.entry
-            td.addr(colspan="3")
+            td.addr
               iron-icon(icon="icons:perm-identity")
               span {{item.addr}}
-            td.max(rowspan="2")
-              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
-                iron-icon(icon="icons:open-in-new")
-                span etherscan
-            td.when(rowspan="2")
-              iron-icon(icon="icons:history")
-              xyz-datetime-elapsed(datetime="{{item.at}}")
-          tr.data
             td.input
               iron-icon(icon="icons:input")
               xyz-number-wei(number="{{item.input}}")
@@ -81,27 +80,36 @@ dom-module#xyz-game-fifty
               iron-icon(icon="icons:timeline")
               span {{item.wins}}/{{item.plays}}
             td.output
-              iron-icon(icon="icons:account-balance")
-              xyz-number-wei(number="{{item.output}}" max)
+              span(class$="[[hideZero(item.output)]]")
+                iron-icon(icon="icons:account-balance")
+                xyz-number-wei(number="{{item.output}}" max)
+            td.when
+              iron-icon(icon="icons:history")
+              xyz-datetime-elapsed(datetime="{{item.at}}")
+            td.external
+              a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
+                iron-icon(icon="icons:open-in-new")
+                span etherscan
         
-    xyz-page-section.hidden(color="gray" opacity class$="[[visibleClass(config, 'price')]]")
-      h2 operation and rules
-      ol
-        li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
-        li
-          |Every <span class="bold">digit/decimal position plays a pool</span> with 1/10 of the position equalling a ticket, e.g
-          ul
-            li 0.05 ether will buy 5 tickets from the 10 finney pool
-            li 0.6 ether will buy 6 tickets from the 100 finney pool
-            li 3 ether will buy 3 tickets from the 1 ether pool
-            li 0.31 ether will buy 4 tickets (3 + 1), each playing against the relevant pools
-        li A maxium <span class="bold">bet of <xyz-number-wei number="{{config.max}}"></xyz-number-wei> is 27 tickets</span>, allocated from 3 different pools and evaluated as such.
-        li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
-        li Each ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
-        li A win allocates <span class="bold">50% of the available pool</span> to your returns, at the same time returning the value of one ticket
-        li A loss <span class="bold">returns the value</span> of the ticket to the pool, this new pool value is used in subsequent calculations
-        li Winning &gt;50% of tickets may result in an <span class="bold">overall loss</span>, losing &gt;50% of tickets may result in an <span class="bold">overall win</span>
-        li You can <span class="bold">play as many times</span> as you like, with as many tickets as you like
-        li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount won by each ticket
+    xyz-page-section.hidden(color="gray" class$="[[visibleClass(config, 'price')]]")
+      .bg.bg-right.rules
+        h2 operation and rules
+        ol
+          li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
+          li
+            |Every <span class="bold">digit/decimal position plays a pool</span> with 1/10 of the position equalling a ticket, e.g
+            ul
+              li 0.05 ether will buy 5 tickets from the 10 finney pool
+              li 0.6 ether will buy 6 tickets from the 100 finney pool
+              li 3 ether will buy 3 tickets from the 1 ether pool
+              li 0.31 ether will buy 4 tickets (3 + 1), each playing against the relevant pools
+          li A maximum bet of <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> is <span class="bold">27 tickets</span>, allocated from 3 different pools and evaluated as such.
+          li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
+          li Each ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
+          li A win allocates <span class="bold">50% of the available pool</span> to your returns, at the same time returning the value of one ticket
+          li A loss <span class="bold">returns the value</span> of the ticket to the pool, this new pool value is used in subsequent calculations
+          li Winning &gt;50% of tickets may result in an <span class="bold">overall loss</span>, losing &gt;50% of tickets may result in an <span class="bold">overall win</span>
+          li You can <span class="bold">play as many times</span> as you like, with as many tickets as you like
+          li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount won by each ticket
         
   script !{readCompiled('fifty.js')}

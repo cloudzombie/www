@@ -11,6 +11,7 @@
 
   window.xyz.GameLottery = {
     properties: {
+      about: Boolean,
       config: Object,
       current: Object,
       players: {
@@ -21,6 +22,15 @@
       },
       end: Number,
       winner: Object
+    },
+
+    toggleAbout: function() {
+      this.about = !this.about;
+      this.toggleClass('about', this.about);
+    },
+
+    getValue: function(val, def) {
+      return val || def || '-';
     },
 
     addPlayers: function(entries) {
@@ -57,6 +67,7 @@
 
     setConfig: function(config) {
       config.edge = (100 * toWei(config.fees) / toWei(config.price)).toFixed(2);
+
       this.config = config;
     },
 
@@ -100,6 +111,13 @@
     },
 
     ready: function() {
+      this.toggleAbout();
+
+      this.end = 0;
+      this.config = null;
+      this.current = null;
+      this.winner = null;
+
       this.$.pubsub.subscribe('game/lottery/player', (entry) => {
         console.log('Player', entry);
 

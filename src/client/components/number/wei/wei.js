@@ -45,7 +45,7 @@
     properties: {
       max: Boolean,
       number: {
-        type: Number,
+        type: String,
         observer: '_setWei'
       },
       wei: Object
