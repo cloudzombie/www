@@ -18,17 +18,15 @@ dom-module#xyz-game-lottery
     xyz-pubsub#pubsub
     
     xyz-page-section(color="blue-dark")
-      .stats
-        .round
-          .large {{getValue(current.round)}}
-          .normal rounds
-        .time
-          .large
-            xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
-          .normal remaining
-        .pool
-          .large {{getValue(current.poolval)}}
-          .normal {{getValue(current.poolunit, '')}} pool
+      .bg.bg-left.lottery
+        .stats
+          .time
+            .large
+              xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
+            .normal remaining
+          .pool
+            .large {{getValue(current.poolval)}}
+            .normal {{getValue(current.poolunit, '')}} pool
           
     xyz-page-section(color="green" size="small")
       .center.winner

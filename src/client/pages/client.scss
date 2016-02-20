@@ -25,15 +25,6 @@ body[unresolved] {
   font-size: $font-size-medium;
   line-height: $golden-ratio;
   text-align: center;
-
-  .icon {
-    @include span-columns(4);
-  }
-
-  .blurb {
-    @include shift(4);
-    @include span-columns(8);
-  }
 }
 
 .quip {
@@ -41,38 +32,46 @@ body[unresolved] {
 }
 
 .bg {
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
+  background-repeat: no-repeat !important;
+  background-position: 50% 50% !important;
   min-height: 140px;
 
   &.bg-left {
-    background-position: 0% 50%;
+    background-position: 0% 50% !important;
     padding-left: 220px;
   }
 
   &.bg-right {
-    background-position: 100% 50%;
+    background-position: 100% 50% !important;
     padding-right: 220px;
   }
 
   &.chemist {
-    background-image: url('/images/chemist-trans-75-140x140.png');
+    background-image: url('/images/chemist.png');
+  }
+
+  &.dice {
+    background-image: url('/images/dice-inv.png')
+  }
+
+  &.fifty {
+    background-image: url('/images/kick-inv.png')
   }
 
   &.looney {
-    background-image: url('/images/looney-inv-140x140.jpg');
+    background-image: url('/images/looney-inv.png');
   }
 
   &.lottery {
-    background-image: url('/images/ticket.png')
+    background-image: url('/images/ticket-inv.png')
   }
 
   &.rules {
-    background-image: url('/images/whiteboard-trans-75-140x140.png');
+    background-image: url('/images/whiteboard.png');
   }
 
   &.shock {
-    background-image: url('/images/shock-trans-75-140x140.png');
+    background-image: url('/images/shock-inv.png');
   }
 }
 
