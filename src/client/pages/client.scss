@@ -37,6 +37,16 @@ body[unresolved] {
   }
 }
 
+.warning, .about, .rules {
+  .icon {
+    @include span-columns(3);
+  }
+
+  .detail {
+    @include span-columns(9);
+  }
+}
+
 .quip {
   text-align: right;
 }
@@ -46,30 +56,24 @@ body[unresolved] {
   min-height: 1px;
 
   &::before {
-    content: " ";
+    content: ' ';
     position: absolute;
-    right: 1em;
-    width: 140px;
+    width: 100%;
     height: 140px;
     background-repeat: no-repeat !important;
-    background-position: 0 0 !important;
+    background-position: center top;
+    display: block;
   }
 
   &.bg-left {
-    padding-left: 180px;
-
     &::before {
-      right: auto;
-      left: 1em;
+      background-position: left center;
     }
   }
 
   &.bg-right {
-    padding-right: 180px;
-
     &::before {
-      left: auto;
-      right: 1em;
+      background-position: right center;
     }
   }
 
@@ -108,7 +112,6 @@ body[unresolved] {
   .game {
     height: 150px;
     border-radius: 1em;
-    text-align: left;
 
     @include span-columns(4);
 
@@ -124,7 +127,6 @@ body[unresolved] {
         vertical-align: middle;
         width: 100%;
         text-transform: none;
-        text-align: left;
 
         span {
           display: inline-block;
