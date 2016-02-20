@@ -38,22 +38,26 @@ body[unresolved] {
   background-repeat: no-repeat;
   background-position: 50% 50%;
 
-  &.left {
+  &.bg-left {
     background-position: 0% 50%;
-    padding-left: 270px;
+    padding-left: 220px;
   }
 
-  &.right {
+  &.bg-right {
     background-position: 100% 50%;
-    padding-right: 270px;
+    padding-right: 220px;
   }
 
   &.chemist {
-    background-image: url('/images/chemist-trans-75-140x140.jpg');
+    background-image: url('/images/chemist-trans-75-140x140.png');
+  }
+
+  &.rules {
+    background-image: url('/images/whiteboard-trans-75-140x140.png');
   }
 
   &.shock {
-    background-image: url('/images/shock-trans-75-140x140.jpg');
+    background-image: url('/images/shock-trans-75-140x140.png');
   }
 }
 
