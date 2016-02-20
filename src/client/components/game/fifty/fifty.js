@@ -3,33 +3,14 @@
 
   window.xyz.GameFifty = {
     properties: {
-      about: Boolean,
       config: Object,
       current: Object,
-      winner: Object,
       players: {
         type: Array,
         value: function() {
           return [];
         }
       }
-    },
-
-    toggleAbout: function() {
-      this.about = !this.about;
-      this.toggleClass('about', this.about);
-    },
-
-    getValue: function(val, def) {
-      return val || def || '-';
-    },
-
-    hideZero: function(val) {
-      return (!val || val === '0') ? 'hidden' : '';
-    },
-
-    lastColor: function(winner) {
-      return winner && winner.winner ? 'green' : 'red';
     },
 
     addPlayers: function(players) {
@@ -118,6 +99,6 @@
 
   Polymer({ // eslint-disable-line new-cap
     is: 'xyz-game-fifty',
-    behaviors: [window.xyz.Page, window.xyz.GameFifty]
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameFifty]
   });
 })();

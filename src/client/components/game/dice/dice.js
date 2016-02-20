@@ -5,7 +5,6 @@
     properties: {
       current: Object,
       config: Object,
-      winner: Object,
       players: {
         type: Array,
         value: function() {
@@ -94,6 +93,6 @@
 
   Polymer({ // eslint-disable-line new-cap
     is: 'xyz-game-dice',
-    behaviors: [window.xyz.Page, window.xyz.GameDice]
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameDice]
   });
 })();

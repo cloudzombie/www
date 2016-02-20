@@ -11,26 +11,15 @@
 
   window.xyz.GameLottery = {
     properties: {
-      about: Boolean,
       config: Object,
       current: Object,
+      end: Number,
       players: {
         type: Array,
         value: function() {
           return [];
         }
-      },
-      end: Number,
-      winner: Object
-    },
-
-    toggleAbout: function() {
-      this.about = !this.about;
-      this.toggleClass('about', this.about);
-    },
-
-    getValue: function(val, def) {
-      return val || def || '-';
+      }
     },
 
     addPlayers: function(entries) {
@@ -151,6 +140,6 @@
 
   Polymer({ // eslint-disable-line new-cap
     is: 'xyz-game-lottery',
-    behaviors: [window.xyz.Page, window.xyz.GameLottery]
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameLottery]
   });
 })();

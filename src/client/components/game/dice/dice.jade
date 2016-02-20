@@ -2,9 +2,9 @@ link(rel="import" href="/components/bower/polymer/polymer.html")
 link(rel="import" href="/components/bower/iron-icons/iron-icons.html")
 
 link(rel="import" href="/components/3rdparty/lodash.html")
-link(rel="import" href="/components/3rdparty/web3.html")
 link(rel="import" href="/components/api/api.html")
 link(rel="import" href="/components/datetime/datetime.html")
+link(rel="import" href="/components/game/game.html")
 link(rel="import" href="/components/number/number.html")
 link(rel="import" href="/components/page/page.html")
 link(rel="import" href="/components/pubsub/pubsub.html")
@@ -16,12 +16,10 @@ dom-module#xyz-game-dice
     xyz-api#api
     xyz-pubsub#pubsub
     
-    xyz-page-section(color="indigo" opacity) 
+    xyz-page-section(color="orange") 
       // .hidden class$="[[visibleClass(current, 'tkratio')]]")
       .stats
-        .stat
-          .large {{current.tkwins}}
-          .normal wins
+        .icon.bg.dice
         .stat
           .large {{current.tkratio}}
           .normal won
@@ -29,7 +27,7 @@ dom-module#xyz-game-dice
           .large {{current.turnover.value}}
           .normal {{current.turnover.unit}} played
         
-    xyz-page-section(color="indigo" opacity size="small")
+    xyz-page-section(color="orange" size="small")
       .hidden(class$="[[visibleClass(config, 'min')]]")
         .contract.right
           xyz-number-wei(number="{{config.min}}")
