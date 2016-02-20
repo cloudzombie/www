@@ -39,15 +39,15 @@ body[unresolved] {
   text-align: right;
 }
 
-.bg-zocchi {
-  background-image: url('/images/zocchi-250-bw-trans.jpg');
+.bg-chemist {
+  background-image: url('/images/crazy-chemist-bw-trans-50.jpg');
   background-repeat: no-repeat;
   background-position: 0% 50%;
   padding-left: 270px;
 }
 
-.bg-nobrain {
-  background-image: url('/images/no-brain-250-bw-trans-inv.jpg');
+.bg-shock {
+  background-image: url('/images/crazy-shock-bw-trans-50.jpg');
   background-repeat: no-repeat;
   background-position: 100% 50%;
   padding-right: 270px;
@@ -83,7 +83,7 @@ body[unresolved] {
 
         span {
           display: inline-block;
-          line-height: 24px;
+          line-height: 150px; // 24px;
           vertical-align: middle;
           margin: 0 5px;
         }
@@ -92,43 +92,39 @@ body[unresolved] {
 
     &[disabled] {
       a.line {
-        color: rgba(238, 238, 238, 0.5);
+        opacity: 0.5;
+        // color: rgba(238, 238, 238, 0.5);
         cursor: default;
 
+
         paper-button {
-          color: rgba(238, 238, 238, 0.5);
+          color: inherit;
         }
       }
     }
 
     &.lottery {
-      background-image: url('/images/cookies-150-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
+      paper-button {
+        background-image: url('/images/crazy-lottery-bw-inv-trans-25-140.png');
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+      }
     }
 
     &.fifty {
-      background-image: url('/images/50-150-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
+      paper-button {
+        background-image: url('/images/crazy-kick-bw-inv-trans-25-140.png');
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+      }
     }
 
     &.next {
-      background-image: url('/images/question-150-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.cards {
-      background-image: url('/images/playing-cards-250x-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.dice {
-      background-image: url('/images/cube-dice-210x-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
+      paper-button {
+        background-image: url('/images/crazy-man-bw-inv-trans-25-140.png');
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+      }
     }
   }
 }

@@ -14,25 +14,25 @@ block content
     .quip.right
       xyz-quip
         
-  xyz-page-section(color="gray")
+  xyz-page-section
     .games
       .game.lottery
         a(href="/game/lottery").line
-          paper-button(raised color="blue-gray" opacity)
+          paper-button(raised color="blue-light")
             span lottery
             iron-icon(icon="icons:exit-to-app")
       .game.fifty
         a(href="/game/fifty").line
-          paper-button(raised color="blue-gray" opacity)
+          paper-button(raised color="brown-light")
             span fifty
             iron-icon(icon="icons:exit-to-app")
       .game.next(disabled)
         a.line
-          paper-button(raised color="blue-gray" disabled opacity)
+          paper-button(raised color="gray" disabled)
             span soon
       
-  xyz-page-section.border
-    .center.bg-zocchi
+  xyz-page-section.border(size="small-top")
+    .center.bg-chemist
       h2 about our games
       p.
         Everything you find here is built on the <span class="bold">Ethereum infrastructure</span>, which means games are played and evaluated in a distributed manner - even if we are not available due to some freak of nature, the games will be. You send transactions to the network and it gets executed. No centralization.
@@ -42,7 +42,7 @@ block content
         Most importantly, we are all here to <span class="bold">have fun</span>. And yes, that includes you. If you are not having fun, move along. You may win some, you may lose some, but it will <span class="bold">always be fair</span>.
     
   xyz-page-section
-    .center.bg-nobrain
+    .center.bg-shock
       h2 warning
       p.
         In addition to being looney and generally aiming to attract the looney bunch, <span class="bold">we are in Beta</span>, very much like the Ethereum network. So don't go crazy. Only play with <span class="bold">Ether you can afford</span> to do without.
