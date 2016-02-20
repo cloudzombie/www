@@ -81,25 +81,41 @@ iron-icon+iron-icon {
     width: 100%;
     border-collapse: collapse;
 
-    tr {
+    thead th {
+      text-align: left;
+      white-space: nowrap;
+      padding-bottom: 0.5em;
+
+      * {
+        vertical-align: middle;
+      }
+
+      iron-icon {
+        margin-left: 0;
+      }
+    }
+
+    tbody tr {
       @include animFadeIn;
+
+      &:nth-child(odd) {
+        background: rgb(238, 238, 238);
+      }
 
       td {
         text-align: left;
-        padding: 0;
+        padding: 0.5em 1em 0.5em 0;
         white-space: nowrap;
 
         * {
           vertical-align: middle;
         }
 
-        &.when {
-          width: 100%;
+        &.round, &.tickets {
+          text-align: center;
         }
 
         &.external {
-          text-align: center;
-
           a {
             text-decoration: none;
 
@@ -112,16 +128,6 @@ iron-icon+iron-icon {
             }
           }
         }
-
-        &.addr {
-          text-align: left;
-        }
-      }
-    }
-
-    tr+tr {
-      td {
-        padding-top: 1em;
       }
     }
   }
