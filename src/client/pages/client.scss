@@ -10,11 +10,6 @@ body {
 
   margin: 0;
   -webkit-text-size-adjust: 100%;
-
-  background-image: url('/images/bg-blocks-bw-2.jpg') !important;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
 }
 
 body[unresolved] {
@@ -39,18 +34,27 @@ body[unresolved] {
   text-align: right;
 }
 
-.bg-chemist {
-  background-image: url('/images/crazy-chemist-bw-trans-50.jpg');
+.bg {
   background-repeat: no-repeat;
-  background-position: 0% 50%;
-  padding-left: 270px;
-}
+  background-position: 50% 50%;
 
-.bg-shock {
-  background-image: url('/images/crazy-shock-bw-trans-50.jpg');
-  background-repeat: no-repeat;
-  background-position: 100% 50%;
-  padding-right: 270px;
+  &.left {
+    background-position: 0% 50%;
+    padding-left: 270px;
+  }
+
+  &.right {
+    background-position: 100% 50%;
+    padding-right: 270px;
+  }
+
+  &.chemist {
+    background-image: url('/images/chemist-trans-75-140x140.jpg');
+  }
+
+  &.shock {
+    background-image: url('/images/shock-trans-75-140x140.jpg');
+  }
 }
 
 .games {
@@ -105,7 +109,7 @@ body[unresolved] {
 
     &.lottery {
       paper-button {
-        background-image: url('/images/crazy-lottery-bw-inv-trans-25-140.png');
+        background-image: url('/images/ticket-inv-trans-25-700x200.png');
         background-repeat: no-repeat;
         background-position: 50% 50%;
       }
@@ -113,15 +117,7 @@ body[unresolved] {
 
     &.fifty {
       paper-button {
-        background-image: url('/images/crazy-kick-bw-inv-trans-25-140.png');
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-      }
-    }
-
-    &.next {
-      paper-button {
-        background-image: url('/images/crazy-man-bw-inv-trans-25-140.png');
+        background-image: url('/images/kick-inv-trans-25-700x200.png');
         background-repeat: no-repeat;
         background-position: 50% 50%;
       }
@@ -129,7 +125,7 @@ body[unresolved] {
 
     &.dice {
       paper-button {
-        background-image: url('/images/crazy-dice-bw-inv-trans-25-140.png');
+        background-image: url('/images/dice-inv-trans-25-700x200.png');
         background-repeat: no-repeat;
         background-position: 50% 50%;
       }
