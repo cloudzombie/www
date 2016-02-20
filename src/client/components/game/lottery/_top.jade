@@ -4,10 +4,10 @@ xyz-page-section(color="blue-dark")
     .stat
       .large
         xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
-      .normal remaining
+      .medium remaining
     .stat
       .large {{getValue(current.poolval)}}
-      .normal {{getValue(current.poolunit, '')}} pool
+      .medium {{getValue(current.poolunit, '')}}
       
 xyz-page-section(color="green" size="small")
   .center.winner
