@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const channels = require('../config/channels').dice;
 const contract = require('../config/contracts').dice;
 const geth = require('../lib/geth');
@@ -48,7 +50,7 @@ let winner;
 let players = [];
 
 const addPlayer = function(player) {
-  if (player.winner && (!winner || player.tkplays > winner.tkplays)) {
+  if (player.winner && (!winner || player.total > winner.total)) {
     winner = player;
   }
 
@@ -76,12 +78,28 @@ const get = function() {
 };
 
 const eventPlayer = function(data) {
-  console.log(data);
+  const dices = data.args.dice.toNumber();
+  const total = data.args.txs.toNumber();
+  const wins = data.args.wins.toNumber();
+  const losses = total - wins;
+
+  if (!_.isNumber(total) || !total) {
+    return;
+  }
 
   const player = {
     addr: data.args.addr,
     at: geth.toTime(data.args.at),
+    bet: String.fromCharCode(data.args.bet.toNumber()),
+    dicea: dices & 0x0f,
+    diceb: dices & 0xf0,
+    input: data.args.input.toString(),
+    output: data.args.output.toString(),
+    winner: data.args.output.gt(winner.args.input),
     turnover: data.args.turnover.toString(),
+    total: total,
+    wins: wins,
+    losses: losses,
     txhash: data.transactionHash
   };
 
