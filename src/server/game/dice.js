@@ -28,17 +28,10 @@ const BETS = {
   'S': { short: '< Ten', long: 'Single digit sum' }
 };
 
-const BETALIAS = {
-  ':': '2'
-};
+const BETALIAS = {};
 
 const CONFIG_MIN_VALUE = dice.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
 const CONFIG_MAX_VALUE = dice.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-const CONFIG_MIN_FUNDS = dice.CONFIG_MIN_FUNDS(); // eslint-disable-line new-cap
-const CONFIG_MAX_FUNDS = dice.CONFIG_MAX_FUNDS(); // eslint-disable-line new-cap
-const CONFIG_RETURN_MUL = dice.CONFIG_RETURN_MUL().toNumber(); // eslint-disable-line new-cap
-const CONFIG_RETURN_DIV = dice.CONFIG_RETURN_DIV().toNumber(); // eslint-disable-line new-cap
-const CONFIG_FUNDS_EDGE = 1.0 - CONFIG_RETURN_MUL / CONFIG_RETURN_DIV; // eslint-disable-line new-cap
 const CONFIG_FEES_MUL = dice.CONFIG_FEES_MUL().toNumber(); // eslint-disable-line new-cap
 const CONFIG_FEES_DIV = dice.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
 const CONFIG_FEES_EDGE = CONFIG_FEES_MUL / CONFIG_FEES_DIV; // eslint-disable-line new-cap
@@ -46,9 +39,6 @@ const CONFIG = {
   addr: contract.addr,
   min: CONFIG_MIN_VALUE.toString(),
   max: CONFIG_MAX_VALUE.toString(),
-  mmmin: CONFIG_MIN_FUNDS.toString(),
-  mmmax: CONFIG_MAX_FUNDS.toString(),
-  mmedge: CONFIG_FUNDS_EDGE,
   edge: CONFIG_FEES_EDGE,
   bets: BETS,
   betalias: BETALIAS
@@ -96,6 +86,8 @@ const eventPlayer = function(data) {
 
 const init = function() {
   dice.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
+    logger.log('Dice', 'watch', data);
+
     if (error) {
       logger.log('Dice', 'watch', error);
       return;
