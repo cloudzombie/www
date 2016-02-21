@@ -1,13 +1,12 @@
 xyz-page-section(color="orange") 
-  // .hidden class$="[[visibleClass(current, 'tkratio')]]")
   .stats
     .icon.bg.dice
     .stat
-      .large {{current.tkratio}}
-      .normal won
+      .large {{getValue(current.tkwins)}}
+      .medium.thin won
     .stat
       .large {{current.turnover.value}}
-      .normal {{current.turnover.unit}} played
+      .medium.thin {{current.turnover.unit}} played
     
 xyz-page-section(color="orange" size="small")
   .hidden(class$="[[visibleClass(config, 'min')]]")
