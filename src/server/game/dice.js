@@ -56,8 +56,14 @@ const addPlayer = function(player) {
   players = players.slice(0, 10);
 };
 
-const getFunds = function() {
-  return dice.funds().toString();
+const getGame = function() {
+  return {
+    wins: dice.wins().toNumber(),
+    losses: dice.wins().toNumber(),
+    total: dice.txs().toNumber(),
+    turnover: dice.turnover().toString(),
+    funds: dice.funds().toString()
+  };
 };
 
 const get = function() {
@@ -65,7 +71,7 @@ const get = function() {
     config: CONFIG,
     winner: winner,
     players: players,
-    funds: getFunds()
+    current: getGame()
   };
 };
 
