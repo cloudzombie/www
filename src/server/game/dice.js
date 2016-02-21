@@ -50,7 +50,7 @@ let winner;
 let players = [];
 
 const addPlayer = function(player) {
-  if (player.winner && (!winner || player.total > winner.total)) {
+  if (player.winner && (!winner || player.txs > winner.txs)) {
     winner = player;
   }
 
@@ -78,7 +78,6 @@ const get = function() {
 };
 
 const eventPlayer = function(data) {
-  const dices = data.args.dice.toNumber();
   const total = data.args.txs.toNumber();
   const wins = data.args.wins.toNumber();
   const losses = total - wins;
@@ -91,13 +90,13 @@ const eventPlayer = function(data) {
     addr: data.args.addr,
     at: geth.toTime(data.args.at),
     bet: String.fromCharCode(data.args.bet.toNumber()),
-    dicea: dices & 0x0f,
-    diceb: dices & 0xf0,
+    dicea: data.args.dicea.toNumber(),
+    diceb: data.args.diceb.toNumber(),
     input: data.args.input.toString(),
     output: data.args.output.toString(),
-    winner: data.args.output.gt(winner.args.input),
+    winner: data.args.output.gt(data.args.input),
     turnover: data.args.turnover.toString(),
-    total: total,
+    txs: total,
     wins: wins,
     losses: losses,
     txhash: data.transactionHash
