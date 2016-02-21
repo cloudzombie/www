@@ -1,0 +1,29 @@
+xyz-page-section(color="brown")
+  .stats
+    .icon.bg.fifty
+    .stat
+      .large {{getValue(current.tkwins)}}
+      .medium.thin wins
+    .stat
+      .large {{getValue(current.turnover.value)}}
+      .medium.thin {{getValue(current.turnover.unit, '')}} played
+      
+xyz-page-section(color="green" size="small")
+  .center.winner
+    iron-icon(icon="icons:timeline")
+    span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
+    iron-icon(icon="icons:account-balance")
+    xyz-number-wei(number="{{winner.output}}" max)
+    iron-icon(icon="icons:trending-flat")
+    iron-icon(icon="icons:perm-identity")
+    span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
+    iron-icon(icon="icons:history")
+    xyz-datetime-elapsed(datetime="{{winner.at}}")
+    
+xyz-page-section(color="brown" size="small")
+  .contract.right
+    xyz-number-wei(number="{{getValue(config.min, '0')}}")
+    span &nbsp;-&nbsp;
+    xyz-number-wei(number="{{getValue(config.max, '0')}}")
+    iron-icon(icon="icons:input")
+    span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}

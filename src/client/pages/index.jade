@@ -6,61 +6,7 @@ block imports
   link(rel="import" href="/components/quip/quip.html")
 
 block content
-  xyz-page-section(color="blue-gray")
-    .hero
-      .icon.bg.looney
-      .blurb.
-        <span class="bold">the.looney.farm</span> is a collection of smart contract games using Ether tokens, all playable on a distributed network in an open manner
-  
-  xyz-page-section(color="blue-gray" size="small")
-    .quip.right
-      xyz-quip
-        
-  xyz-page-section
-    .games
-      .game
-        a(href="/game/lottery").line
-          paper-button.bg.lottery(raised color="blue")
-            span lottery
-            iron-icon(icon="icons:exit-to-app")
-      .game
-        a(href="/game/fifty").line
-          paper-button.bg.fifty(raised color="brown")
-            span fifty
-            iron-icon(icon="icons:exit-to-app")
-      .game
-        a(href="/game/dice").line
-          paper-button.bg.dice(raised color="orange")
-            span dice
-            iron-icon(icon="icons:exit-to-app")
-
-  xyz-page-section(size="small-top")
-    .bg.bg-right.chemist
-      h2 about our games
-      p.
-        Everything you find here is built on the <span class="bold">Ethereum infrastructure</span>, which means games are played and evaluated in a distributed manner - even if we are not available due to some freak of nature, the games will be. You send transactions to the network and it gets executed. No centralization.
-      p.
-        As a start, we don't have too much on offer, rather the first contracts (Lottery & Fifty) forms a basis for getting the infrastructure in place. It is a <span class="bold">minimum collection</span>, however provides just enough to show the early features on offer.
-      p.
-        Most importantly, we are all here to <span class="bold">have fun</span>. And yes, that includes you. If you are not having fun, move along. You may win some, you may lose some, but it will <span class="bold">always be fair</span>.
-    
-  xyz-page-section(color="red")
-    .bg.bg-left.warning
-      h2 warning
-      p.
-        In addition to being looney and generally aiming to attract the looney bunch, <span class="bold">we are in Beta</span>, very much like the Ethereum network. So don't go crazy. Only play with <span class="bold">Ether you can afford</span> to do without.
-      p.
-        Most of the games operate on a <span class="bold">commission of 0.50%</span> so over an infinite number of games, according to the law of big numbers, you will be down by that amount. At any point in time the averages may point in the wrong direction and <span class="bold">you could be up or down</span> by the GDP of a small African country. 
-      p.
-        And do remember, even a large network of distributed computing has no brain, so please use yours.
-  
-  xyz-page-section(color="gray")
-    .bg.bg-right.rules
-      h2 general rules
-      ol
-        li Only play with Ether you can afford to do without and has been specifically set aside for <span class="bold">entertainment purposes</span>.
-        li You will gain some big numbers, <span class="bold">you may lose</span> some as well. The upswings are there, but so are the downswings.
-        li We have a <span class="bold">commission of 0.50%</span> on all positive returns. This is used to keep these pages up and running.
-        li According to the <span class="bold">law of big numbers</span>, over an infinite number of entries, you will be 0.5% down across all games. It is just how it works.
-        li Always <span class="bold">have fun</span>. If you are not having fun, you really should go elsewhere.
-        li If you are having fun, <span class="bold">tell everybody</span> about it - this is not Fight Club. Expansion benefits everybody with larger pools.
+  include _top.jade
+  include _about.jade
+  include _warning.jade
+  include _rules.jade
