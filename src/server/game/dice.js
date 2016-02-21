@@ -25,7 +25,10 @@ const BETS = {
   '=': { short: 'A = B', long: 'Equal dice numbers' },
   '!': { short: 'A <> B', long: 'Unequal dice numbers' },
   'D': { short: '>= Ten', long: 'Double digit sum' },
-  'S': { short: '< Ten', long: 'Single digit sum' }
+  'S': { short: '< Ten', long: 'Single digit sum' },
+  alias: {
+    ':': '2'
+  }
 };
 
 const CONFIG_MIN_VALUE = dice.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
@@ -34,7 +37,7 @@ const CONFIG_MIN_FUNDS = dice.CONFIG_MIN_FUNDS(); // eslint-disable-line new-cap
 const CONFIG_MAX_FUNDS = dice.CONFIG_MAX_FUNDS(); // eslint-disable-line new-cap
 const CONFIG_RETURN_MUL = dice.CONFIG_RETURN_MUL().toNumber(); // eslint-disable-line new-cap
 const CONFIG_RETURN_DIV = dice.CONFIG_RETURN_DIV().toNumber(); // eslint-disable-line new-cap
-const CONFIG_HOUSE_EDGE = 100.0 - (CONFIG_RETURN_MUL / CONFIG_RETURN_DIV); // eslint-disable-line new-cap
+const CONFIG_FUNDS_EDGE = 1.0 - CONFIG_RETURN_MUL / CONFIG_RETURN_DIV; // eslint-disable-line new-cap
 const CONFIG_FEES_MUL = dice.CONFIG_FEES_MUL().toNumber(); // eslint-disable-line new-cap
 const CONFIG_FEES_DIV = dice.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
 const CONFIG_FEES_EDGE = CONFIG_FEES_MUL / CONFIG_FEES_DIV; // eslint-disable-line new-cap
@@ -44,8 +47,8 @@ const CONFIG = {
   max: CONFIG_MAX_VALUE.toString(),
   mmmin: CONFIG_MIN_FUNDS.toString(),
   mmmax: CONFIG_MAX_FUNDS.toString(),
+  mmedge: CONFIG_FUNDS_EDGE,
   edge: CONFIG_FEES_EDGE,
-  house: CONFIG_HOUSE_EDGE,
   bets: BETS
 };
 
@@ -62,7 +65,7 @@ const addPlayer = function(player) {
 };
 
 const getFunds = function() {
-  return dice.funds.toString();
+  return dice.funds().toString();
 };
 
 const get = function() {
