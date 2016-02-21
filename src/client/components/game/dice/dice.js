@@ -77,6 +77,10 @@
     },
 
     ready: function() {
+      this.config = null;
+      this.current = null;
+      this.winner = null;
+
       this.$.pubsub.subscribe('game/dice/player', (player) => {
         if (!player.txs) {
           return;
