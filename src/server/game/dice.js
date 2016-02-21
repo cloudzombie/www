@@ -25,10 +25,11 @@ const BETS = {
   '=': { short: 'A = B', long: 'Equal dice numbers' },
   '!': { short: 'A <> B', long: 'Unequal dice numbers' },
   'D': { short: '>= Ten', long: 'Double digit sum' },
-  'S': { short: '< Ten', long: 'Single digit sum' },
-  alias: {
-    ':': '2'
-  }
+  'S': { short: '< Ten', long: 'Single digit sum' }
+};
+
+const BETALIAS = {
+  ':': '2'
 };
 
 const CONFIG_MIN_VALUE = dice.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
@@ -49,7 +50,8 @@ const CONFIG = {
   mmmax: CONFIG_MAX_FUNDS.toString(),
   mmedge: CONFIG_FUNDS_EDGE,
   edge: CONFIG_FEES_EDGE,
-  bets: BETS
+  bets: BETS,
+  betalias: BETALIAS
 };
 
 let winner;
