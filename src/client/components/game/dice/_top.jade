@@ -2,20 +2,11 @@ xyz-page-section(color="orange")
   .stats
     .icon.bg.dice
     .stat
-      .large {{getValue(current.tkwins)}}
+      .large {{getValue(current.wins)}}
       .medium.thin won
     .stat
       .large {{getValue(current.turnover.value)}}
       .medium.thin {{current.turnover.unit}} played
-    
-xyz-page-section(color="orange" size="small")
-  .hidden(class$="[[visibleClass(config, 'min')]]")
-    .contract.right
-      xyz-number-wei(number="{{config.min}}")
-      span &nbsp;-&nbsp;
-      xyz-number-wei(number="{{config.max}}")
-      iron-icon(icon="icons:input")
-      span {{config.addr}}
       
 xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
@@ -28,3 +19,12 @@ xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[vi
     span {{winner.addr}}
     iron-icon(icon="icons:history")
     xyz-datetime-elapsed(datetime="{{winner.at}}")
+    
+xyz-page-section(color="orange" size="small")
+  .hidden(class$="[[visibleClass(config, 'min')]]")
+    .contract.right
+      xyz-number-wei(number="{{config.min}}")
+      span &nbsp;-&nbsp;
+      xyz-number-wei(number="{{config.max}}")
+      iron-icon(icon="icons:input")
+      span {{config.addr}}

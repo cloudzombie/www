@@ -23,9 +23,8 @@
         if (!this.current || player.txs > this.current.txs) {
           this.current = {
             wins: player.wins,
-            plays: player.txs,
-            ratio: player.wins / player.txs,
-            turnover: window.xyz.NumberWei.format(player.turnover)
+            txs: player.txs,
+            turnover: window.xyz.NumberWei.formatMax(player.turnover)
           };
         }
 
@@ -69,6 +68,8 @@
         .then((game) => {
           console.log('game', game);
 
+          game.current.turnover = window.xyz.NumberWei.formatMax(game.current.turnover);
+          this.current = game.current;
           this.winner = game.winner;
 
           this.addPlayers(game.players);
