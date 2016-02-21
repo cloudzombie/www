@@ -66,7 +66,7 @@ const solcPipe = function(basedir) {
             bytecode: contract.bytecode,
             // estimates: contract.gasEstimates,
             interface: JSON.parse(contract.interface)
-          }, null, 2), 'utf-8');
+          }), 'utf-8');
         }
       });
 

@@ -13,16 +13,16 @@ export ADDR_COINBASE_DEV=0x63cf90d3f0410092fc0fca41846f596223979195
 export ADDR_COINBASE_TST=$ADDR_COINBASE_DEV
 export ADDR_COINBASE_LVE=$ADDR_COINBASE_TST
 
-export ADDR_DICE_DEV=0xc71773fdfed2619cae127ae6cecb12b269e1fce4
+export ADDR_DICE_DEV=0xc9635c70573e0508adaef34fa1507f41c591bc44
 export ADDR_DICE_TST=
 export ADDR_DICE_LVE=
 
 export ADDR_FIFTY_DEV=0x5263a93563b2413b11a73b7f93c3a41fc024de59
-export ADDR_FIFTY_TST=
+export ADDR_FIFTY_TST=0x0718a6ee3a97108c6eefc041b52f31f000408482
 export ADDR_FIFTY_LVE=0xa96f7d29dc792359b1ce24c7c54230882dee1be2
 
 export ADDR_LOTTERY_DEV=0x03a094e07af59bb9a8c999fadb8c7f7a750c2e03
-export ADDR_LOTTERY_TST=
+export ADDR_LOTTERY_TST=0x967be93fd39b8eeecafff7b917ad1a342735a2af
 export ADDR_LOTTERY_LVE=0x2ef76694fbfd691141d83f921a5ba710525de9b0
 
 export SERVICE_TMPL="[Unit]\nDescription=www service\n\n[Install]\nWantedBy=multi-user.target\n\n[Service]\nKillMode=process\nRestart=on-failure\nRestartSec=15s\nExecReload=/bin/kill -HUP \\\$MAINPID\n"
