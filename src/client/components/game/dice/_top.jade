@@ -1,0 +1,31 @@
+xyz-page-section(color="orange") 
+  // .hidden class$="[[visibleClass(current, 'tkratio')]]")
+  .stats
+    .icon.bg.dice
+    .stat
+      .large {{current.tkratio}}
+      .normal won
+    .stat
+      .large {{current.turnover.value}}
+      .normal {{current.turnover.unit}} played
+    
+xyz-page-section(color="orange" size="small")
+  .hidden(class$="[[visibleClass(config, 'min')]]")
+    .contract.right
+      xyz-number-wei(number="{{config.min}}")
+      span &nbsp;-&nbsp;
+      xyz-number-wei(number="{{config.max}}")
+      iron-icon(icon="icons:input")
+      span {{config.addr}}
+      
+xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
+  .center.winner
+    iron-icon(icon="icons:timeline")
+    span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
+    iron-icon(icon="icons:account-balance")
+    xyz-number-wei(number="{{winner.output}}" max)
+    iron-icon(icon="icons:trending-flat")
+    iron-icon(icon="icons:perm-identity")
+    span {{winner.addr}}
+    iron-icon(icon="icons:history")
+    xyz-datetime-elapsed(datetime="{{winner.at}}")
