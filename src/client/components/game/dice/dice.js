@@ -58,7 +58,7 @@
 
     setConfig: function(config) {
       config.edge = (config.edge * 100.0).toFixed(2);
-      config.house = (config.house * 100.0).toFixed(2);
+      config.mmedge = (config.mmedge * 100.0).toFixed(2);
 
       this.config = config;
     },
