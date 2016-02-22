@@ -59,7 +59,6 @@
 
     setConfig: function(config) {
       config.edge = (config.edge * 100.0).toFixed(2);
-      config.mmedge = (config.mmedge * 100.0).toFixed(2);
 
       this.config = config;
     },
@@ -74,6 +73,7 @@
           this.current = game.current;
 
           if (game.winner) {
+            game.winner.chance = (100.0 * game.winner.chance).toFixed(2);
             game.winner.addr = this.sliceAddr(game.winner.addr);
             this.winner = game.winner;
           }

@@ -10,8 +10,8 @@ xyz-page-section(color="orange")
       
 xyz-page-section.hidden(color$="{{lastColor(winner)}}" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
-    iron-icon(icon="icons:timeline")
-    span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
+    iron-icon(icon="icons:gesture")
+    span {{winner.play}} ({{winner.chance}}%)
     iron-icon(icon="icons:account-balance")
     xyz-number-wei(number="{{winner.output}}" max)
     iron-icon(icon="icons:trending-flat")
