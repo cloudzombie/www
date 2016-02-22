@@ -62,7 +62,7 @@ const getGame = function() {
   return {
     wins: dice.wins().toNumber(),
     losses: dice.wins().toNumber(),
-    total: dice.txs().toNumber(),
+    txs: dice.txs().toNumber(),
     turnover: dice.turnover().toString(),
     funds: dice.funds().toString()
   };
@@ -89,7 +89,7 @@ const eventPlayer = function(data) {
   const player = {
     addr: data.args.addr,
     at: geth.toTime(data.args.at),
-    bet: String.fromCharCode(data.args.bet.toNumber()),
+    play: data.args.play.toNumber(),
     dicea: data.args.dicea.toNumber(),
     diceb: data.args.diceb.toNumber(),
     input: data.args.input.toString(),
