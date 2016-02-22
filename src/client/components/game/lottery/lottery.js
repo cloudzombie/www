@@ -11,15 +11,6 @@
 
   window.xyz.GameLottery = {
     properties: {
-      config: Object,
-      current: Object,
-      end: Number,
-      players: {
-        type: Array,
-        value: function() {
-          return [];
-        }
-      }
     },
 
     addPlayers: function(entries) {
@@ -75,9 +66,9 @@
 
       round.poolval = wei.value;
       round.poolunit = wei.unit;
-      console.log(round.end);
 
       this.current = round;
+      this.set('current.end', round.end);
     },
 
     getGame: function() {
@@ -104,11 +95,6 @@
     },
 
     ready: function() {
-      this.config = { min: '0', max: '0', addr: '0x00000...0000000' };
-      this.current = null;
-      this.winner = null;
-      this.end = 0;
-
       this.$.pubsub.subscribe('game/lottery/player', (entry) => {
         console.log('Player', entry);
 

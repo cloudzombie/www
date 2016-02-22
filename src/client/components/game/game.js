@@ -4,7 +4,20 @@
   window.xyz.Game = {
     properties: {
       about: Boolean,
-      winner: Object
+      current: Object,
+      winner: Object,
+      config: {
+        type: Object,
+        value: function() {
+          return { min: '0', max: '0', addr: '0x00000...0000000' };
+        }
+      },
+      players: {
+        type: Array,
+        value: function() {
+          return [];
+        }
+      }
     },
 
     sliceAddr: function(addr) {
@@ -29,6 +42,9 @@
     },
 
     ready: function() {
+      this.current = null;
+      this.winner = null;
+
       this.toggleAbout();
     }
   };

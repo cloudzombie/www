@@ -3,7 +3,7 @@ xyz-page-section(color="blue-dark")
     .icon.bg.lottery
     .stat
       .large
-        xyz-datetime-countdown(datetime="[[current.end]]" format="(long)")
+        xyz-datetime-countdown(datetime="[[getValue(current.end)]]" format="(long)")
       .medium.thin remaining
     .stat
       .large [[getValue(current.poolval)]]

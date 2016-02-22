@@ -3,14 +3,6 @@
 
   window.xyz.GameFifty = {
     properties: {
-      config: Object,
-      current: Object,
-      players: {
-        type: Array,
-        value: function() {
-          return [];
-        }
-      }
     },
 
     addPlayers: function(players) {
@@ -81,10 +73,6 @@
     },
 
     ready: function() {
-      this.config = { min: '0', max: '0', addr: '0x00000...0000000' };
-      this.current = null;
-      this.winner = null;
-
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
         if (!player.tkplays) {
           return;
