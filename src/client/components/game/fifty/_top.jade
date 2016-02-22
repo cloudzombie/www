@@ -8,7 +8,7 @@ xyz-page-section(color="brown")
       .large {{getValue(current.turnover.value)}}
       .medium.thin {{current.turnover.unit}} played
       
-xyz-page-section(color="green" size="small")
+xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
     iron-icon(icon="icons:timeline")
     span {{winner.wins}}/{{winner.plays}} {{winner.ratio}}
@@ -16,14 +16,14 @@ xyz-page-section(color="green" size="small")
     xyz-number-wei(number="{{winner.output}}" max)
     iron-icon(icon="icons:trending-flat")
     iron-icon(icon="icons:perm-identity")
-    span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
+    span {{getValue(winner.addr, '0x00000...0000000')}}
     iron-icon(icon="icons:history")
     xyz-datetime-elapsed(datetime="{{winner.at}}")
     
 xyz-page-section(color="brown" size="small")
   .contract.right
-    xyz-number-wei(number="{{getValue(config.min, '0')}}")
+    xyz-number-wei(number="{{config.min}}")
     span &nbsp;-&nbsp;
-    xyz-number-wei(number="{{getValue(config.max, '0')}}")
+    xyz-number-wei(number="{{config.max}}")
     iron-icon(icon="icons:input")
-    span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}
+    span {{config.addr}}
