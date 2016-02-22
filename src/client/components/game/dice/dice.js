@@ -85,8 +85,8 @@
 
     ready: function() {
       this.config = { min: '0', max: '0', addr: '0x00000...0000000' };
-      this.current = {};
-      this.winner = {};
+      this.current = null;
+      this.winner = null;
 
       this.$.pubsub.subscribe('game/dice/player', (player) => {
         if (!player.txs) {
