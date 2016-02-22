@@ -83,7 +83,7 @@ body[unresolved] {
   }
 
   &.dice::before {
-    background-image: url('/images/dice-inv-50.png')
+    background-image: url('/images/dice-25.png')
   }
 
   &.fifty::before {
@@ -118,7 +118,6 @@ body[unresolved] {
 
     a.line {
       color: inherit;
-      cursor: pointer;
       display: inline-block;
       width: 100%;
 
