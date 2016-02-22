@@ -19,6 +19,7 @@
         const output = new BigNumber(player.output);
 
         player.result = output.minus(input).toString();
+        player.chance = (100.0 * player.chance).toFixed(2);
 
         if (!this.current || player.txs > this.current.txs) {
           this.current = {

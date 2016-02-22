@@ -66,11 +66,11 @@ const eventPlayer = function(data) {
   let play;
 
   if (pdata <= 1) {
-    play = pdata ? 'Result Odd' : 'Result Even';
+    play = pdata ? 'Odd' : 'Even';
   } else if (pdata <= 12) {
-    play = `Exactly ${NUMBERS[pdata]}`;
+    play = `${NUMBERS[pdata]}`;
   } else {
-    play = `Range ${NUMBERS[Math.floor(pdata / 10)]}-${NUMBERS[pdata % 10]}`;
+    play = `${NUMBERS[Math.floor(pdata / 10)]} to ${NUMBERS[pdata % 10]}`;
   }
 
   const player = {
