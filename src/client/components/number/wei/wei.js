@@ -14,7 +14,7 @@
       unitidx++;
     }
 
-    return { value: parseFloat(`${value}.${decimal}`).toFixed(2), unit: UNITS[unitidx] };
+    return { value: parseFloat(`${value}.${decimal}`).toFixed(3), unit: UNITS[unitidx] };
   };
 
   const format = function(number) {
