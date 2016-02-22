@@ -8,29 +8,7 @@ const pubsub = require('../route/pubsub');
 
 const dice = geth.getContract(contract);
 
-const BETS = {
-  'E': { short: 'Even', long: 'Even sum' },
-  'O': { short: 'Odd', long: 'Odd sum' },
-  '2': { short: 'Two', long: 'Exactly 2' },
-  '3': { short: 'Three', long: 'Exactly 3' },
-  '4': { short: 'Four', long: 'Exactly 4' },
-  '5': { short: 'Five', long: 'Exactly 5' },
-  '6': { short: 'Six', long: 'Exactly 6' },
-  '7': { short: 'Seven', long: 'Exactly 7' },
-  '8': { short: 'Eight', long: 'Exactly 8' },
-  '9': { short: 'Nine', long: 'Exactly 9' },
-  '0': { short: 'Ten', long: 'Exactly 10' },
-  '1': { short: 'Eleven', long: 'Exactly 11' },
-  'X': { short: 'Twelve', long: 'Exactly 12' },
-  '>': { short: '> Seven', long: 'Larger than median' },
-  '<': { short: '< Seven', long: 'Smaller than median' },
-  '=': { short: 'A = B', long: 'Equal dice numbers' },
-  '!': { short: 'A <> B', long: 'Unequal dice numbers' },
-  'D': { short: '>= Ten', long: 'Double digit sum' },
-  'S': { short: '< Ten', long: 'Single digit sum' }
-};
-
-const BETALIAS = {};
+const NUMBERS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
 
 const CONFIG_MIN_VALUE = dice.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
 const CONFIG_MAX_VALUE = dice.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
@@ -41,9 +19,7 @@ const CONFIG = {
   addr: contract.addr,
   min: CONFIG_MIN_VALUE.toString(),
   max: CONFIG_MAX_VALUE.toString(),
-  edge: CONFIG_FEES_EDGE,
-  bets: BETS,
-  betalias: BETALIAS
+  edge: CONFIG_FEES_EDGE
 };
 
 let winner;
@@ -86,10 +62,22 @@ const eventPlayer = function(data) {
     return;
   }
 
+  const pdata = data.args.play.toNumber();
+  let play;
+
+  if (pdata <= 1) {
+    play = pdata ? 'Result Odd' : 'Result Even';
+  } else if (pdata <= 12) {
+    play = `Exactly ${NUMBERS[pdata]}`;
+  } else {
+    play = `Range ${NUMBERS[Math.floor(pdata / 10)]}-${NUMBERS[pdata % 10]}`;
+  }
+
   const player = {
     addr: data.args.addr,
     at: geth.toTime(data.args.at),
-    play: data.args.play.toNumber(),
+    play: play,
+    chance: data.args.chance.toNumber() / 36.0,
     dicea: data.args.dicea.toNumber(),
     diceb: data.args.diceb.toNumber(),
     input: data.args.input.toString(),
