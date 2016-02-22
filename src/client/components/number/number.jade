@@ -3,16 +3,16 @@ link(rel="import" href="/components/bower/polymer/polymer.html")
 link(rel="import" href="/components/3rdparty/lodash.html")
   
 dom-module#xyz-number
-  template {{numberstr}}
+  template [[numberstr]]
   
   script !{readCompiled('number.js')}
 
 dom-module#xyz-number-text
-  template {{numbertextstr}}
+  template [[numbertextstr]]
   
   script !{readCompiled('text/text.js')}
 
 dom-module#xyz-number-wei
-  template {{wei.value}} {{wei.unit}}
+  template [[wei.value]] [[wei.unit]]
   
   script !{readCompiled('wei/wei.js')}
