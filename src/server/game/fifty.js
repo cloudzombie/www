@@ -6,7 +6,7 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const fifty = contract ? geth.getContract(contract) : null;
+const fifty = contract.addr ? geth.getContract(contract) : null;
 
 if (!fifty) {
   logger.error('Fifty', 'init', 'invalid contract value, address not set');
