@@ -57,16 +57,12 @@ if (!lottery) {
     };
   };
 
-  const getWinner = function() {
-    return winner;
-  };
-
   const get = function() {
     return {
       config: getConfig(),
       round: getRound(),
       players: players,
-      winner: getWinner()
+      winner: winner
     };
   };
 
@@ -144,8 +140,8 @@ if (!lottery) {
       txhash: data.transactionHash
     };
 
-    if (!winner || _winner.round > winner.round) {
-      winner = winner;
+    if (!winner || (_winner.round > winner.round)) {
+      winner = _winner;
     }
 
     pubsub.publish(channels.winner, _winner);
@@ -171,7 +167,6 @@ if (!lottery) {
     get: get,
     getBalance: getBalance,
     getRound: getRound,
-    getWinner: getWinner,
     ownerWithdraw: ownerWithdraw,
     init: init
   };
