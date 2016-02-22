@@ -85,8 +85,6 @@
       this.current = null;
       this.winner = null;
 
-      this.toggleAbout();
-
       this.$.pubsub.subscribe('game/fifty/player', (player) => {
         if (!player.tkplays) {
           return;

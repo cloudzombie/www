@@ -75,6 +75,7 @@
 
       round.poolval = wei.value;
       round.poolunit = wei.unit;
+      console.log(round.end);
 
       this.current = round;
     },
@@ -103,8 +104,6 @@
     },
 
     ready: function() {
-      this.toggleAbout();
-
       this.config = { min: '0', max: '0', addr: '0x00000...0000000' };
       this.current = null;
       this.winner = null;

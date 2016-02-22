@@ -2,28 +2,28 @@ xyz-page-section(color="orange")
   .stats
     .icon.bg.dice
     .stat
-      .large {{getValue(current.wins)}}
+      .large [[getValue(current.wins)]]
       .medium.thin won
     .stat
-      .large {{getValue(current.turnover.value)}}
-      .medium.thin {{current.turnover.unit}} played
+      .large [[getValue(current.turnover.value)]]
+      .medium.thin [[current.turnover.unit]] played
       
 xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
     iron-icon(icon="icons:gesture")
-    span {{winner.play}} ({{winner.chance}}%)
+    span [[winner.play]] ([[winner.chance]]%)
     iron-icon(icon="icons:account-balance")
-    xyz-number-wei(number="{{winner.output}}" max)
+    xyz-number-wei(number="[[winner.output]]" max)
     iron-icon(icon="icons:trending-flat")
     iron-icon(icon="icons:perm-identity")
-    span {{getValue(winner.addr, '0x00000...0000000')}}
+    span [[getValue(winner.addr, '0x00000...0000000')]]
     iron-icon(icon="icons:history")
-    xyz-datetime-elapsed(datetime="{{winner.at}}")
+    xyz-datetime-elapsed(datetime="[[winner.at]]")
     
 xyz-page-section(color="orange" size="small")
   .contract.right
-    xyz-number-wei(number="{{config.min}}")
+    xyz-number-wei(number="[[config.min]]")
     span &nbsp;-&nbsp;
-    xyz-number-wei(number="{{config.max}}")
+    xyz-number-wei(number="[[config.max]]")
     iron-icon(icon="icons:input")
-    span {{config.addr}}
+    span [[config.addr]]
