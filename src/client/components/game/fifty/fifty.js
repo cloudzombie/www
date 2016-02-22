@@ -18,6 +18,7 @@
         const input = new BigNumber(player.input);
         const output = new BigNumber(player.output);
 
+        player.addr = this.sliceAddr(player.addr);
         player.result = output.minus(input).toString();
 
         if (!this.current || player.tkplays > this.current.tkplays) {
@@ -69,7 +70,10 @@
         .then((game) => {
           console.log('game', game);
 
-          this.winner = game.winner;
+          if (game.winner) {
+            game.winner.addr = this.sliceAddr(this.winner.addr);
+            this.winner = game.winner;
+          }
 
           this.setConfig(game.config);
           this.addPlayers(game.players);

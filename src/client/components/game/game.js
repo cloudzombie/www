@@ -7,6 +7,10 @@
       winner: Object
     },
 
+    sliceAddr: function(addr) {
+      return `${addr.substring(0, 7)}...${addr.slice(-7)}`;
+    },
+
     toggleAbout: function() {
       this.about = !this.about;
       this.toggleClass('about', this.about);

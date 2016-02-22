@@ -28,6 +28,7 @@
           return;
         }
 
+        entry.addr = this.sliceAddr(entry.addr);
         entry.value = new BigNumber(this.config.price).times(entry.tickets).toString();
 
         for (let idx = 0; idx < this.players.length; idx++) {
@@ -62,7 +63,9 @@
 
     setWinner: function(winner) {
       if (winner) {
+        winner.addr = this.sliceAddr(winner.addr);
         winner.value = new BigNumber(this.config.price).times(winner.numtickets).toString();
+
         this.winner = winner;
       }
     },
