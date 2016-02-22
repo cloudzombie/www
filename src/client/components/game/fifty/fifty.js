@@ -63,7 +63,7 @@
           console.log('game', game);
 
           if (game.winner) {
-            game.winner.addr = this.sliceAddr(this.winner.addr);
+            game.winner.addr = this.sliceAddr(game.winner.addr);
             this.winner = game.winner;
           }
 
