@@ -62,7 +62,7 @@
     },
 
     setRound: function(round) {
-      const wei = window.xyz.NumberWei.format(round.value);
+      const wei = window.xyz.NumberWei.formatMax(round.value);
 
       round.poolval = wei.value;
       round.poolunit = wei.unit;
