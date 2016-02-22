@@ -18,6 +18,7 @@
         const input = new BigNumber(player.input);
         const output = new BigNumber(player.output);
 
+        player.addr = this.sliceAddr(player.addr);
         player.result = output.minus(input).toString();
         player.chance = (100.0 * player.chance).toFixed(2);
 
@@ -71,7 +72,11 @@
 
           game.current.turnover = window.xyz.NumberWei.formatMax(game.current.turnover);
           this.current = game.current;
-          this.winner = game.winner;
+
+          if (game.winner) {
+            game.winner.addr = this.sliceAddr(game.winner.addr);
+            this.winner = game.winner;
+          }
 
           this.addPlayers(game.players);
           this.setConfig(game.config);
