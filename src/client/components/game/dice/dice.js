@@ -1,7 +1,7 @@
 (function() {
   window.xyz = window.xyz || {};
 
-  window.xyz.GameFifty = {
+  window.xyz.GameDice = {
     properties: {
     },
 
@@ -12,20 +12,18 @@
 
         player.addr = this.sliceAddr(player.addr);
         player.result = output.minus(input).toString();
+        player.chance = (100.0 * player.chance).toFixed(2);
 
-        if (!this.current || player.tkplays > this.current.tkplays) {
-          const wei = window.xyz.NumberWei.formatMax(player.turnover);
-
+        if (!this.current || player.txs > this.current.txs) {
           this.current = {
-            tkwins: player.tkwins,
-            tkplays: player.tkplays,
-            tkratio: player.tkratio,
-            turnover: wei
+            wins: player.wins,
+            txs: player.txs,
+            turnover: window.xyz.NumberWei.formatMax(player.turnover)
           };
         }
 
         if (player.winner) {
-          if (!this.winner || player.tkplays > this.winner.tkplays) {
+          if (!this.winner || player.txs > this.winner.txs) {
             this.winner = player;
           }
         }
@@ -37,7 +35,7 @@
             return;
           }
 
-          if (player.tkplays > _player.tkplays) {
+          if (player.txs > _player.txs) {
             this.splice('players', idx, 0, player);
             return;
           }
@@ -52,29 +50,34 @@
     },
 
     setConfig: function(config) {
-      config.edge = (config.edge * 100).toFixed(2);
+      config.edge = (config.edge * 100.0).toFixed(2);
+
       this.config = config;
     },
 
     getGame: function() {
       this.$.api
-        .get('game/fifty')
+        .get('game/dice')
         .then((game) => {
           console.log('game', game);
 
+          game.current.turnover = window.xyz.NumberWei.formatMax(game.current.turnover);
+          this.current = game.current;
+
           if (game.winner) {
+            game.winner.chance = (100.0 * game.winner.chance).toFixed(2);
             game.winner.addr = this.sliceAddr(game.winner.addr);
             this.winner = game.winner;
           }
 
-          this.setConfig(game.config);
           this.addPlayers(game.players);
+          this.setConfig(game.config);
         });
     },
 
     ready: function() {
-      this.$.pubsub.subscribe('game/fifty/player', (player) => {
-        if (!player.tkplays) {
+      this.$.pubsub.subscribe('game/dice/player', (player) => {
+        if (!player.txs) {
           return;
         }
 
@@ -88,7 +91,7 @@
   };
 
   Polymer({ // eslint-disable-line new-cap
-    is: 'xyz-game-fifty',
-    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameFifty]
+    is: 'xyz-game-dice',
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameDice]
   });
 })();

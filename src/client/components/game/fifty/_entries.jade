@@ -1,24 +1,23 @@
-xyz-page-section.hidden(class$="[[visibleClass(config, 'price')]]")
-  .entries
-    table: tbody: template(is="dom-repeat" items="{{players}}")
-      tr.entry
-        td.addr
-          iron-icon(icon="icons:perm-identity")
-          span {{item.addr}}
-        td.input
-          iron-icon(icon="icons:input")
-          xyz-number-wei(number="{{item.input}}")
-        td.win
-          iron-icon(icon="icons:timeline")
-          span {{item.wins}}/{{item.plays}}
-        td.output
-          span(class$="[[hideZero(item.output)]]")
-            iron-icon(icon="icons:account-balance")
-            xyz-number-wei(number="{{item.output}}" max)
-        td.when
-          iron-icon(icon="icons:history")
-          xyz-datetime-elapsed(datetime="{{item.at}}")
-        td.external
-          a(href$="https://etherscan.io/tx/{{item.txhash}}" target="_blank")
-            iron-icon(icon="icons:open-in-new")
-            span etherscan
+xyz-page-section.hidden(class$="[[visibleClass(config, 'min')]]")
+  .entries: table: tbody: template(is="dom-repeat" items="[[players]]")
+    tr.entry
+      td.addr
+        iron-icon(icon="icons:perm-identity")
+        span [[item.addr]]
+      td.input
+        iron-icon(icon="icons:input")
+        xyz-number-wei(number="[[item.input]]")
+      td.win
+        iron-icon(icon="icons:timeline")
+        span [[item.wins]]/[[item.plays]]
+      td.output
+        span(class$="[[hideZero(item.output)]]")
+          iron-icon(icon="icons:account-balance")
+          xyz-number-wei(number="[[item.output]]" max)
+      td.when
+        iron-icon(icon="icons:history")
+        xyz-datetime-elapsed(datetime="[[item.at]]")
+      td.external
+        a(href$="https://etherscan.io/tx/[[item.txhash]]" target="_blank")
+          iron-icon(icon="icons:open-in-new")
+          span etherscan

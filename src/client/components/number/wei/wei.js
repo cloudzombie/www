@@ -14,7 +14,14 @@
       unitidx++;
     }
 
-    return { value: parseFloat(`${value}.${decimal}`).toFixed(2), unit: UNITS[unitidx] };
+    const float = parseFloat(`${value}.${decimal}`);
+    let rvalue = float.toFixed(3);
+
+    if (rvalue.slice(-3) === '000') {
+      rvalue = float.toFixed(0);
+    }
+
+    return { value: rvalue, unit: UNITS[unitidx] };
   };
 
   const format = function(number) {

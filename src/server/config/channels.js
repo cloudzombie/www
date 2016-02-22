@@ -1,4 +1,7 @@
 module.exports = {
+  dice: {
+    player: 'game/dice/player'
+  },
   fifty: {
     player: 'game/fifty/player'
   },

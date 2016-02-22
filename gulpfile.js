@@ -62,11 +62,11 @@ const solcPipe = function(basedir) {
           file.contents = new Buffer(JSON.stringify({
             // solidity: contract.solidity_interface,
             // runtime: contract.runtimeBytecode
-            // size: contract.bytecode.length,
-            // bytecode: contract.bytecode,
+            size: contract.bytecode.length,
+            bytecode: contract.bytecode,
             // estimates: contract.gasEstimates,
             interface: JSON.parse(contract.interface)
-          }, null, 2), 'utf-8');
+          }), 'utf-8');
         }
       });
 
@@ -296,6 +296,19 @@ gulp.task('test-server', () => {
     .pipe(mocha({
       timeout: 30000
     }));
+});
+
+gulp.task('solc-deploy', ['solc-contract'], (callback) => {
+  const Web3 = require('web3');
+  const web3 = new Web3();
+
+  _.each(['dist', 'fifty', 'lottery'], (name) => {
+    const code = require(`./dist/contracts/${name}/${name}.json`).bytecode;
+
+    web3.eth.deploy(code);
+  });
+
+  callback();
 });
 
 gulp.task('test', ['test-server']);

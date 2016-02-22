@@ -4,12 +4,14 @@ source bin/_setenv.sh
 
 if [ "$1" == "test" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_TST
+  ADDR_DICE=$ADDR_DICE_TST
   ADDR_FIFTY=$ADDR_FIFTY_TST
   ADDR_LOTTERY=$ADDR_LOTTERY_TST
   GETH_PASS=$GETH_PASS_TST
   GETH_NET="--testnet"
 elif [ "$1" == "live" ]; then
   ADDR_COINBASE=$ADDR_COINBASE_LVE
+  ADDR_DICE=$ADDR_DICE_LVE
   ADDR_FIFTY=$ADDR_FIFTY_LVE
   ADDR_LOTTERY=$ADDR_LOTTERY_LVE
   GETH_PASS=$GETH_PASS_LVE
@@ -22,7 +24,7 @@ fi
 GETH_PASS_FILE=".password.$ADDR_COINBASE"
 
 SERVICE_EXEC_GETH="ExecStart=/usr/bin/geth --rpc --datadir /root/.ethereum --unlock $ADDR_COINBASE --password /root/$GETH_PASS_FILE $GETH_NET"
-SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-fifty $ADDR_FIFTY --contract-lottery $ADDR_LOTTERY"
+SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-dice $ADDR_DICE --contract-fifty $ADDR_FIFTY --contract-lottery $ADDR_LOTTERY"
 SERVICE_EXEC_MONITOR="Environment=INSTANCE_NAME=$MONITOR_INSTANCE\nEnvironment=WS_SECRET=$MONITOR_KEY\nEnvironment=WS_SERVER=$MONITOR_SERVER\nEnvironment=CONTACT_DETAILS=$MONITOR_CONTACT\nWorkingDirectory=/www/gethmonitor\nExecStart=/usr/bin/nodejs app.js"
 
 echo  "Creating dist/"

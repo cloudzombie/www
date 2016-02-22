@@ -3,28 +3,28 @@ xyz-page-section(color="blue-dark")
     .icon.bg.lottery
     .stat
       .large
-        xyz-datetime-countdown(datetime="{{current.end}}" format="(long)")
+        xyz-datetime-countdown(datetime="[[getValue(current.end)]]" format="(long)")
       .medium.thin remaining
     .stat
-      .large {{getValue(current.poolval)}}
-      .medium.thin {{getValue(current.poolunit, '')}}
+      .large [[getValue(current.poolval)]]
+      .medium.thin [[current.poolunit]] pool
       
-xyz-page-section(color="green" size="small")
+xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
     iron-icon(icon="icons:donut-large")
-    span round {{getValue(winner.round)}}
+    span round [[getValue(winner.round)]]
     iron-icon(icon="icons:account-balance")
-    xyz-number-wei(number="{{getValue(winner.value, '0')}}")
+    xyz-number-wei(number="[[getValue(winner.value, '0')]]")
     iron-icon(icon="icons:trending-flat")
     iron-icon(icon="icons:perm-identity")
-    span {{getValue(winner.addr, '0x0000000000000000000000000000000000000000')}}
+    span [[getValue(winner.addr, '0x00000...0000000')]]
     iron-icon(icon="icons:history")
-    xyz-datetime-elapsed(datetime="{{getValue(winner.at, '-')}}")
+    xyz-datetime-elapsed(datetime="[[getValue(winner.at, '-')]]")
     
 xyz-page-section(color="blue-dark" size="small")
   .contract.right
-    xyz-number-wei(number="{{getValue(config.min, '0')}}")
+    xyz-number-wei(number="[[config.min]]")
     span &nbsp;-&nbsp;
-    xyz-number-wei(number="{{getValue(config.max, '0')}}")
+    xyz-number-wei(number="[[config.max]]")
     iron-icon(icon="icons:input")
-    span {{getValue(config.addr, '0x0000000000000000000000000000000000000000')}}
+    span [[config.addr]]

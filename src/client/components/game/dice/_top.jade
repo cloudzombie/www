@@ -1,17 +1,17 @@
-xyz-page-section(color="brown")
+xyz-page-section(color="orange") 
   .stats
-    .icon.bg.fifty
+    .icon.bg.dice
     .stat
-      .large [[getValue(current.tkwins)]]
-      .medium.thin wins
+      .large [[getValue(current.wins)]]
+      .medium.thin won
     .stat
       .large [[getValue(current.turnover.value)]]
       .medium.thin [[current.turnover.unit]] played
       
 xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
-    iron-icon(icon="icons:timeline")
-    span [[winner.wins]]/[[winner.plays]] [[winner.ratio]]
+    iron-icon(icon="icons:gesture")
+    span [[winner.play]] ([[winner.chance]]%)
     iron-icon(icon="icons:account-balance")
     xyz-number-wei(number="[[winner.output]]" max)
     iron-icon(icon="icons:trending-flat")
@@ -20,7 +20,7 @@ xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner
     iron-icon(icon="icons:history")
     xyz-datetime-elapsed(datetime="[[winner.at]]")
     
-xyz-page-section(color="brown" size="small")
+xyz-page-section(color="orange" size="small")
   .contract.right
     xyz-number-wei(number="[[config.min]]")
     span &nbsp;-&nbsp;

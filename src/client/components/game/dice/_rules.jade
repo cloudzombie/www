@@ -1,0 +1,24 @@
+extends ../_template_rules.jade
+
+block rules
+  ol
+    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold"></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
+    
+    li Any amount that does not fall within this range will result in the full amount being returned, <span class="bold">voiding the play</span>
+    
+    li When a play is made that will result in <span class="bold">&gt;5% of the pool</span> at risk, the full play will be voided - before results are calculated
+    
+    li Quick and easy <span class="bold">even predictions</span> are made via deposits, <span class="bold">specific outcome predictions</span> are made by calling the <span class="bold">enter method</span> on the contract with a number &lt;129 for the specific prediction
+    
+    li
+      |Specific predictions can be made by following the play format as values to the <span class="bold">enter method</span>
+      ul
+        li for <span class="bold">1/2 (50%) probability</span>, sending <span class="bold">0 predicts an even</span> sums (the default for deposity play), <span class="bold">1 predicts odd</span> sums
+        li specific values of 2, 3 up to 12 predicts <span class="bold">an exact sum</span>, with 1/36 probability for 2 &amp; 12, 1/6 for 7 and other numbers falling in-between
+        li ranges are specified with the <span class="bold">larger number</span> first, i.e. 126 predicts between <span class="bold">12 and 6 (all inclusive</span>), 93 predicts between <span class="bold">9 and 3</span>, 42 between <span class="bold">4 and 2</span>, etc.
+        li selecting a range of 122 (12 to 2) will have a 36/36 probability, with <span class="bold">no profit</span> or possibility of loss
+        li sending an invalid value (&gt;13) or range (not between <span class="bold">32 and 129</span>), range with equal numbers (<span class="bold">for 33, rather send 3</span>) or range with the smallest first will void the bet and returned all inputs
+        
+    li A win will return your <span class="bold">original amount plus profit</span class="bold">, minus the overall comission applied to the profit portion
+    
+    li The game operates on a <span class="bold">[[config.edge]]% commission</span>, this is subtracted from the amount won by each ticket, which excludes the inputs

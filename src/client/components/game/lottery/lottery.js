@@ -11,26 +11,6 @@
 
   window.xyz.GameLottery = {
     properties: {
-      about: Boolean,
-      config: Object,
-      current: Object,
-      players: {
-        type: Array,
-        value: function() {
-          return [];
-        }
-      },
-      end: Number,
-      winner: Object
-    },
-
-    toggleAbout: function() {
-      this.about = !this.about;
-      this.toggleClass('about', this.about);
-    },
-
-    getValue: function(val, def) {
-      return val || def || '-';
     },
 
     addPlayers: function(entries) {
@@ -39,6 +19,7 @@
           return;
         }
 
+        entry.addr = this.sliceAddr(entry.addr);
         entry.value = new BigNumber(this.config.price).times(entry.tickets).toString();
 
         for (let idx = 0; idx < this.players.length; idx++) {
@@ -73,18 +54,21 @@
 
     setWinner: function(winner) {
       if (winner) {
+        winner.addr = this.sliceAddr(winner.addr);
         winner.value = new BigNumber(this.config.price).times(winner.numtickets).toString();
+
         this.winner = winner;
       }
     },
 
     setRound: function(round) {
-      const wei = window.xyz.NumberWei.format(round.value);
+      const wei = window.xyz.NumberWei.formatMax(round.value);
 
       round.poolval = wei.value;
       round.poolunit = wei.unit;
 
       this.current = round;
+      this.set('current.end', round.end);
     },
 
     getGame: function() {
@@ -111,13 +95,6 @@
     },
 
     ready: function() {
-      this.toggleAbout();
-
-      this.end = 0;
-      this.config = null;
-      this.current = null;
-      this.winner = null;
-
       this.$.pubsub.subscribe('game/lottery/player', (entry) => {
         console.log('Player', entry);
 
@@ -151,6 +128,6 @@
 
   Polymer({ // eslint-disable-line new-cap
     is: 'xyz-game-lottery',
-    behaviors: [window.xyz.Page, window.xyz.GameLottery]
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameLottery]
   });
 })();

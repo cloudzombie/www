@@ -2,7 +2,7 @@ extends ../_template_rules.jade
 
 block rules
   ol
-    li To enter, send between <xyz-number-wei number="{{config.min}}" class="bold"></xyz-number-wei> and <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> to <span class="bold">{{config.addr}}</span>
+    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold"></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
     
     li
       |Every <span class="bold">digit/decimal position plays a pool</span> with 1/10 of the position equalling a ticket, e.g
@@ -12,7 +12,7 @@ block rules
         li 3 ether will buy 3 tickets from the 1 ether pool
         li 0.31 ether will buy 4 tickets (3 + 1), each playing against the relevant pools
     
-    li A maximum bet of <xyz-number-wei number="{{config.max}}" class="bold"></xyz-number-wei> is <span class="bold">27 tickets</span>, allocated from 3 different pools and evaluated as such.
+    li A maximum bet of <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> is <span class="bold">27 tickets</span>, allocated from 3 different pools and evaluated as such.
     
     li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
     
@@ -26,4 +26,4 @@ block rules
     
     li You can <span class="bold">play as many times</span> as you like, with as many tickets as you like
     
-    li The game operates on a <span class="bold">{{config.edge}}% commission</span>, this is subtracted from the amount won by each ticket
+    li The game operates on a <span class="bold">[[config.edge]]% commission</span>, this is subtracted from the amount won by each ticket
