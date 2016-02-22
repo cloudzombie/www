@@ -14,7 +14,7 @@
         player.result = output.minus(input).toString();
 
         if (!this.current || player.tkplays > this.current.tkplays) {
-          const wei = window.xyz.NumberWei.format(player.turnover);
+          const wei = window.xyz.NumberWei.formatMax(player.turnover);
 
           this.current = {
             tkwins: player.tkwins,
