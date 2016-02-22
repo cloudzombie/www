@@ -6,7 +6,7 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const fifty = geth.getContract(contract);
+const fifty = contract ? geth.getContract(contract) : null;
 
 const CONFIG_PRICE = fifty.CONFIG_PRICE(); // eslint-disable-line new-cap
 const CONFIG_MIN_VALUE = fifty.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
@@ -82,6 +82,10 @@ const eventPlayer = function(data) {
 };
 
 const init = function() {
+  if (!fifty) {
+    return;
+  }
+
   fifty.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
     if (error) {
       logger.log('Fifty', 'watch', error);

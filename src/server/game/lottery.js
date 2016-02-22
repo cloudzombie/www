@@ -4,7 +4,7 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const lottery = geth.getContract(contract);
+const lottery = contract ? geth.getContract(contract) : null;
 
 const CONFIG_MIN_PLAYERS = lottery.CONFIG_MIN_PLAYERS(); // eslint-disable-line new-cap
 const CONFIG_MAX_PLAYERS = lottery.CONFIG_MAX_PLAYERS(); // eslint-disable-line new-cap
@@ -145,6 +145,11 @@ const eventWinner = function(data) {
 };
 
 const init = function() {
+  if (!lottery) {
+    logger.error('Lottery', 'init', 'invalid contract value, address not set');
+    return;
+  }
+
   lottery.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
     if (error) {
       logger.log('Lottery', 'watch', error);

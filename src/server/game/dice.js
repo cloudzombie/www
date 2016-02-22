@@ -6,7 +6,7 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const dice = geth.getContract(contract);
+const dice = contract ? geth.getContract(contract) : null;
 
 const NUMBERS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
 
@@ -96,6 +96,11 @@ const eventPlayer = function(data) {
 };
 
 const init = function() {
+  if (!dice) {
+    logger.error('Dice', 'init', 'invalid contract value, address not set');
+    return;
+  }
+
   dice.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
     logger.log('Dice', 'watch', data);
 
