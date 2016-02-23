@@ -3,6 +3,31 @@
 
   const UNITS = ['wei', 'ada', 'babbage', 'shannon', 'szabo', 'finney', 'ether', 'kether', 'mether', 'gether', 'tether'];
 
+  const formatEther = function(number) {
+    let unitidx = 7;
+    let value = number.substr(0, number.length - 18);
+    let decimal = number.substr(number.length - 18);
+
+    while (value.length > 3 && unitidx < UNITS.length - 1) {
+      decimal = value.substr(value.length - 3);
+      value = value.substr(0, value.length - 3);
+      unitidx++;
+    }
+
+    const float = parseFloat(`${value}.${decimal}`);
+    let rvalue = float.toFixed(3);
+
+    if (rvalue.substr(rvalue.length - 4) === '.000') {
+      rvalue = float.toFixed(0);
+    } else if (rvalue.substr(rvalue.length - 2) === '00') {
+      rvalue = float.toFixed(1);
+    } else if (rvalue.substr(rvalue.length - 2) === '0') {
+      rvalue = float.toFixed(2);
+    }
+
+    return { value: rvalue, unit: UNITS[unitidx] };
+  };
+
   const formatMax = function(number) {
     let unitidx = 0;
     let value = number;
@@ -14,7 +39,14 @@
       unitidx++;
     }
 
-    return { value: parseFloat(`${value}.${decimal}`).toFixed(2), unit: UNITS[unitidx] };
+    const float = parseFloat(`${value}.${decimal}`);
+    let rvalue = float.toFixed(3);
+
+    if (rvalue.slice(-3) === '000') {
+      rvalue = float.toFixed(0);
+    }
+
+    return { value: rvalue, unit: UNITS[unitidx] };
   };
 
   const format = function(number) {
@@ -44,15 +76,22 @@
   window.xyz.NumberWei = {
     properties: {
       max: Boolean,
+      ether: Boolean,
       number: {
-        type: Number,
+        type: String,
         observer: '_setWei'
       },
       wei: Object
     },
 
     _setWei: function() {
-      this.wei = this.max ? formatMax(this.number) : format(this.number);
+      if (this.max) {
+        this.wei = formatMax(this.number);
+      } else if (this.ether) {
+        this.wei = formatEther(this.number);
+      } else {
+        this.wei = format(this.number);
+      }
     },
 
     format: format,

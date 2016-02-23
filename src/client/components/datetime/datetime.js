@@ -7,6 +7,10 @@
   const TIME_LONG = 'HH:mm:ss';
 
   const format = function(datetime, _fmt) {
+    if (!datetime) {
+      return '-';
+    }
+
     const date = moment(datetime);
 
     const ntf = function(fmt) {

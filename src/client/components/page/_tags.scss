@@ -1,18 +1,34 @@
 h2, h3 {
-  color: $color-font-gray;
+  // color: $color-font-gray;
+  opacity: 0.9;
   margin: 0 0 1em 0;
 }
 
 li+li, li>ol, li>ul {
   margin-top: 0.75em;
+  line-height: $golden-ratio;
+}
+
+a {
+  color: $color-link;
+  text-decoration: none;
+  cursor: pointer;
+
+  iron-icon {
+    color: $color-link;
+  }
+
+  &, &:visited {
+    color: $color-link;
+  }
 }
 
 p {
-  line-height: 1.75em;
+  line-height: $golden-ratio;
   margin: 0;
   -webkit-margin: 0em;
 }
 
 p+p {
-  margin-top: 1.5em;
+  margin-top: $golden-ratio;
 }

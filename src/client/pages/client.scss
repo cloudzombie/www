@@ -10,11 +10,6 @@ body {
 
   margin: 0;
   -webkit-text-size-adjust: 100%;
-
-  background-image: url('/images/bg-blocks-bw-2.jpg') !important;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
 }
 
 body[unresolved] {
@@ -28,29 +23,94 @@ body[unresolved] {
 
 .hero {
   font-size: $font-size-medium;
-  line-height: 1.5em;
+  font-weight: 100;
+  line-height: $golden-ratio;
   text-align: center;
 
-  @include span-columns(8);
-  @include shift(2);
+  @include outer-container;
+
+  .icon {
+    @include span-columns(4);
+  }
+
+  .blurb {
+    @include span-columns(8);
+  }
+}
+
+.warning, .about, .rules {
+  .icon {
+    @include span-columns(3);
+  }
+
+  .detail {
+    @include span-columns(9);
+  }
 }
 
 .quip {
   text-align: right;
 }
 
-.bg-zocchi {
-  background-image: url('/images/zocchi-250-bw-trans.jpg');
-  background-repeat: no-repeat;
-  background-position: 0% 50%;
-  padding-left: 270px;
-}
+.bg {
+  position: relative;
+  min-height: 1px;
 
-.bg-nobrain {
-  background-image: url('/images/no-brain-250-bw-trans-inv.jpg');
-  background-repeat: no-repeat;
-  background-position: 100% 50%;
-  padding-right: 270px;
+  &::before {
+    content: ' ';
+    position: absolute;
+    width: 100%;
+    height: 140px;
+    background-repeat: no-repeat !important;
+    background-position: center top;
+    display: block;
+  }
+
+  &.bg-offset {
+    &::before {
+      top: 70px;
+    }
+  }
+
+  &.bg-left {
+    &::before {
+      background-position: left center;
+    }
+  }
+
+  &.bg-right {
+    &::before {
+      background-position: right center;
+    }
+  }
+
+  &.chemist::before {
+    background-image: url('/images/chemist-50.png');
+  }
+
+  &.dice::before {
+    background-image: url('/images/dice-25.png')
+  }
+
+  &.fifty::before {
+    background-image: url('/images/slots-inv-50.png')
+  }
+
+  &.looney::before {
+    background-image: url('/images/looney-inv-50.png');
+  }
+
+  &.lottery::before {
+    background-image: url('/images/ticket-inv-50.png')
+  }
+
+  &.rules::before {
+    background-image: url('/images/manual-40.png');
+  }
+
+  &.warning::before {
+    background-image: url('/images/notice-inv-50.png');
+  }
 }
 
 .games {
@@ -59,27 +119,28 @@ body[unresolved] {
   .game {
     height: 150px;
     border-radius: 1em;
-    text-align: center;
 
     @include span-columns(4);
 
     a.line {
       color: inherit;
-      cursor: pointer;
       display: inline-block;
       width: 100%;
 
       @include vertical-align;
 
+      iron-icon {
+        color: inherit;
+      }
+
       paper-button {
         vertical-align: middle;
         width: 100%;
-        text-align: right;
         text-transform: none;
 
         span {
           display: inline-block;
-          line-height: 24px;
+          line-height: 150px; // 24px;
           vertical-align: middle;
           margin: 0 5px;
         }
@@ -88,43 +149,13 @@ body[unresolved] {
 
     &[disabled] {
       a.line {
-        color: rgba(238, 238, 238, 0.5);
+        opacity: 0.5;
         cursor: default;
 
         paper-button {
-          color: rgba(238, 238, 238, 0.5);
+          color: inherit;
         }
       }
-    }
-
-    &.lottery {
-      background-image: url('/images/cookies-150-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.fifty {
-      background-image: url('/images/50-150-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.next {
-      background-image: url('/images/question-150-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.cards {
-      background-image: url('/images/playing-cards-250x-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
-    }
-
-    &.dice {
-      background-image: url('/images/cube-dice-210x-bw-trans.png');
-      background-repeat: no-repeat;
-      background-position: 50% 50%;
     }
   }
 }

@@ -18,6 +18,15 @@ $opacity: 0.9;
   }
 }
 
+*[color="blue-light"] {
+  color: $color-font-white;
+  background: rgb(81, 173, 246);
+
+  &[opacity] {
+    background: rgba(81, 173, 246, $opacity);
+  }
+}
+
 *[color="blue-dark"] {
   color: $color-font-white;
   background: rgb(30, 136, 229);
@@ -51,6 +60,15 @@ $opacity: 0.9;
 
   &[opacity] {
     background: rgba(85, 74, 59, $opacity);
+  }
+}
+
+*[color="brown-light"] {
+  color: $color-font-white;
+  background: rgb(115, 100, 80);
+
+  &[opacity] {
+    background: rgba(115, 100, 80, $opacity);
   }
 }
 

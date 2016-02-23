@@ -8,6 +8,7 @@ const data = require('gulp-data');
 const fs = require('fs');
 const gulp = require('gulp');
 const eslint = require('gulp-eslint');
+const htmlmin = require('gulp-htmlmin');
 const ignore = require('gulp-ignore');
 const jade = require('gulp-jade');
 const jadelint = require('gulp-jadelint');
@@ -61,11 +62,11 @@ const solcPipe = function(basedir) {
           file.contents = new Buffer(JSON.stringify({
             // solidity: contract.solidity_interface,
             // runtime: contract.runtimeBytecode
-            // size: contract.bytecode.length,
-            // bytecode: contract.bytecode,
+            size: contract.bytecode.length,
+            bytecode: contract.bytecode,
             // estimates: contract.gasEstimates,
             interface: JSON.parse(contract.interface)
-          }, null, 2), 'utf-8');
+          }), 'utf-8');
         }
       });
 
@@ -136,9 +137,9 @@ gulp.task('clean-xmlhttp', (cb) => {
 
 gulp.task('clean', ['clean-dist', 'clean-xmlhttp']);
 
-gulp.task('copy-components', () => {
+gulp.task('copy-bower', () => {
   return gulp
-    .src(['bower_components/**/*'])
+    .src(['bower_components/**/*', '!bower_components/**/*.html'])
     .pipe(gulp.dest('dist/public/components/bower/'));
 });
 
@@ -198,6 +199,28 @@ gulp.task('css-pages', () => {
     .pipe(ignore.exclude('*.css.map'))
     .pipe(cssmin())
     .pipe(gulp.dest('dist/public/'));
+});
+
+gulp.task('html-bower', () => {
+  return gulp
+    .src(['bower_components/**/*.html'])
+    .pipe(htmlmin({
+      removeComments: true,
+      removeCommentsFromCDATA: true,
+      collapseWhitespace: true,
+      conservativeCollapse: false,
+      caseSensitive: true,
+      customAttrAssign: [
+        { source: '\\$=' }
+      ],
+      customAttrSurround: [
+        [{ source: '\\({\\{' }, { source: '\\}\\}' }],
+        [{ source: '\\[\\[' }, { source: '\\]\\]' }]
+      ],
+      minifyCSS: true,
+      minifyJS: true
+    }))
+    .pipe(gulp.dest('dist/public/components/bower/'));
 });
 
 gulp.task('html-components', ['css-components', 'js-components'], () => {
@@ -275,8 +298,21 @@ gulp.task('test-server', () => {
     }));
 });
 
+gulp.task('solc-deploy', ['solc-contract'], (callback) => {
+  const Web3 = require('web3');
+  const web3 = new Web3();
+
+  _.each(['dist', 'fifty', 'lottery'], (name) => {
+    const code = require(`./dist/contracts/${name}/${name}.json`).bytecode;
+
+    web3.eth.deploy(code);
+  });
+
+  callback();
+});
+
 gulp.task('test', ['test-server']);
-gulp.task('components', ['copy-components', 'html-components']);
+gulp.task('components', ['copy-bower', 'html-bower', 'html-components']);
 gulp.task('pages', ['css-pages', 'html-pages', 'js-pages']);
 gulp.task('contracts', ['solc-contracts']);
 gulp.task('client', ['components', 'pages']);

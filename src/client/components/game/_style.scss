@@ -1,3 +1,20 @@
+:host {
+  display: block;
+}
+
+.stats {
+  @include outer-container;
+  text-align: center;
+
+  .icon {
+    @include span-columns(4);
+  }
+
+  .stat {
+    @include span-columns(4);
+  }
+}
+
 iron-icon {
   color: $color-font-gray-light;
   margin: 0 0.35em 0 1em;
@@ -13,6 +30,7 @@ iron-icon+iron-icon {
 
 .contract {
   text-align: right;
+  position: relative;
 
   * {
     vertical-align: middle;
@@ -20,6 +38,24 @@ iron-icon+iron-icon {
 
   iron-icon {
     margin: 0 1em;
+  }
+
+  .btnbar {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    paper-button {
+      margin: 0 1em;
+      vertical-align: middle;
+      text-transform: none;
+
+      iron-icon {
+        color: inherit; //#ffff8d;
+        vertical-align: middle;
+        margin: 0 0 0 0.5em;
+      }
+    }
   }
 
   xyz-number-wei {
@@ -33,36 +69,91 @@ iron-icon+iron-icon {
   }
 }
 
-.about {
-  text-align: left;
-  padding: 3em 1em 2em 1em;
-  margin: -3em 0 0 0;
+.has-about {
+  display: none;
+  cursor: pointer;
+  position: relative;
 
-  @include span-columns(4);
+  .overview, .details {
+    @include span-columns(6);
+  }
+}
+
+.has-abi {
+  display: none;
+  cursor: pointer;
+  position: relative;
+
+  .details {
+    padding: 2em;
+    font-family: monospace;
+  }
+}
+
+.has-about, .has-abi {
+  .close {
+    position: absolute;
+    top: 2em;
+    right: 2em;
+    color: inherit;
+  }
+}
+
+:host.about {
+  .has-about {
+    display: block;
+    @include animFadeIn;
+  }
+}
+
+:host.abi {
+  .has-abi {
+    display: block;
+    @include animFadeIn;
+  }
 }
 
 .entries {
-  @include span-columns(8);
-
   table {
     width: 100%;
     border-collapse: collapse;
 
-    tr {
+    thead th {
+      text-align: left;
+      white-space: nowrap;
+      padding-bottom: 0.5em;
+
+      * {
+        vertical-align: middle;
+      }
+
+      iron-icon {
+        margin-left: 0;
+      }
+    }
+
+    tbody tr {
+      @include animFadeIn;
+
+      &:nth-child(odd) {
+        background: rgb(238, 238, 238);
+      }
+
       td {
         text-align: left;
-        padding: 0 0;
+        padding: 0.5em 1em 0.5em 0;
         white-space: nowrap;
+        line-height: $golden-ratio;
 
         * {
           vertical-align: middle;
         }
 
-        &.max {
-          width: 100%;
-          padding-bottom: 1em;
+        &.round, &.tickets {
           text-align: center;
+        }
 
+        &.external {
           a {
             text-decoration: none;
 
@@ -74,27 +165,6 @@ iron-icon+iron-icon {
               color: $color-link;
             }
           }
-        }
-
-        &.addr {
-          text-align: left;
-        }
-
-        &.when {
-          color: $color-font-gray-light;
-          vertical-align: middle;
-          padding-bottom: 1em;
-        }
-      }
-
-      &.data {
-        td {
-          padding-bottom: 1em;
-          text-align: left;
-        }
-
-        td:first-child {
-          padding-left: 2em;
         }
       }
     }

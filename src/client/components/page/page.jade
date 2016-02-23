@@ -25,11 +25,11 @@ dom-module#xyz-page-menu
   template
     style !{readCompiled('menu/menu.css')}
     
-    div(color$="{{color}}" opacity)
-      paper-tabs(selected="{{selected}}")
-        template(is="dom-repeat" items="{{pages}}")
+    div(color$="[[color]]")
+      paper-tabs(selected="[[selected]]")
+        template(is="dom-repeat" items="[[pages]]")
           paper-tab
-            a(href$="{{item.url}}" class="link") {{item.name}}
+            a(href$="[[item.url]]" class="link") [[item.name]]
         
     content
       

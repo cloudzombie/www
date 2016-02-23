@@ -3,19 +3,6 @@
 
   window.xyz.GameFifty = {
     properties: {
-      config: Object,
-      current: Object,
-      winner: Object,
-      players: {
-        type: Array,
-        value: function() {
-          return [];
-        }
-      }
-    },
-
-    lastColor: function(winner) {
-      return winner && winner.winner ? 'green' : 'red';
     },
 
     addPlayers: function(players) {
@@ -23,10 +10,11 @@
         const input = new BigNumber(player.input);
         const output = new BigNumber(player.output);
 
+        player.addr = this.sliceAddr(player.addr);
         player.result = output.minus(input).toString();
 
         if (!this.current || player.tkplays > this.current.tkplays) {
-          const wei = window.xyz.NumberWei.format(player.turnover);
+          const wei = window.xyz.NumberWei.formatMax(player.turnover);
 
           this.current = {
             tkwins: player.tkwins,
@@ -74,7 +62,10 @@
         .then((game) => {
           console.log('game', game);
 
-          this.winner = game.winner;
+          if (game.winner) {
+            game.winner.addr = this.sliceAddr(game.winner.addr);
+            this.winner = game.winner;
+          }
 
           this.setConfig(game.config);
           this.addPlayers(game.players);
@@ -98,6 +89,6 @@
 
   Polymer({ // eslint-disable-line new-cap
     is: 'xyz-game-fifty',
-    behaviors: [window.xyz.Page, window.xyz.GameFifty]
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameFifty]
   });
 })();

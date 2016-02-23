@@ -1,0 +1,33 @@
+extends ../_template_rules.jade
+
+block rules
+  ol
+    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold"></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
+    
+    li
+      |Every <span class="bold">digit/decimal position plays a pool</span> with 1/10 of the position equalling a ticket, e.g
+      ul
+        li 0.05 ether will buy 5 tickets from the 10 finney pool
+        li 0.6 ether will buy 6 tickets from the 100 finney pool
+        li 3 ether will buy 3 tickets from the 1 ether pool
+        li 0.31 ether will buy 4 tickets (3 + 1), each playing against the relevant pools
+    
+    li A maximum bet of <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> is <span class="bold">27 tickets</span>, allocated from 3 different pools and evaluated as such.
+    
+    li Any value not an <span class="bold">exact multiple of the smallest bet</span> will be returned, while playing the divisible amount
+    
+    li Each ticket is <span class="bold">evaluated in sucession</span>, with each having a seperate win/lose result
+    
+    li A win allocates <span class="bold">50% of the available pool</span> to your returns, at the same time returning the value of one ticket
+    
+    li A loss <span class="bold">returns the value</span> of the ticket to the pool, this new pool value is used in subsequent calculations
+    
+    li Winning &gt;50% of tickets may result in an <span class="bold">overall loss</span>, losing &gt;50% of tickets may result in an <span class="bold">overall win</span>
+    
+    li You can <span class="bold">play as many times</span> as you like, with as many tickets as you like
+    
+    li The game operates on a <span class="bold">[[config.edge]]% commission</span>, this is subtracted from the amount won by each ticket
+    
+    li To add the contract to your wallet, either to watch or interact with directly, use the <a on-click="toggleAbi">provided ABI</a>
+  
+  include ../_template_abi.jade

@@ -30,8 +30,12 @@ span.visible {
   font-size: $font-size-small;
 }
 
+.thin {
+  font-weight: 100;
+}
+
 .bold {
-  font-weight: bold;
+  font-weight: 700;
 }
 
 .right {
