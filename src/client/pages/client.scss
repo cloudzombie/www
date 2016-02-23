@@ -66,6 +66,12 @@ body[unresolved] {
     display: block;
   }
 
+  &.bg-offset {
+    &::before {
+      top: 70px;
+    }
+  }
+
   &.bg-left {
     &::before {
       background-position: left center;
