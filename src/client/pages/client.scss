@@ -99,11 +99,11 @@ body[unresolved] {
   }
 
   &.rules::before {
-    background-image: url('/images/whiteboard-50.png');
+    background-image: url('/images/manual-40.png');
   }
 
   &.warning::before {
-    background-image: url('/images/look-inv-50.png');
+    background-image: url('/images/notice-inv-50.png');
   }
 }
 
