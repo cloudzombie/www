@@ -77,7 +77,20 @@ iron-icon+iron-icon {
   .overview, .details {
     @include span-columns(6);
   }
+}
 
+.has-abi {
+  display: none;
+  cursor: pointer;
+  position: relative;
+
+  .details {
+    padding: 2em;
+    font-family: monospace;
+  }
+}
+
+.has-about, .has-abi {
   .close {
     position: absolute;
     top: 2em;
@@ -88,6 +101,13 @@ iron-icon+iron-icon {
 
 :host.about {
   .has-about {
+    display: block;
+    @include animFadeIn;
+  }
+}
+
+:host.abi {
+  .has-abi {
     display: block;
     @include animFadeIn;
   }

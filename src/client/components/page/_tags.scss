@@ -12,6 +12,7 @@ li+li, li>ol, li>ul {
 a {
   color: $color-link;
   text-decoration: none;
+  cursor: pointer;
 
   iron-icon {
     color: $color-link;

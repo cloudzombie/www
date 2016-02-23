@@ -22,12 +22,13 @@ if (!dice) {
   const CONFIG_FEES_MUL = dice.CONFIG_FEES_MUL().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_DIV = dice.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = CONFIG_FEES_MUL / CONFIG_FEES_DIV; // eslint-disable-line new-cap
+  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
   const CONFIG = {
     addr: contract.addr,
     min: CONFIG_MIN_VALUE.toString(),
     max: CONFIG_MAX_VALUE.toString(),
     edge: CONFIG_FEES_EDGE,
-    abi: contract.spec.interface
+    abi: CONFIG_ABI
   };
 
   let winner;

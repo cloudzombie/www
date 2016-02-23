@@ -4,6 +4,7 @@
   window.xyz.Game = {
     properties: {
       about: Boolean,
+      abi: Boolean,
       current: Object,
       winner: Object,
       config: {
@@ -27,6 +28,11 @@
     toggleAbout: function() {
       this.about = !this.about;
       this.toggleClass('about', this.about);
+    },
+
+    toggleAbi: function() {
+      this.abi = !this.abi;
+      this.toggleClass('abi', this.abi);
     },
 
     getValue: function(val, def) {

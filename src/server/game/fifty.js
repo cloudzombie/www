@@ -22,6 +22,7 @@ if (!fifty) {
   const CONFIG_FEES_MUL = fifty.CONFIG_FEES_MUL(); // eslint-disable-line new-cap
   const CONFIG_FEES_DIV = fifty.CONFIG_FEES_DIV(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = CONFIG_FEES_MUL.toNumber() / CONFIG_FEES_DIV.toNumber();
+  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
   const CONFIG = {
     addr: contract.addr,
     price: CONFIG_PRICE.toString(),
@@ -29,7 +30,7 @@ if (!fifty) {
     max: CONFIG_MAX_VALUE.toString(),
     tickets: CONFIG_MAX_TICKETS.toNumber(),
     edge: CONFIG_FEES_EDGE,
-    abi: contract.spec.interface
+    abi: CONFIG_ABI
   };
 
   let winner;

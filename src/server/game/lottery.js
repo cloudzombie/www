@@ -22,6 +22,7 @@ if (!lottery) {
   const CONFIG_MAX_VALUE = lottery.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
   const CONFIG_RETURN = lottery.CONFIG_RETURN(); // eslint-disable-line new-cap
   const CONFIG_DURATION = lottery.CONFIG_DURATION(); // eslint-disable-line new-cap
+  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
   const CONFIG = {
     addr: contract.addr,
     price: CONFIG_PRICE.toString(),
@@ -33,7 +34,7 @@ if (!lottery) {
     minplayers: CONFIG_MIN_PLAYERS.toNumber(),
     maxplayers: CONFIG_MAX_PLAYERS.toNumber(),
     maxtickets: CONFIG_MAX_TICKETS.toNumber(),
-    abi: contract.spec.interface
+    abi: CONFIG_ABI
   };
 
   let winner;
