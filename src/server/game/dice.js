@@ -15,7 +15,7 @@ if (!dice) {
     get: function() { return {}; }
   };
 } else {
-  const NUMBERS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+  // const NUMBERS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
 
   const CONFIG_MIN_VALUE = dice.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
   const CONFIG_MAX_VALUE = dice.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
@@ -77,18 +77,22 @@ if (!dice) {
     if (pdata <= 1) {
       play = pdata ? 'Odd' : 'Even';
     } else if (pdata <= 12) {
-      play = `${NUMBERS[pdata]}`;
+      play = `${pdata}`;
     } else {
-      play = `${NUMBERS[Math.floor(pdata / 10)]} to ${NUMBERS[pdata % 10]}`;
+      play = `${Math.floor(pdata / 10)} to ${pdata % 10}`;
     }
+
+    const dicea = data.args.dicea.toNumber();
+    const diceb = data.args.diceb.toNumber();
 
     const player = {
       addr: data.args.addr,
       at: geth.toTime(data.args.at),
       play: play,
       chance: data.args.chance.toNumber() / 36.0,
-      dicea: data.args.dicea.toNumber(),
-      diceb: data.args.diceb.toNumber(),
+      dicea: dicea,
+      diceb: diceb,
+      sum: dicea + diceb,
       input: data.args.input.toString(),
       output: data.args.output.toString(),
       winner: data.args.output.gt(data.args.input),

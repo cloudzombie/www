@@ -11,9 +11,9 @@ xyz-page-section(color="orange")
 xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
     iron-icon(icon="icons:help-outline")
-    span [[winner.play]], [[winner.chance]]%
+    span [[winner.play]] ([[winner.chance]]%)
     iron-icon(icon="icons:gesture")
-    span [[winner.dicea]] + [[winner.diceb]]
+    span [[winner.dicea]] + [[winner.diceb]] = [[winner.sum]]
     iron-icon(icon="icons:account-balance")
     xyz-number-wei(number="[[winner.output]]" max)
     iron-icon(icon="icons:trending-flat")

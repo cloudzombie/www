@@ -9,10 +9,10 @@ xyz-page-section.hidden(class$="[[visibleClass(config, 'min')]]")
         xyz-number-wei(number="[[item.input]]")
       td.win
         iron-icon(icon="icons:help-outline")
-        span [[item.play]], [[item.chance]]%
+        span [[item.play]] ([[item.chance]]%)
       td.win
         iron-icon(icon="icons:gesture")
-        span [[item.dicea]] + [[item.diceb]]
+        span [[item.dicea]] + [[item.diceb]] = [[item.sum]]
       td.output
         span(class$="[[hideZero(item.output)]]")
           iron-icon(icon="icons:account-balance")
