@@ -28,7 +28,8 @@ if (!fifty) {
     min: CONFIG_MIN_VALUE.toString(),
     max: CONFIG_MAX_VALUE.toString(),
     tickets: CONFIG_MAX_TICKETS.toNumber(),
-    edge: CONFIG_FEES_EDGE
+    edge: CONFIG_FEES_EDGE,
+    abi: contract.spec.interface
   };
 
   let winner;

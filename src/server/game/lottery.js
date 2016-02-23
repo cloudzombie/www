@@ -32,7 +32,8 @@ if (!lottery) {
     duration: geth.toTime(CONFIG_DURATION),
     minplayers: CONFIG_MIN_PLAYERS.toNumber(),
     maxplayers: CONFIG_MAX_PLAYERS.toNumber(),
-    maxtickets: CONFIG_MAX_TICKETS.toNumber()
+    maxtickets: CONFIG_MAX_TICKETS.toNumber(),
+    abi: contract.spec.interface
   };
 
   let winner;

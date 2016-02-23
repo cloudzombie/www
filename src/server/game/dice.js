@@ -26,7 +26,8 @@ if (!dice) {
     addr: contract.addr,
     min: CONFIG_MIN_VALUE.toString(),
     max: CONFIG_MAX_VALUE.toString(),
-    edge: CONFIG_FEES_EDGE
+    edge: CONFIG_FEES_EDGE,
+    abi: contract.spec.interface
   };
 
   let winner;
