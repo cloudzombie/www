@@ -46,7 +46,7 @@ if (!dice) {
   const getGame = function() {
     return {
       wins: dice.wins().toNumber(),
-      losses: dice.wins().toNumber(),
+      losses: dice.losses().toNumber(),
       txs: dice.txs().toNumber(),
       turnover: dice.turnover().toString(),
       funds: dice.funds().toString()
