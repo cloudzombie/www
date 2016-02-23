@@ -81,7 +81,6 @@ iron-icon+iron-icon {
 
 .has-abi {
   display: none;
-  cursor: pointer;
   position: relative;
 
   .details {
@@ -92,6 +91,7 @@ iron-icon+iron-icon {
 
 .has-about, .has-abi {
   .close {
+    cursor: pointer;
     position: absolute;
     top: 2em;
     right: 2em;
