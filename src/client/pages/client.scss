@@ -123,6 +123,10 @@ body[unresolved] {
 
       @include vertical-align;
 
+      iron-icon {
+        color: inherit;
+      }
+
       paper-button {
         vertical-align: middle;
         width: 100%;

@@ -9,6 +9,19 @@ li+li, li>ol, li>ul {
   line-height: $golden-ratio;
 }
 
+a {
+  color: $color-link;
+  text-decoration: none;
+
+  iron-icon {
+    color: $color-link;
+  }
+
+  &, &:visited {
+    color: $color-link;
+  }
+}
+
 p {
   line-height: $golden-ratio;
   margin: 0;
