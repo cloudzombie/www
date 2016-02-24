@@ -135,6 +135,24 @@ $opacity: 0.9;
   }
 }
 
+&[color="khaki"] {
+  color: $color-font-white;
+  background: rgb(72, 69, 42);
+
+  &[opacity] {
+    background: rgba(72, 69, 42, $opacity);
+  }
+}
+
+*[color="maroon"] {
+  color: $color-font-white;
+  background: rgb(76, 0, 0);
+
+  &[opacity] {
+    background: rgba(76, 0, 0, $opacity);
+  }
+}
+
 *[color="orange"] {
   color: $color-font-white;
   background: rgb(255, 162, 26);
