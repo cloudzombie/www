@@ -1,8 +1,10 @@
+@import "../../base";
+
 :host {
   display: block;
 }
 
-.stats {
+:host ::content .stats {
   @include outer-container;
   text-align: center;
 

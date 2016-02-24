@@ -99,14 +99,16 @@ const jadedata = function() {
   return data(function(file) {
     let comp = false;
 
-    const location = _.filter(file.path.split('/'), function(p) {
+    const location = _.filter(file.path.split('/'), (p) => {
       if (comp && p.indexOf('.jade') === -1) {
         return true;
       }
 
-      if (p.indexOf('components') === 0) {
+      if (p.indexOf('components') === 0 || p.indexOf('pages') === 0) {
         comp = true;
       }
+
+      return false;
     }).join('/');
 
     return {
@@ -198,6 +200,7 @@ gulp.task('css-pages', () => {
     .on('error', errcb)
     .pipe(ignore.exclude('*.css.map'))
     .pipe(cssmin())
+    .pipe(compilerPipe())
     .pipe(gulp.dest('dist/public/'));
 });
 
@@ -226,16 +229,18 @@ gulp.task('html-bower', () => {
 gulp.task('html-components', ['css-components', 'js-components'], () => {
   return gulp
     .src(['src/client/components/**/*.jade'])
+    .pipe(jadelint())
     .pipe(jadedata())
     .pipe(jade())
     .on('error', errcb)
     .pipe(gulp.dest('dist/public/components/'));
 });
 
-gulp.task('html-pages', () => {
+gulp.task('html-pages', ['css-pages', 'js-pages'], () => {
   return gulp
     .src(['src/client/pages/**/*.jade'])
     .pipe(jadelint())
+    .pipe(jadedata())
     .pipe(jade())
     .pipe(gulp.dest('dist/public/'));
 });
@@ -247,7 +252,9 @@ gulp.task('js-pages', () => {
     .pipe(eslint.format())
     .pipe(babel())
     .on('error', errcb)
+    .pipe(compilerPipe())
     .pipe(uglify())
+    .pipe(compilerPipe(true))
     .pipe(gulp.dest('dist/public/'));
 });
 

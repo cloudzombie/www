@@ -1,0 +1,7 @@
+{
+  "globals": {
+    "BigNumber": false,
+    "Polymer": false,
+    "Web3": false
+  }
+}
