@@ -64,6 +64,7 @@ body[unresolved] {
     background-repeat: no-repeat !important;
     background-position: center top;
     display: block;
+    opacity: 0.5;
   }
 
   &.bg-offset {
@@ -85,31 +86,31 @@ body[unresolved] {
   }
 
   &.chemist::before {
-    background-image: url('/images/chemist-50.png');
+    background-image: url('/images/chemist.png');
   }
 
   &.dice::before {
-    background-image: url('/images/dice-inv-50.png')
+    background-image: url('/images/dice-inv.png')
   }
 
   &.fifty::before {
-    background-image: url('/images/slots-inv-50.png')
+    background-image: url('/images/slots-inv.png')
   }
 
   &.looney::before {
-    background-image: url('/images/looney-inv-50.png');
+    background-image: url('/images/looney-inv.png');
   }
 
   &.lottery::before {
-    background-image: url('/images/ticket-inv-50.png')
+    background-image: url('/images/ticket-inv.png')
   }
 
   &.rules::before {
-    background-image: url('/images/manual-40.png');
+    background-image: url('/images/manual.png');
   }
 
   &.warning::before {
-    background-image: url('/images/notice-inv-50.png');
+    background-image: url('/images/notice-inv.png');
   }
 }
 
