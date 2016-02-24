@@ -41,8 +41,8 @@
         this.splice('players', this.players.length, 0, entry);
       });
 
-      if (this.players.length > 10) {
-        this.splice('players', 10, this.players.length - 10);
+      if (this.players.length > 15) {
+        this.splice('players', 15, this.players.length - 15);
       }
     },
 

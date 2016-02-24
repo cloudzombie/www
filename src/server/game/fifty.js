@@ -42,7 +42,7 @@ if (!fifty) {
     }
 
     players.unshift(player);
-    players = players.slice(0, 10);
+    players = players.slice(0, 15);
   };
 
   const get = function() {

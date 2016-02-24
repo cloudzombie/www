@@ -40,7 +40,7 @@ if (!dice) {
     }
 
     players.unshift(player);
-    players = players.slice(0, 10);
+    players = players.slice(0, 15);
   };
 
   const getGame = function() {
