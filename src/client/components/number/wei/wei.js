@@ -3,10 +3,20 @@
 
   const UNITS = ['wei', 'ada', 'babbage', 'shannon', 'szabo', 'finney', 'ether', 'kether', 'mether', 'gether', 'tether'];
 
-  const formatMax = function(number) {
+  const formatMax = function(number, ether) {
     let unitidx = 0;
     let value = number;
     let decimal = '0';
+
+    if (ether) {
+      while (value.length <= 18) {
+        value = `0${value}`;
+      }
+
+      unitidx = 6;
+      decimal = value.substr(value.length - 18);
+      value = value.substr(0, value.length - 18);
+    }
 
     while (value.length > 3 && unitidx < UNITS.length - 1) {
       decimal = value.substr(value.length - 3);
@@ -54,6 +64,7 @@
 
   window.xyz.NumberWei = {
     properties: {
+      ether: Boolean,
       max: Boolean,
       number: {
         type: String,
@@ -63,7 +74,9 @@
     },
 
     _setWei: function() {
-      if (this.max) {
+      if (this.ether) {
+        this.wei = formatMax(this.number, true);
+      } else if (this.max) {
         this.wei = formatMax(this.number);
       } else {
         this.wei = format(this.number);

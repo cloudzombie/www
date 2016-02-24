@@ -2,7 +2,7 @@ extends ../_template_rules.jade
 
 block rules
   ol
-    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold"></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
+    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold" ether></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold" ether></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
     
     li Any amount that does not fall within this range will result in the full amount being returned, <span class="bold">voiding the play</span>
     

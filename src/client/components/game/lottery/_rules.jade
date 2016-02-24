@@ -2,11 +2,11 @@ extends ../_template_rules.jade
 
 block rules
   ol
-    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold"></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold"></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
+    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold" ether></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold" ether></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
     
     li There is only <span class="bold">one winner per round</span>, the randomly selected address collects the full pool minus the applicable commission
     
-    li Every <xyz-number-wei number="[[config.price]]" class="bold"></xyz-number-wei> you send (an entry) buys one ticket, any value not a multiple of this will be returned
+    li Every <xyz-number-wei number="[[config.price]]" class="bold" ether></xyz-number-wei> you send (an entry) buys one ticket, any value not a multiple of this will be returned
     
     li You can <span class="bold">enter as many times</span> as you like, with as many tickets per entry as you like
     
