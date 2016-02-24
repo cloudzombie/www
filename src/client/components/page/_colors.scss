@@ -171,6 +171,15 @@ $opacity: 0.9;
   }
 }
 
+*[color="red-dark"] {
+  color: $color-font-white;
+  background: rgb(186, 22, 11);
+
+  &[opacity] {
+    background: rgba(186, 22, 11, $opacity);
+  }
+}
+
 *[color="red-light"] {
   color: $color-font-white;
   background: rgb(247, 112, 102);
