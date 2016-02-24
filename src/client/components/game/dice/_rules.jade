@@ -17,11 +17,11 @@ block rules
         li specific values of 2, 3 up to 12 predicts <span class="bold">an exact sum</span>, with 1/36 probability for 2 &amp; 12, 1/6 for 7 and other numbers falling in-between
         li ranges are specified with the <span class="bold">larger number</span> first, i.e. 126 predicts between <span class="bold">12 and 6 (all inclusive</span>), 93 predicts between <span class="bold">9 and 3</span>, 42 between <span class="bold">4 and 2</span>, etc.
         li selecting a range of 122 (12 to 2) will have a 36/36 probability, with <span class="bold">no profit</span> or possibility of loss
-        li sending an invalid value (&gt;13) or range (not between <span class="bold">32 and 129</span>), range with equal numbers (<span class="bold">for 33, rather send 3</span>) or range with the smallest first will void the bet and returned all inputs
+        li sending an invalid value (&gt;13) or range (not between <span class="bold">32 and 129</span>), or range with the smallest first will void the bet and returned all inputs
         
     li A win will return your <span class="bold">original amount plus profit</span class="bold">, minus the overall comission applied to the profit portion
     
-    li The game operates on a <span class="bold">[[config.edge]]% commission</span>, this is subtracted from the amount won by each ticket, which excludes the inputs
+    li The game operates on a <span class="bold">[[config.edge]]% commission</span>, this is subtracted from the amount returned to the player in the case of a win
     
     li To add the contract to your wallet, either to watch or interact with directly, use the <a on-click="toggleAbi">provided ABI</a>
   
