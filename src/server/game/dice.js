@@ -71,15 +71,20 @@ if (!dice) {
       return;
     }
 
-    const pdata = data.args.play.toNumber();
+    const sum = data.args.play.toNumber();
+    const rangeh = Math.floor(sum / 10);
+    const rangel = sum % 10;
+
     let play;
 
-    if (pdata <= 1) {
-      play = pdata ? 'Odd' : 'Even';
-    } else if (pdata <= 12) {
-      play = `${pdata}`;
+    if (sum <= 1) {
+      play = sum ? 'Odd' : 'Even';
+    } else if (sum <= 12) {
+      play = `${sum}`;
+    } else if (rangeh === rangel) {
+      play = `${rangel}`;
     } else {
-      play = `${Math.floor(pdata / 10)} to ${pdata % 10}`;
+      play = `${rangeh} to ${rangel}`;
     }
 
     const dicea = data.args.dicea.toNumber();
