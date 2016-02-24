@@ -135,8 +135,12 @@ iron-icon+iron-icon {
     tbody tr {
       @include animFadeIn;
 
+      iron-icon {
+        color: $color-font-gray-light-darker;
+      }
+
       &:nth-child(odd) {
-        background: rgb(238, 238, 238);
+        background: #f5f5f5;
       }
 
       td {
