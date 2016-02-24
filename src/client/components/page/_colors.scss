@@ -92,7 +92,11 @@ $opacity: 0.9;
 
 *[color="gray-dark"] {
   color: $color-font-white;
-  background: var(--paper-grey-700);
+  background: rgb(97, 97, 97);
+
+  &[opacity] {
+    background: rgba(97, 97, 97, $opacity);
+  }
 }
 
 *[color="green"] {
@@ -133,16 +137,20 @@ $opacity: 0.9;
 
 *[color="orange"] {
   color: $color-font-white;
-  background: rgb(255, 152, 0);
+  background: rgb(255, 162, 26);
 
   &[opacity] {
-    background: rgba(255, 152, 0, $opacity);
+    background: rgba(255, 162, 26, $opacity);
   }
 }
 
 *[color="orange-light"] {
   color: $color-font-gray;
-  background: var(--paper-orange-100);
+  background: rgb(255, 224, 178);
+
+  &[opacity] {
+    background: rgba(255, 224, 178, $opacity);
+  }
 }
 
 *[color="orange-dark"] {
@@ -156,5 +164,18 @@ $opacity: 0.9;
 
 *[color="red"] {
   color: $color-font-white;
-  background: var(--paper-red-500);
+  background: rgb(244, 67, 54);
+
+  &[opacity] {
+    background: rgba(244, 67, 54, $opacity);
+  }
+}
+
+*[color="red-light"] {
+  color: $color-font-white;
+  background: rgb(247, 112, 102);
+
+  &[opacity] {
+    background: rgba(247, 112, 102, $opacity);
+  }
 }
