@@ -8,3 +8,5 @@ node_modules/
 UTC--*
 img/unused
 beactive.*
+
+*.txt
