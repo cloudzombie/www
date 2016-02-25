@@ -126,12 +126,8 @@ if (!dice) {
     }
   };
 
-  const startEvents = function(fromBlock) {
-    dice.allEvents({ fromBlock: fromBlock }, handleEvents);
-  };
-
   const init = function() {
-    startEvents(geth.getEventBlock());
+    geth.startEvents(dice, geth.getEventBlock(), handleEvents);
   };
 
   module.exports = {

@@ -103,12 +103,8 @@ if (!fifty) {
     }
   };
 
-  const startEvents = function(fromBlock) {
-    fifty.allEvents({ fromBlock: fromBlock }, handleEvents);
-  };
-
   const init = function() {
-    startEvents(geth.getEventBlock());
+    geth.startEvents(fifty, geth.getEventBlock(), handleEvents);
   };
 
   const ownerWithdraw = function(owner) {

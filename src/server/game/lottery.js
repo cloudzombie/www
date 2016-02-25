@@ -163,12 +163,8 @@ if (!lottery) {
     }
   };
 
-  const startEvents = function(fromBlock) {
-    lottery.allEvents({ fromBlock: fromBlock }, handleEvents);
-  };
-
   const init = function() {
-    startEvents(geth.getEventBlock());
+    geth.startEvents(lottery, geth.getEventBlock(), handleEvents);
   };
 
   module.exports = {

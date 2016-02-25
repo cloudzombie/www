@@ -5,6 +5,7 @@ const config = require('../config/geth');
 const logger = require('./logger');
 
 const WATCH_MONITOR = 30000;
+const EVENT_MONITOR = 5 * 60000;
 
 const web3 = new Web3();
 
@@ -38,6 +39,10 @@ const getCoinbase = function() {
 
 const getBlockNumber = function() {
   return blocknumber;
+};
+
+const getCurrentBlockNumber = function() {
+  return web3.eth.blockNumber;
 };
 
 const getEventBlock = function() {
@@ -74,6 +79,18 @@ const toWei = function(number, unit) {
 
 const toTime = function(number) {
   return number.toNumber() * 1000;
+};
+
+const startEvents = function(contract, fromBlock, handleEvents) {
+  logger.log('Geth', 'startEvents', 'starting event watch');
+
+  const events = contract.allEvents({ fromBlock: fromBlock });
+  events.watch(handleEvents);
+
+  setTimeout(() => {
+    events.stopWatching();
+    startEvents(contract, getCurrentBlockNumber() - 5);
+  }, EVENT_MONITOR + Math.ceil(Math.random() * EVENT_MONITOR));
 };
 
 const init = function() {
@@ -122,11 +139,13 @@ module.exports = {
   call: call,
   deployContract: deployContract,
   getBlockNumber: getBlockNumber,
+  getCurrentBlockNumber: getCurrentBlockNumber,
   getEventBlock: getEventBlock,
   getContract: getContract,
   sendTransaction: sendTransaction,
   getCoinbase: getCoinbase,
   getBalance: getBalance,
+  startEvents: startEvents,
   toHex: toHex,
   toWei: toWei,
   toTime: toTime
