@@ -115,7 +115,7 @@ if (!dice) {
 
   const init = function() {
     dice.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
-      logger.log('Dice', 'watch', data);
+      // logger.log('Dice', 'watch', data);
 
       if (error) {
         logger.error('Dice', 'watch', error);
