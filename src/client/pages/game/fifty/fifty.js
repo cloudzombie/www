@@ -69,6 +69,10 @@
 
           this.setConfig(game.config);
           this.addPlayers(game.players);
+        })
+        .catch((error) => {
+          console.log('error', error);
+          this.getGame();
         });
     },
 

@@ -81,6 +81,10 @@
           this.setWinner(game.winner);
           this.setRound(game.round);
           this.addPlayers(game.players);
+        })
+        .catch((error) => {
+          console.log('error', error);
+          this.getGame();
         });
     },
 
