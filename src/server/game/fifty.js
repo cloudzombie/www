@@ -93,7 +93,7 @@ if (!fifty) {
   const init = function() {
     fifty.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
       if (error) {
-        logger.log('Fifty', 'watch', error);
+        logger.error('Fifty', 'watch', error);
         return;
       }
 

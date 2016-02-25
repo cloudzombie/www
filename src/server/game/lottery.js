@@ -152,7 +152,7 @@ if (!lottery) {
   const init = function() {
     lottery.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
       if (error) {
-        logger.log('Lottery', 'watch', error);
+        logger.error('Lottery', 'watch', error);
         return;
       }
 

@@ -118,7 +118,7 @@ if (!dice) {
       logger.log('Dice', 'watch', data);
 
       if (error) {
-        logger.log('Dice', 'watch', error);
+        logger.error('Dice', 'watch', error);
         return;
       }
 
