@@ -28,7 +28,6 @@ const route = function(req, res) {
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive'
   });
-  res.write('\n');
 
   const resid = addConnection(res, req.path);
 
