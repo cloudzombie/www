@@ -90,19 +90,25 @@ if (!fifty) {
     pubsub.publish(channels.player, player);
   };
 
-  const init = function() {
-    fifty.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
-      if (error) {
-        logger.error('Fifty', 'watch', error);
-        return;
-      }
+  const handleEvents = function(error, data) {
+    if (error) {
+      logger.error('Fifty', 'watch', error);
+      return;
+    }
 
-      switch (data.event) {
-        case 'Player': eventPlayer(data); break;
-        default:
-          logger.error('Fifty', 'watch', `Unknown event ${data.event}`);
-      }
-    });
+    switch (data.event) {
+      case 'Player': eventPlayer(data); break;
+      default:
+        logger.error('Fifty', 'watch', `Unknown event ${data.event}`);
+    }
+  };
+
+  const startEvents = function(fromBlock) {
+    fifty.allEvents({ fromBlock: fromBlock }, handleEvents);
+  };
+
+  const init = function() {
+    startEvents(geth.getEventBlock());
   };
 
   const ownerWithdraw = function(owner) {

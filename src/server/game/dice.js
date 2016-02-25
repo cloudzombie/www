@@ -113,21 +113,25 @@ if (!dice) {
     pubsub.publish(channels.player, player);
   };
 
+  const handleEvents = function(error, data) {
+    if (error) {
+      logger.error('Dice', 'watch', error);
+      return;
+    }
+
+    switch (data.event) {
+      case 'Player': eventPlayer(data); break;
+      default:
+        logger.error('Dice', 'watch', `Unknown event ${data.event}`);
+    }
+  };
+
+  const startEvents = function(fromBlock) {
+    dice.allEvents({ fromBlock: fromBlock }, handleEvents);
+  };
+
   const init = function() {
-    dice.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
-      // logger.log('Dice', 'watch', data);
-
-      if (error) {
-        logger.error('Dice', 'watch', error);
-        return;
-      }
-
-      switch (data.event) {
-        case 'Player': eventPlayer(data); break;
-        default:
-          logger.error('Dice', 'watch', `Unknown event ${data.event}`);
-      }
-    });
+    startEvents(geth.getEventBlock());
   };
 
   module.exports = {

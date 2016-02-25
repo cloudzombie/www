@@ -149,20 +149,26 @@ if (!lottery) {
     pubsub.publish(channels.winner, _winner);
   };
 
-  const init = function() {
-    lottery.allEvents({ fromBlock: geth.getEventBlock() }, (error, data) => {
-      if (error) {
-        logger.error('Lottery', 'watch', error);
-        return;
-      }
+  const handleEvents = function(error, data) {
+    if (error) {
+      logger.error('Lottery', 'watch', error);
+      return;
+    }
 
-      switch (data.event) {
-        case 'Player': eventPlayer(data); break;
-        case 'Winner': eventWinner(data); break;
-        default:
-          logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
-      }
-    });
+    switch (data.event) {
+      case 'Player': eventPlayer(data); break;
+      case 'Winner': eventWinner(data); break;
+      default:
+        logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
+    }
+  };
+
+  const startEvents = function(fromBlock) {
+    lottery.allEvents({ fromBlock: fromBlock }, handleEvents);
+  };
+
+  const init = function() {
+    startEvents(geth.getEventBlock());
   };
 
   module.exports = {
