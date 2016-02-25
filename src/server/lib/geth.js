@@ -89,7 +89,7 @@ const startEvents = function(contract, fromBlock, handleEvents) {
 
   setTimeout(() => {
     events.stopWatching();
-    startEvents(contract, getCurrentBlockNumber() - 5);
+    startEvents(contract, getCurrentBlockNumber() - 5, handleEvents);
   }, EVENT_MONITOR + Math.ceil(Math.random() * EVENT_MONITOR));
 };
 
