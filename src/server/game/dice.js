@@ -127,7 +127,7 @@ if (!dice) {
   };
 
   const init = function() {
-    geth.startEvents(dice, geth.getEventBlock(), handleEvents);
+    geth.startEvents(contract.addr, contract.spec.interface,  geth.getEventBlock(), handleEvents);
   };
 
   module.exports = {
