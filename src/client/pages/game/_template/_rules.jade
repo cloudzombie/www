@@ -1,0 +1,9 @@
+extends ../_template_rules.jade
+
+block rules
+  ol
+    li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold" ether></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold" ether></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
+    
+    li To add the contract to your wallet, either to watch or interact with directly, use the <a on-click="toggleAbi">provided ABI</a>
+  
+  include ../_template_abi.jade

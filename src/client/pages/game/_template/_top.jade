@@ -1,0 +1,31 @@
+xyz-page-section(color="orange") 
+  .stats
+    .icon.bg.dice
+    .stat
+      .large [[getValue(current.wins)]]
+      .medium.thin won
+    .stat
+      .large [[getValue(current.turnover.value)]]
+      .medium.thin [[current.turnover.unit]] played
+      
+xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
+  .center.winner
+    iron-icon(icon="icons:help-outline")
+    span [[winner.play]] ([[winner.chance]]%)
+    iron-icon(icon="icons:gesture")
+    span [[winner.dicea]] + [[winner.diceb]] = [[winner.sum]]
+    iron-icon(icon="icons:account-balance")
+    xyz-number-wei(number="[[winner.output]]" max)
+    iron-icon(icon="icons:trending-flat")
+    iron-icon(icon="icons:perm-identity")
+    span [[getValue(winner.addr, '0x00000...0000000')]]
+    iron-icon(icon="icons:history")
+    xyz-datetime-elapsed(datetime="[[winner.at]]")
+    
+xyz-page-section(color="orange" size="small")
+  .contract.right
+    xyz-number-wei(number="[[config.min]]" ether)
+    span &nbsp;-&nbsp;
+    xyz-number-wei(number="[[config.max]]" ether)
+    iron-icon(icon="icons:input")
+    span [[config.addr]]
