@@ -20,10 +20,13 @@ span.visible {
 
 .large {
   font-size: $font-size-large;
+  font-family: $font-heading;
+  margin-bottom: -20px;
 }
 
 .medium {
   font-size: $font-size-medium;
+  font-family: $font-heading;
 }
 
 .small {
