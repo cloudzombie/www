@@ -71,23 +71,6 @@
       this.set('current.end', round.end);
     },
 
-    getGame: function() {
-      this.$.api
-        .get('game/lottery')
-        .then((game) => {
-          console.log('game', game);
-
-          this.setConfig(game.config);
-          this.setWinner(game.winner);
-          this.setRound(game.round);
-          this.addPlayers(game.players);
-        })
-        .catch((error) => {
-          console.log('error', error);
-          this.getGame();
-        });
-    },
-
     getRound: function() {
       this.$.api
         .get('game/lottery/round')
@@ -98,7 +81,7 @@
         });
     },
 
-    ready: function() {
+    subscribe: function() {
       this.$.pubsub.subscribe('game/lottery/player', (entry) => {
         console.log('Player', entry);
 
@@ -125,7 +108,28 @@
         this.setWinner(winner);
         this.getRound();
       });
+    },
 
+    getGame: function() {
+      this.$.api
+        .get('game/lottery')
+        .then((game) => {
+          console.log('game', game);
+
+          this.setConfig(game.config);
+          this.setWinner(game.winner);
+          this.setRound(game.round);
+          this.addPlayers(game.players);
+
+          this.subscribe();
+        })
+        .catch((error) => {
+          console.log('error', error);
+          this.getGame();
+        });
+    },
+
+    ready: function() {
       this.getGame();
     }
   };

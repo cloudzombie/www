@@ -56,6 +56,17 @@
       this.config = config;
     },
 
+    subscribe: function() {
+      this.$.pubsub.subscribe('game/fifty/player', (player) => {
+        if (!player.tkplays) {
+          return;
+        }
+
+        console.log('Player', player);
+        this.addPlayers([player]);
+      });
+    },
+
     getGame: function() {
       this.$.api
         .get('game/fifty')
@@ -69,6 +80,8 @@
 
           this.setConfig(game.config);
           this.addPlayers(game.players);
+
+          this.subscribe();
         })
         .catch((error) => {
           console.log('error', error);
@@ -77,16 +90,6 @@
     },
 
     ready: function() {
-      this.$.pubsub.subscribe('game/fifty/player', (player) => {
-        if (!player.tkplays) {
-          return;
-        }
-
-        console.log('Player', player);
-
-        this.addPlayers([player]);
-      });
-
       this.getGame();
     }
   };

@@ -55,6 +55,17 @@
       this.config = config;
     },
 
+    subscribe: function() {
+      this.$.pubsub.subscribe('game/dice/player', (player) => {
+        if (!player.txs) {
+          return;
+        }
+
+        console.log('Player', player);
+        this.addPlayers([player]);
+      });
+    },
+
     getGame: function() {
       this.$.api
         .get('game/dice')
@@ -72,6 +83,8 @@
 
           this.addPlayers(game.players);
           this.setConfig(game.config);
+
+          this.subscribe();
         })
         .catch((error) => {
           console.log('error', error);
@@ -80,16 +93,6 @@
     },
 
     ready: function() {
-      this.$.pubsub.subscribe('game/dice/player', (player) => {
-        if (!player.txs) {
-          return;
-        }
-
-        console.log('Player', player);
-
-        this.addPlayers([player]);
-      });
-
       this.getGame();
     }
   };
