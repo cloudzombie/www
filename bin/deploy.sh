@@ -55,8 +55,8 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
   echo
 
   echo "Stopping systemd www*"
-  systemctl stop wwwgethtimer
   systemctl stop wwwnode
+  systemctl stop wwwgethtimer
   systemctl stop wwwgethmon
   systemctl stop wwwgeth
   echo
@@ -99,8 +99,8 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
   echo "Restarting systemd www*"
   systemctl start wwwgeth
   systemctl start wwwgethmon
-  systemctl start wwwnode
   systemctl start wwwgethtimer.timer
+  systemctl start wwwnode
   echo
 DEPLOYEND
 
