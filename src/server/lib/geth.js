@@ -126,7 +126,7 @@ const init = function() {
       coinbase = web3.eth.coinbase;
       blocknumber = web3.eth.blockNumber;
 
-      // monitor();
+      monitor();
 
       logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
       resolve();
