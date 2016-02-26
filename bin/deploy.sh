@@ -27,9 +27,6 @@ SERVICE_EXEC_GETH="ExecStart=/usr/bin/geth --rpc --datadir /root/.ethereum --unl
 SERVICE_EXEC_NODE="WorkingDirectory=/www/dist\nExecStart=/usr/bin/nodejs server.js --port 80 --contract-dice $ADDR_DICE --contract-fifty $ADDR_FIFTY --contract-lottery $ADDR_LOTTERY"
 SERVICE_EXEC_MONITOR="Environment=INSTANCE_NAME=$MONITOR_INSTANCE\nEnvironment=WS_SECRET=$MONITOR_KEY\nEnvironment=WS_SERVER=$MONITOR_SERVER\nEnvironment=CONTACT_DETAILS=$MONITOR_CONTACT\nWorkingDirectory=/www/gethmonitor\nExecStart=/usr/bin/nodejs app.js"
 
-SERVICE_TIMER_RESTART="[Unit]\nDescription=Geth restart\n[Timer]\nOnBootSec=60min\nOnUnitActiveSec=60min\nUnit=wwwgethrestart.service\n[Install]\nWantedBy=multi-user.target\n"
-SERVICE_EXEC_RESTART="[Unit]\nDescription=Geth restart\n\n[Service]\nType=simple\nExecStart=/bin/systemctl restart wwwgeth\n"
-
 echo  "Creating dist/"
 gulp clean
 gulp --minimize
@@ -56,21 +53,12 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
 
   echo "Stopping systemd www*"
   systemctl stop wwwnode
-  systemctl stop wwwgethtimer
   systemctl stop wwwgethmon
   systemctl stop wwwgeth
   echo
 
   echo "Creating Geth password file"
   printf "$GETH_PASS\n" > /root/$GETH_PASS_FILE
-  echo
-
-  echo "Creating wwwgethtimer.timer"
-  printf "$SERVICE_TIMER_RESTART" > /lib/systemd/system/wwwgethtimer.timer
-  echo
-
-  echo "Creating wwwgethrestart.service"
-  printf "$SERVICE_EXEC_RESTART" > /lib/systemd/system/wwwgethrestart.service
   echo
 
   echo "Creating wwwgeth.service"
@@ -99,7 +87,6 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
   echo "Restarting systemd www*"
   systemctl start wwwgeth
   systemctl start wwwgethmon
-  # systemctl start wwwgethtimer.timer
   systemctl start wwwnode
   echo
 DEPLOYEND
