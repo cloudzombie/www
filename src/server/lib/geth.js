@@ -46,7 +46,7 @@ const getCurrentBlockNumber = function() {
 };
 
 const getEventBlock = function() {
-  return Math.max(0, blocknumber - 8640);
+  return Math.max(0, blocknumber - (8640 / 2));
 };
 
 const getBalance = function(address) {
