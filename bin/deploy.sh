@@ -99,7 +99,7 @@ ssh -i $TLF_KEY root@$TLF_HOST << DEPLOYEND
   echo "Restarting systemd www*"
   systemctl start wwwgeth
   systemctl start wwwgethmon
-  systemctl start wwwgethtimer.timer
+  # systemctl start wwwgethtimer.timer
   systemctl start wwwnode
   echo
 DEPLOYEND
