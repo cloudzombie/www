@@ -5,7 +5,7 @@ const config = require('../config/geth');
 const logger = require('./logger');
 
 const WATCH_MONITOR = 30000;
-const EVENT_MONITOR = 5 * 60000;
+// const EVENT_MONITOR = 5 * 60000;
 
 const web3 = new Web3();
 
@@ -87,10 +87,10 @@ const startEvents = function(contract, fromBlock, handleEvents) {
   const events = contract.allEvents({ fromBlock: fromBlock });
   events.watch(handleEvents);
 
-  setTimeout(() => {
-    events.stopWatching();
-    startEvents(contract, getCurrentBlockNumber() - 5, handleEvents);
-  }, EVENT_MONITOR + Math.ceil(Math.random() * EVENT_MONITOR));
+  // setTimeout(() => {
+  //   events.stopWatching();
+  //   startEvents(contract, getCurrentBlockNumber() - 5, handleEvents);
+  // }, EVENT_MONITOR + Math.ceil(Math.random() * EVENT_MONITOR));
 };
 
 const init = function() {
@@ -126,7 +126,7 @@ const init = function() {
       coinbase = web3.eth.coinbase;
       blocknumber = web3.eth.blockNumber;
 
-      monitor();
+      // monitor();
 
       logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
       resolve();
