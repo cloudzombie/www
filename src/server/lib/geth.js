@@ -132,31 +132,41 @@ const startEvents = function(addr, abi, fromBlock, handleEvents) {
     blockName(methodAbi);
   });
 
-  const topics = _.filter(abi, { type: 'event' });
-
   const callbackLogs = function(logs) {
     _.each(logs, (log) => {
-      _.each(topics, (topic) => {
-        if (log.topics[0] === topic.blockTopic) {
-          log.event = topic.name;
+      const values = log.data.substr(2).match(/.{1,64}/g);
+
+      _.each(log.topics, (topic) => {
+        const data = [];
+        const abiTopic = _.find(abi, { blockTopic: topic });
+
+        if (!abiTopic) {
+          return;
+        }
+
+        let vidx = 0;
+
+        _.each(abiTopic.inputs, () => {
+          data.push(values[vidx]);
+          vidx++;
+        });
+
+        if (abiTopic.type === 'event') {
+          log.event = abiTopic.name;
           log.args = {};
 
-          _.each(log.data.substr(2).match(/.{1,64}/g), (hex, idx) => {
-            const input = topic.inputs[idx];
+          _.each(data, (value, idx) => {
+            const input = abiTopic.inputs[idx];
 
             if (input.type === 'address') {
-              log.args[input.name] = `0x${hex.slice(-40)}`;
+              log.args[input.name] = `0x${value.slice(-40)}`;
             } else {
-              log.args[input.name] = new BigNumber(`0x${hex}`);
+              log.args[input.name] = new BigNumber(`0x${value}`);
             }
           });
 
           handleEvents(null, log);
-
-          return true;
         }
-
-        return false;
       });
     });
   };
