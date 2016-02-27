@@ -12,7 +12,7 @@ const sha3 = require('./sha3');
 
 const CONNECTION = `http://${config.host}:${config.port}`;
 const WATCH_MONITOR = 30000;
-const WATCH_TIMER = 5000;
+const WATCH_TIMER = 7000;
 const EVENT_BLOCK_START = 8640;
 // const EVENT_MONITOR = 5 * 60000;
 
@@ -82,14 +82,6 @@ const getCoinbase = function() {
   return coinbase;
 };
 
-const getBlockNumber = function() {
-  return blocknumber;
-};
-
-const getCurrentBlockNumber = function() {
-  return web3.eth.blockNumber;
-};
-
 const getBalance = function(address) {
   return web3.eth.getBalance(address || coinbase);
 };
@@ -120,6 +112,17 @@ const toWei = function(number, unit) {
 
 const toTime = function(number) {
   return number.toNumber() * 1000;
+};
+
+const ethBlockNumber = function() {
+  return rpc('eth_blockNumber');
+};
+
+const ethGetLogs = function(fromBlock, addr) {
+  return rpc('eth_getLogs', [{
+    fromBlock: fromBlock,
+    address: addr
+  }]);
 };
 
 const startEvents = function(addr, abi, handleEvents) {
@@ -168,12 +171,16 @@ const startEvents = function(addr, abi, handleEvents) {
     });
   };
 
-  const watch = function(fromBlock) {
+  const watch = function(offset) {
     const timeout = function() {
       setTimeout(watch, WATCH_TIMER + Math.floor(Math.random() * WATCH_TIMER));
     };
 
-    rpc('eth_getLogs', [{ fromBlock: fromBlock || 'latest', address: addr }])
+    ethBlockNumber()
+      .then((data) => {
+        const fromBlock = new BigNumber(`0x${data.result}`).toNumber() - (offset || 2);
+        return ethGetLogs(fromBlock, addr);
+      })
       .then((data) => {
         callbackLogs(data.result);
         timeout();
@@ -233,8 +240,6 @@ module.exports = {
   init: init,
   call: call,
   deployContract: deployContract,
-  getBlockNumber: getBlockNumber,
-  getCurrentBlockNumber: getCurrentBlockNumber,
   getContract: getContract,
   sendTransaction: sendTransaction,
   getCoinbase: getCoinbase,
