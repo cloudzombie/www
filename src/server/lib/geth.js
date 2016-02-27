@@ -14,12 +14,10 @@ const CONNECTION = `http://${config.host}:${config.port}`;
 const WATCH_MONITOR = 30000;
 const WATCH_TIMER = 7000;
 const EVENT_BLOCK_START = 8640;
-// const EVENT_MONITOR = 5 * 60000;
 
 const web3 = new Web3();
 
 let coinbase;
-let blocknumber;
 
 let id = cluster.worker.id * 1000000;
 
@@ -128,9 +126,7 @@ const ethGetLogs = function(fromBlock, addr) {
 const startEvents = function(addr, abi, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
 
-  _.each(abi, (methodAbi) => {
-    blockName(methodAbi);
-  });
+  _.each(abi, blockName);
 
   const callbackLogs = function(logs) {
     _.each(logs, (log) => {
@@ -190,7 +186,7 @@ const startEvents = function(addr, abi, handleEvents) {
       });
   };
 
-  watch(Math.max(0, blocknumber - EVENT_BLOCK_START));
+  watch(EVENT_BLOCK_START);
 };
 
 const init = function() {
@@ -222,7 +218,6 @@ const init = function() {
 
     waitGeth(() => {
       coinbase = web3.eth.coinbase;
-      blocknumber = web3.eth.blockNumber;
 
       rpc('web3_clientVersion').then((data) => {
         logger.log('rpc', 'data=', data);
