@@ -1,8 +1,9 @@
-h2, h3 {
+h2 {
   // color: $color-font-gray;
   opacity: 0.9;
-  margin: 0 0 1em 0;
+  margin: 0 0 0.5em 0;
   font-family: $font-heading;
+  font-size: $font-size-medium;
 }
 
 li+li, li>ol, li>ul {
