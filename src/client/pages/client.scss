@@ -52,83 +52,27 @@ body[unresolved] {
   text-align: right;
 }
 
-.bg {
-  position: relative;
-  min-height: 1px;
-
-  &::before {
-    content: ' ';
-    position: absolute;
-    width: 100%;
-    height: 140px;
-    background-repeat: no-repeat !important;
-    background-position: center top;
-    display: block;
-    opacity: 0.5;
-  }
-
-  &.bg-offset {
-    &::before {
-      top: 70px;
-    }
-  }
-
-  &.bg-left {
-    &::before {
-      background-position: left center;
-    }
-  }
-
-  &.bg-right {
-    &::before {
-      background-position: right center;
-    }
-  }
-
-  &.chemist::before {
-    background-image: url('/images/chemist.png');
-  }
-
-  &.dice::before {
-    background-image: url('/images/dice-inv.png')
-  }
-
-  &.fifty::before {
-    background-image: url('/images/slots-inv.png')
-  }
-
-  &.looney::before {
-    background-image: url('/images/looney-inv.png');
-  }
-
-  &.lottery::before {
-    background-image: url('/images/ticket-inv.png')
-  }
-
-  &.rules::before {
-    background-image: url('/images/manual.png');
-  }
-
-  &.warning::before {
-    background-image: url('/images/notice-inv.png');
-  }
-}
-
 .games {
   text-align: center;
+  @include row();
+
+  &+.games {
+    margin-top: 1em;
+  }
 
   .game {
-    height: 150px;
     border-radius: 1em;
 
-    @include span-columns(4);
+    @include span-columns(3);
+
+    &.offset {
+      @include shift(2);
+    }
 
     a.line {
       color: inherit;
       display: inline-block;
       width: 100%;
-
-      @include vertical-align;
 
       iron-icon {
         color: inherit;
