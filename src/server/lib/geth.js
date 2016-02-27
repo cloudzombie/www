@@ -55,27 +55,6 @@ const rpc = function(method, params) {
   });
 };
 
-const deployContract = function(contract) {
-  logger.log('Geth', 'deployContract', 'creating contract');
-
-  const data = {
-    from: coinbase,
-    data: contract.spec.bytecode,
-    gas: 3000000
-  };
-
-  web3.eth.contract(contract.spec.interface).new(data, (error, tx) => {
-    if (error) {
-      logger.error('Geth', 'deployContract', error);
-      return;
-    }
-
-    if (tx && tx.address) {
-      logger.log('Geth', 'deployContract', `mined as ${tx.address} with hash ${tx.transactionHash}`);
-    }
-  });
-};
-
 const getCoinbase = function() {
   return coinbase;
 };
@@ -174,7 +153,7 @@ const startEvents = function(addr, abi, handleEvents) {
 
     ethBlockNumber()
       .then((data) => {
-        const fromBlock = new BigNumber(`0x${data.result}`).toNumber() - (offset || 2);
+        const fromBlock = new BigNumber(`0x${data.result}`).toNumber() - (offset || 1);
         return ethGetLogs(fromBlock, addr);
       })
       .then((data) => {
@@ -198,7 +177,7 @@ const init = function() {
 
     setTimeout(() => {
       waitGeth(callback);
-    }, 500 + Math.ceil(Math.random() * 500));
+    }, 100 + Math.ceil(Math.random() * 100));
   };
 
   const monitor = function() {
@@ -234,7 +213,6 @@ const init = function() {
 module.exports = {
   init: init,
   call: call,
-  deployContract: deployContract,
   getContract: getContract,
   sendTransaction: sendTransaction,
   getCoinbase: getCoinbase,
