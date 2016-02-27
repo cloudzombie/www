@@ -3,7 +3,6 @@ const cluster = require('cluster');
 const http = require('http');
 
 const srvcfg = require('./config/server');
-const geth = require('./lib/geth');
 const logger = require('./lib/logger');
 
 const initMaster = function() {
@@ -21,6 +20,8 @@ const initMaster = function() {
 };
 
 const initChild = function() {
+  const geth = require('./lib/geth');
+
   geth.init().then(() => {
     const games = require('./game');
     const express = require('./lib/express');

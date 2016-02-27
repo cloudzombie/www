@@ -43,7 +43,7 @@ route.publish = function(channel, data) {
   const json = JSON.stringify({ data: data });
 
   _.each(connections[`/pubsub/${channel}`], (call, _id) => {
-    logger.log('PubSub', 'publish', `sending on, ${channel} to id=${_id}`);
+    logger.log('PubSub', 'publish', `${channel} to id=${_id}`);
 
     call(json);
   });
