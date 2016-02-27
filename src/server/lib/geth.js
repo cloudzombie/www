@@ -12,7 +12,7 @@ const sha3 = require('./sha3');
 
 const CONNECTION = `http://${config.host}:${config.port}`;
 const WATCH_MONITOR = 30000;
-const WATCH_TIMER = 7000;
+const WATCH_TIMER = 5000;
 // const EVENT_MONITOR = 5 * 60000;
 
 const web3 = new Web3();
@@ -171,28 +171,22 @@ const startEvents = function(addr, abi, fromBlock, handleEvents) {
     });
   };
 
-  let filterId = 0;
-
-  const watch = function() {
-    rpc('eth_getFilterChanges', [filterId]).then((data) => {
-      callbackLogs(data.result);
-
+  const watch = function(_fromBlock) {
+    const timeout = function() {
       setTimeout(watch, WATCH_TIMER + Math.floor(Math.random() * WATCH_TIMER));
-    }).catch((error) => {
-      handleEvents(error);
-    });
+    };
+
+    rpc('eth_getLogs', [{ fromBlock: _fromBlock || 'latest', address: addr }])
+      .then((data) => {
+        callbackLogs(data.result);
+        timeout();
+      })
+      .catch(() => {
+        timeout();
+      });
   };
 
-  rpc('eth_newFilter', [{
-    fromBlock: fromBlock,
-    address: addr
-  }]).then((data) => {
-    filterId = data.result;
-    return rpc('eth_getFilterLogs', [filterId]);
-  }).then((data) => {
-    callbackLogs(data.result);
-    watch();
-  });
+  watch(fromBlock);
 };
 
 const init = function() {
