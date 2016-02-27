@@ -3,7 +3,10 @@
 
   window.xyz.PubSub = {
     subscribe: function(channel, callback) {
+      console.log('PubSub->subscribe', channel);
+
       if (!window.EventSource) {
+        console.error('PubSub->subscribe', 'no window.EventSource');
         return;
       }
 
@@ -15,7 +18,7 @@
       };
 
       es.onerror = function() {
-        // console.error('PubSub->onerror', event);
+        console.error('PubSub->onerror', event);
       };
 
       es.onmessage = function(event) {
