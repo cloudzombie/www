@@ -18,7 +18,7 @@
     "bourbon": "^4.2.6",
     "bourbon-neat": "^1.7.2",
     "chai": "^3.4.1",
-    "contracts": "thelooneyfarm/contracts",
+    "contracts": "thelooneyfarm/contracts#xyz-box",
     "eslint": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
