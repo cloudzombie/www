@@ -164,7 +164,7 @@ if (!lottery) {
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, geth.getEventBlock(), handleEvents);
+    geth.startEvents(contract.addr, contract.spec.interface, handleEvents);
   };
 
   module.exports = {

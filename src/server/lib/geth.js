@@ -13,6 +13,7 @@ const sha3 = require('./sha3');
 const CONNECTION = `http://${config.host}:${config.port}`;
 const WATCH_MONITOR = 30000;
 const WATCH_TIMER = 5000;
+const EVENT_BLOCK_START = 8640;
 // const EVENT_MONITOR = 5 * 60000;
 
 const web3 = new Web3();
@@ -89,10 +90,6 @@ const getCurrentBlockNumber = function() {
   return web3.eth.blockNumber;
 };
 
-const getEventBlock = function() {
-  return Math.max(0, blocknumber - (8640 / 2));
-};
-
 const getBalance = function(address) {
   return web3.eth.getBalance(address || coinbase);
 };
@@ -125,7 +122,7 @@ const toTime = function(number) {
   return number.toNumber() * 1000;
 };
 
-const startEvents = function(addr, abi, fromBlock, handleEvents) {
+const startEvents = function(addr, abi, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
 
   _.each(abi, (methodAbi) => {
@@ -171,12 +168,12 @@ const startEvents = function(addr, abi, fromBlock, handleEvents) {
     });
   };
 
-  const watch = function(_fromBlock) {
+  const watch = function(fromBlock) {
     const timeout = function() {
       setTimeout(watch, WATCH_TIMER + Math.floor(Math.random() * WATCH_TIMER));
     };
 
-    rpc('eth_getLogs', [{ fromBlock: _fromBlock || 'latest', address: addr }])
+    rpc('eth_getLogs', [{ fromBlock: fromBlock || 'latest', address: addr }])
       .then((data) => {
         callbackLogs(data.result);
         timeout();
@@ -186,7 +183,7 @@ const startEvents = function(addr, abi, fromBlock, handleEvents) {
       });
   };
 
-  watch(fromBlock);
+  watch(Math.max(0, blocknumber - EVENT_BLOCK_START));
 };
 
 const init = function() {
@@ -238,7 +235,6 @@ module.exports = {
   deployContract: deployContract,
   getBlockNumber: getBlockNumber,
   getCurrentBlockNumber: getCurrentBlockNumber,
-  getEventBlock: getEventBlock,
   getContract: getContract,
   sendTransaction: sendTransaction,
   getCoinbase: getCoinbase,

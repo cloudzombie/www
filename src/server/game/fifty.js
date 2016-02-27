@@ -104,7 +104,7 @@ if (!fifty) {
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, geth.getEventBlock(), handleEvents);
+    geth.startEvents(contract.addr, contract.spec.interface, handleEvents);
   };
 
   const ownerWithdraw = function(owner) {
