@@ -39,6 +39,12 @@ if (!dice) {
       winner = player;
     }
 
+    if (_.find(players, { txs: player.txs })) {
+      return;
+    }
+
+    pubsub.publish(channels.player, player);
+
     players.unshift(player);
     players = players.slice(0, 15);
   };
@@ -109,8 +115,6 @@ if (!dice) {
     };
 
     addPlayer(player);
-
-    pubsub.publish(channels.player, player);
   };
 
   const handleEvents = function(error, data) {
