@@ -97,7 +97,7 @@ const ethBlockNumber = function() {
 
 const ethGetLogs = function(fromBlock, addr) {
   return rpc('eth_getLogs', [{
-    fromBlock: fromBlock,
+    fromBlock: Math.max(1, fromBlock),
     address: addr
   }]);
 };
@@ -157,7 +157,6 @@ const startEvents = function(contract, handleEvents) {
         return ethGetLogs(fromBlock, contract.addr);
       })
       .then((data) => {
-        console.log(data);
         callbackLogs(data.result);
         timeout();
       })

@@ -70,8 +70,9 @@ if (!box) {
     }
 
     const player = {
-      addr: data.args.addr,
       at: geth.toTime(data.args.at),
+      sender: data.args.sender,
+      input: data.args.input.toString(),
       receiver: data.args.receiver,
       output: data.args.output.toString(),
       turnover: data.args.turnover.toString(),

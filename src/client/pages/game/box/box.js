@@ -20,6 +20,8 @@
           this.winner = player;
         }
 
+        player.payout = player.sender !== player.receiver;
+
         for (let idx = 0; idx < this.players.length; idx++) {
           const _player = this.players[idx];
 
