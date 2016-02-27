@@ -44,8 +44,11 @@ if (!box) {
   };
 
   const getGame = function() {
+    const txs = box.txs().toNumber();
+
     return {
-      txs: box.txs().toNumber(),
+      txs: txs,
+      paid: Math.max(0, txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
       turnover: box.turnover().toString(),
       pool: box.pool().toString()
     };
@@ -74,7 +77,7 @@ if (!box) {
       turnover: data.args.turnover.toString(),
       pool: data.args.pool.toString(),
       txs: txs,
-      paid: Math.max(txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
+      paid: Math.max(0, txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
       txhash: data.transactionHash
     };
 
