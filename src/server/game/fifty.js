@@ -22,7 +22,7 @@ if (!fifty) {
   const CONFIG_FEES_MUL = fifty.CONFIG_FEES_MUL(); // eslint-disable-line new-cap
   const CONFIG_FEES_DIV = fifty.CONFIG_FEES_DIV(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = CONFIG_FEES_MUL.toNumber() / CONFIG_FEES_DIV.toNumber();
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
+  const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     price: CONFIG_PRICE.toString(),
@@ -108,7 +108,7 @@ if (!fifty) {
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, handleEvents);
+    geth.startEvents(contract, handleEvents);
   };
 
   const ownerWithdraw = function(owner) {

@@ -76,7 +76,7 @@ const sendTransaction = function(object) {
 };
 
 const getContract = function(contract) {
-  return web3.eth.contract(contract.spec.interface).at(contract.addr);
+  return web3.eth.contract(contract.abi).at(contract.addr);
 };
 
 const toHex = function(number) {
@@ -102,10 +102,10 @@ const ethGetLogs = function(fromBlock, addr) {
   }]);
 };
 
-const startEvents = function(addr, abi, handleEvents) {
+const startEvents = function(contract, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
 
-  _.each(abi, blockName);
+  _.each(contract.abi, blockName);
 
   const callbackLogs = function(logs) {
     _.each(logs, (log) => {
@@ -113,7 +113,7 @@ const startEvents = function(addr, abi, handleEvents) {
 
       _.each(log.topics, (topic) => {
         const data = [];
-        const abiTopic = _.find(abi, { blockTopic: topic });
+        const abiTopic = _.find(contract.abi, { blockTopic: topic });
 
         if (!abiTopic) {
           return;
@@ -154,9 +154,10 @@ const startEvents = function(addr, abi, handleEvents) {
     ethBlockNumber()
       .then((data) => {
         const fromBlock = new BigNumber(`0x${data.result}`).toNumber() - (offset || 1);
-        return ethGetLogs(fromBlock, addr);
+        return ethGetLogs(fromBlock, contract.addr);
       })
       .then((data) => {
+        console.log(data);
         callbackLogs(data.result);
         timeout();
       })

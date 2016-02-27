@@ -20,7 +20,7 @@ if (!box) {
   const CONFIG_MAX_VALUE = box.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
   const CONFIG_FEES_DIV = box.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = 1.0 / CONFIG_FEES_DIV; // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
+  const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     min: CONFIG_MIN_VALUE.toString(),
@@ -85,7 +85,7 @@ if (!box) {
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, (error, data) => {
+    geth.startEvents(contract, (error, data) => {
       if (error) {
         logger.error('Box', 'watch', error);
         return;

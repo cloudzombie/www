@@ -5,18 +5,18 @@ const argv = require('yargs').string([
 module.exports = {
   box: {
     addr: process.env.CONTRACT_BOX || argv['contract-box'],
-    spec: require('../contracts/box/box.json')
+    abi: require('../contracts/box/box.json').interface
   },
   dice: {
     addr: process.env.CONTRACT_DICE || argv['contract-dice'],
-    spec: require('../contracts/dice/dice.json')
+    abi: require('../contracts/dice/dice.json').interface
   },
   fifty: {
     addr: process.env.CONTRACT_FIFTY || argv['contract-fifty'],
-    spec: require('../contracts/fifty/fifty.json')
+    abi: require('../contracts/fifty/fifty.json').interface
   },
   lottery: {
     addr: process.env.CONTRACT_LOTTERY || argv['contract-lottery'],
-    spec: require('../contracts/lottery/lottery.json')
+    abi: require('../contracts/lottery/lottery.json').interface
   }
 };

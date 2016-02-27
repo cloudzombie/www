@@ -24,7 +24,7 @@ if (!lottery) {
   const CONFIG_MAX_VALUE = lottery.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
   const CONFIG_RETURN = lottery.CONFIG_RETURN(); // eslint-disable-line new-cap
   const CONFIG_DURATION = lottery.CONFIG_DURATION(); // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
+  const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     price: CONFIG_PRICE.toString(),
@@ -170,7 +170,7 @@ if (!lottery) {
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, handleEvents);
+    geth.startEvents(contract, handleEvents);
   };
 
   module.exports = {

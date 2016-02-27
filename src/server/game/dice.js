@@ -22,7 +22,7 @@ if (!dice) {
   const CONFIG_FEES_MUL = dice.CONFIG_FEES_MUL().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_DIV = dice.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = CONFIG_FEES_MUL / CONFIG_FEES_DIV; // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
+  const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     min: CONFIG_MIN_VALUE.toString(),
@@ -131,7 +131,7 @@ if (!dice) {
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface,  handleEvents);
+    geth.startEvents(contract, handleEvents);
   };
 
   module.exports = {
