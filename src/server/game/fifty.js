@@ -41,6 +41,12 @@ if (!fifty) {
       winner = player;
     }
 
+    if (_.find(players, { tkplays: players.tkplays })) {
+      return;
+    }
+
+    pubsub.publish(channels.player, player);
+
     players.unshift(player);
     players = players.slice(0, 15);
   };
@@ -86,8 +92,6 @@ if (!fifty) {
     };
 
     addPlayer(player);
-
-    pubsub.publish(channels.player, player);
   };
 
   const handleEvents = function(error, data) {

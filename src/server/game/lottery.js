@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const channels = require('../config/channels').lottery;
 const contract = require('../config/contracts').lottery;
 const geth = require('../lib/geth');
@@ -81,6 +83,12 @@ if (!lottery) {
   const addPlayer = function(player) {
     let found = false;
 
+    if (_.find(players, { tktotal: players.tktotal })) {
+      return;
+    }
+
+    pubsub.publish(channels.player, player);
+
     for (let idx = 0; !found && idx < players.length; idx++) {
       const _player = players[idx];
       const newround = player.round > _player.round;
@@ -122,8 +130,6 @@ if (!lottery) {
     };
 
     addPlayer(_player);
-
-    pubsub.publish(channels.player, _player);
   };
 
   const eventWinner = function(data) {
