@@ -7,6 +7,7 @@ const lottery = require('./lottery');
 const init = function() {
   logger.log('Game', 'init', 'initializing games');
 
+  box.init();
   dice.init();
   fifty.init();
   lottery.init();
