@@ -37,12 +37,12 @@ if (!fifty) {
   let players = [];
 
   const addPlayer = function(player) {
-    if (player.winner && (!winner || player.tkplays > winner.tkplays)) {
-      winner = player;
+    if (_.find(players, { tkplays: player.tkplays })) {
+      return;
     }
 
-    if (_.find(players, { tkplays: players.tkplays })) {
-      return;
+    if (player.winner && (!winner || player.tkplays > winner.tkplays)) {
+      winner = player;
     }
 
     pubsub.publish(channels.player, player);

@@ -81,13 +81,13 @@ if (!lottery) {
   };
 
   const addPlayer = function(player) {
-    let found = false;
-
-    if (_.find(players, { tktotal: players.tktotal })) {
+    if (_.find(players, { tktotal: player.tktotal })) {
       return;
     }
 
     pubsub.publish(channels.player, player);
+
+    let found = false;
 
     for (let idx = 0; !found && idx < players.length; idx++) {
       const _player = players[idx];

@@ -35,12 +35,12 @@ if (!dice) {
   let players = [];
 
   const addPlayer = function(player) {
-    if (player.winner && (!winner || player.txs > winner.txs)) {
-      winner = player;
+    if (_.find(players, { txs: player.txs })) {
+      return;
     }
 
-    if (_.find(players, { txs: players.txs })) {
-      return;
+    if (player.winner && (!winner || player.txs > winner.txs)) {
+      winner = player;
     }
 
     pubsub.publish(channels.player, player);
