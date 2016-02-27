@@ -2,23 +2,19 @@ xyz-page-section(color="maroon")
   .stats
     .icon.bg.present
     .stat
-      .large [[getValue(current.wins)]]
-      .medium.thin won
+      .large [[getValue(current.paid)]]
+      .medium.thin payouts
     .stat
-      .large [[getValue(current.turnover.value)]]
-      .medium.thin [[current.turnover.unit]] played
+      .large [[getValue(current.pool.value)]]
+      .medium.thin [[current.pool.unit]] pool
       
 xyz-page-section.hidden(color="green" size="small" class$="[[visibleClass(winner, 'at')]]")
   .center.winner
-    iron-icon(icon="icons:help-outline")
-    span [[winner.play]] ([[winner.chance]]%)
-    iron-icon(icon="icons:gesture")
-    span [[winner.dicea]] + [[winner.diceb]] = [[winner.sum]]
     iron-icon(icon="icons:account-balance")
     xyz-number-wei(number="[[winner.output]]" max)
     iron-icon(icon="icons:trending-flat")
     iron-icon(icon="icons:perm-identity")
-    span [[getValue(winner.addr, '0x00000...0000000')]]
+    span [[getValue(winner.receiver, '0x00000...0000000')]]
     iron-icon(icon="icons:history")
     xyz-datetime-elapsed(datetime="[[winner.at]]")
     

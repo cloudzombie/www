@@ -10,14 +10,14 @@
         if (!this.current || player.txs > this.current.txs) {
           this.current = {
             txs: player.txs,
+            paid: player.paid,
+            pool: window.xyz.NumberWei.formatMax(player.pool),
             turnover: window.xyz.NumberWei.formatMax(player.turnover)
           };
         }
 
-        if (player.winner) {
-          if (!this.winner || player.txs > this.winner.txs) {
-            this.winner = player;
-          }
+        if (player.paid && (!this.winner || player.txs > this.winner.txs)) {
+          this.winner = player;
         }
 
         for (let idx = 0; idx < this.players.length; idx++) {
@@ -65,6 +65,7 @@
           console.log('game', game);
 
           game.current.turnover = window.xyz.NumberWei.formatMax(game.current.turnover);
+          game.current.pool = window.xyz.NumberWei.formatMax(game.current.pool);
           this.current = game.current;
 
           this.addPlayers(game.players);

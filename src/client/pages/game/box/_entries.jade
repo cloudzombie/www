@@ -1,7 +1,7 @@
 xyz-page-section.hidden(class$="[[visibleClass(config, 'min')]]")
   .entries: table: tbody: template(is="dom-repeat" items="[[players]]")
     tr.entry
-      td.addr
+      td.sender
         iron-icon(icon="icons:perm-identity")
         span [[item.addr]]
       td.input
