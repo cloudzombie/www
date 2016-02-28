@@ -21,19 +21,6 @@ let coinbase;
 
 let id = cluster.worker.id * 1000000;
 
-const blockName = function(methodAbi) {
-  if (!methodAbi.blockName) {
-    const types = _.map(methodAbi.inputs, (input) => {
-      return input.type;
-    });
-
-    methodAbi.blockName = `${methodAbi.name}(${types})`;
-  }
-
-  methodAbi.blockTopic = `0x${sha3(methodAbi.blockName)}`;
-  return methodAbi.blockName;
-};
-
 const rpc = function(method, params) {
   id++;
 
@@ -53,6 +40,30 @@ const rpc = function(method, params) {
     logger.error('Geth', method, error);
     throw error;
   });
+};
+
+const attachAbi = function(contract) {
+  const methods = {};
+
+  _.each(contract.abi, (method) => {
+    const types = _.map(method.inputs, (input) => {
+      return input.type;
+    });
+
+    method.blockName = `${method.name}(${types})`;
+    method.blockTopic = `0x${sha3(method.blockName)}`;
+
+    if (method.type === 'function') {
+      methods[method.name] = function() {
+        return rpc('eth_call', [{
+          to: contract.addr,
+          data: method.blockTopic.substr(0, 10)
+        }, 'latest']);
+      };
+    }
+  });
+
+  return methods;
 };
 
 const getCoinbase = function() {
@@ -76,7 +87,7 @@ const sendTransaction = function(object) {
 };
 
 const getContract = function(contract) {
-  return web3.eth.contract(contract.spec.interface).at(contract.addr);
+  return web3.eth.contract(contract.abi).at(contract.addr);
 };
 
 const toHex = function(number) {
@@ -102,10 +113,8 @@ const ethGetLogs = function(fromBlock, addr) {
   }]);
 };
 
-const startEvents = function(addr, abi, handleEvents) {
+const startEvents = function(contract, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
-
-  _.each(abi, blockName);
 
   const callbackLogs = function(logs) {
     _.each(logs, (log) => {
@@ -113,7 +122,7 @@ const startEvents = function(addr, abi, handleEvents) {
 
       _.each(log.topics, (topic) => {
         const data = [];
-        const abiTopic = _.find(abi, { blockTopic: topic });
+        const abiTopic = _.find(contract.abi, { blockTopic: topic });
 
         if (!abiTopic) {
           return;
@@ -140,7 +149,7 @@ const startEvents = function(addr, abi, handleEvents) {
             }
           });
 
-          handleEvents(null, log);
+          handleEvents(log);
         }
       });
     });
@@ -154,7 +163,7 @@ const startEvents = function(addr, abi, handleEvents) {
     ethBlockNumber()
       .then((data) => {
         const fromBlock = new BigNumber(`0x${data.result}`).toNumber() - (offset || 1);
-        return ethGetLogs(fromBlock, addr);
+        return ethGetLogs(fromBlock, contract.addr);
       })
       .then((data) => {
         callbackLogs(data.result);
@@ -213,6 +222,7 @@ const init = function() {
 module.exports = {
   init: init,
   call: call,
+  attachAbi: attachAbi,
   getContract: getContract,
   sendTransaction: sendTransaction,
   getCoinbase: getCoinbase,

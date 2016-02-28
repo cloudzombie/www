@@ -15,6 +15,8 @@ if (!fifty) {
     get: function() { return {}; }
   };
 } else {
+  geth.attachAbi(contract);
+
   const CONFIG_PRICE = fifty.CONFIG_PRICE(); // eslint-disable-line new-cap
   const CONFIG_MIN_VALUE = fifty.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
   const CONFIG_MAX_VALUE = fifty.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
@@ -22,7 +24,7 @@ if (!fifty) {
   const CONFIG_FEES_MUL = fifty.CONFIG_FEES_MUL(); // eslint-disable-line new-cap
   const CONFIG_FEES_DIV = fifty.CONFIG_FEES_DIV(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = CONFIG_FEES_MUL.toNumber() / CONFIG_FEES_DIV.toNumber();
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
+  const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     price: CONFIG_PRICE.toString(),
@@ -94,21 +96,14 @@ if (!fifty) {
     addPlayer(player);
   };
 
-  const handleEvents = function(error, data) {
-    if (error) {
-      logger.error('Fifty', 'watch', error);
-      return;
-    }
-
-    switch (data.event) {
-      case 'Player': eventPlayer(data); break;
-      default:
-        logger.error('Fifty', 'watch', `Unknown event ${data.event}`);
-    }
-  };
-
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, handleEvents);
+    geth.startEvents(contract, (data) => {
+      switch (data.event) {
+        case 'Player': eventPlayer(data); break;
+        default:
+          logger.error('Fifty', 'watch', `Unknown event ${data.event}`);
+      }
+    });
   };
 
   const ownerWithdraw = function(owner) {

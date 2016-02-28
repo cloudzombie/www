@@ -15,6 +15,8 @@ if (!lottery) {
     get: function() { return {}; }
   };
 } else {
+  geth.attachAbi(contract);
+
   const CONFIG_MIN_PLAYERS = lottery.CONFIG_MIN_PLAYERS(); // eslint-disable-line new-cap
   const CONFIG_MAX_PLAYERS = lottery.CONFIG_MAX_PLAYERS(); // eslint-disable-line new-cap
   const CONFIG_MAX_TICKETS = lottery.CONFIG_MAX_TICKETS(); // eslint-disable-line new-cap
@@ -24,7 +26,7 @@ if (!lottery) {
   const CONFIG_MAX_VALUE = lottery.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
   const CONFIG_RETURN = lottery.CONFIG_RETURN(); // eslint-disable-line new-cap
   const CONFIG_DURATION = lottery.CONFIG_DURATION(); // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
+  const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     price: CONFIG_PRICE.toString(),
@@ -155,22 +157,15 @@ if (!lottery) {
     pubsub.publish(channels.winner, _winner);
   };
 
-  const handleEvents = function(error, data) {
-    if (error) {
-      logger.error('Lottery', 'watch', error);
-      return;
-    }
-
-    switch (data.event) {
-      case 'Player': eventPlayer(data); break;
-      case 'Winner': eventWinner(data); break;
-      default:
-        logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
-    }
-  };
-
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface, handleEvents);
+    geth.startEvents(contract, (data) => {
+      switch (data.event) {
+        case 'Player': eventPlayer(data); break;
+        case 'Winner': eventWinner(data); break;
+        default:
+          logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
+      }
+    });
   };
 
   module.exports = {
