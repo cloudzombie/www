@@ -1,18 +1,17 @@
-const argv = require('yargs').string([
-  'contract-dice', 'contract-fifty', 'contract-lottery'
-]).argv;
+const _ = require('lodash');
 
-module.exports = {
-  dice: {
-    addr: process.env.CONTRACT_DICE || argv['contract-dice'],
-    abi: require('../contracts/dice/dice.json').interface
-  },
-  fifty: {
-    addr: process.env.CONTRACT_FIFTY || argv['contract-fifty'],
-    abi: require('../contracts/fifty/fifty.json').interface
-  },
-  lottery: {
-    addr: process.env.CONTRACT_LOTTERY || argv['contract-lottery'],
-    abi: require('../contracts/lottery/lottery.json').interface
-  }
-};
+const CONTRACTS = ['dice', 'fifty', 'lottery'];
+const EXPORTS = {};
+
+const argv = require('yargs').string(_.map(CONTRACTS, (contract) => {
+  return `contract-${contract}`;
+})).argv;
+
+_.each(CONTRACTS, (contract) => {
+  EXPORTS[contract] = {
+    addr: argv[`contract-${contract}`],
+    abi: require(`../contracts/${contract}/${contract}.json`).interface
+  };
+});
+
+module.exports = EXPORTS;

@@ -1,15 +1,16 @@
-const logger = require('../lib/logger');
+const _ = require('lodash');
+const glob = require('glob').sync;
 
-const dice = require('./dice');
-const fifty = require('./fifty');
-const lottery = require('./lottery');
+const logger = require('../lib/logger');
 
 const init = function() {
   logger.log('Game', 'init', 'initializing games');
 
-  dice.init();
-  fifty.init();
-  lottery.init();
+  _.each(_.reject(glob('*.js', { cwd: __dirname }), _.matches('index.js')), (file) => {
+    logger.log('Game', 'init', `initializing ${file}`);
+
+    require(`./${file}`).init();
+  });
 
   logger.log('Game', 'init', 'initialized all games');
 };
