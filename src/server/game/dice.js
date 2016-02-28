@@ -1,4 +1,6 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
+const BigNumber = require('bignumber.js');
 
 const channels = require('../config/channels').dice;
 const contract = require('../config/contracts').dice;
@@ -6,7 +8,13 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
+const CONFIG = {
+  addr: contract.addr,
+  abi: JSON.stringify(contract.abi)
+};
+
 const dice = contract.addr ? geth.getContract(contract) : null;
+const methods = geth.attachAbi(contract);
 
 if (!dice) {
   logger.error('Dice', 'init', 'invalid contract value, address not set');
@@ -15,22 +23,6 @@ if (!dice) {
     get: function() { return {}; }
   };
 } else {
-  // const NUMBERS = ['Zero', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
-
-  const CONFIG_MIN_VALUE = dice.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_MAX_VALUE = dice.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_FEES_MUL = dice.CONFIG_FEES_MUL().toNumber(); // eslint-disable-line new-cap
-  const CONFIG_FEES_DIV = dice.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
-  const CONFIG_FEES_EDGE = CONFIG_FEES_MUL / CONFIG_FEES_DIV; // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.spec.interface);
-  const CONFIG = {
-    addr: contract.addr,
-    min: CONFIG_MIN_VALUE.toString(),
-    max: CONFIG_MAX_VALUE.toString(),
-    edge: CONFIG_FEES_EDGE,
-    abi: CONFIG_ABI
-  };
-
   let winner;
   let players = [];
 
@@ -117,21 +109,29 @@ if (!dice) {
     addPlayer(player);
   };
 
-  const handleEvents = function(error, data) {
-    if (error) {
-      logger.error('Dice', 'watch', error);
-      return;
-    }
-
-    switch (data.event) {
-      case 'Player': eventPlayer(data); break;
-      default:
-        logger.error('Dice', 'watch', `Unknown event ${data.event}`);
-    }
+  const initConfig = function() {
+    return Promise
+      .all([
+        methods.CONFIG_MIN_VALUE(), methods.CONFIG_MAX_VALUE(), // eslint-disable-line
+        methods.CONFIG_FEES_MUL(), methods.CONFIG_FEES_DIV() // eslint-disable-line
+      ])
+      .then((data) => {
+        CONFIG.min = (new BigNumber(data[0].result)).toString();
+        CONFIG.max = (new BigNumber(data[1].result)).toString();
+        CONFIG.edge = (new BigNumber(data[2].result)).toNumber() / (new BigNumber(data[3].result)).toNumber();
+      });
   };
 
   const init = function() {
-    geth.startEvents(contract.addr, contract.spec.interface,  handleEvents);
+    initConfig();
+
+    geth.startEvents(contract, (data) => {
+      switch (data.event) {
+        case 'Player': eventPlayer(data); break;
+        default:
+          logger.error('Dice', 'watch', `Unknown event ${data.event}`);
+      }
+    });
   };
 
   module.exports = {
