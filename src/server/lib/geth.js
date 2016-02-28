@@ -3,7 +3,6 @@ const _ = require('lodash');
 const cluster = require('cluster');
 const Promise = require('bluebird');
 const request = require('request-promise');
-const Web3 = require('web3');
 const BigNumber = require('bignumber.js');
 
 const config = require('../config/geth');
@@ -11,28 +10,12 @@ const logger = require('./logger');
 const sha3 = require('./sha3');
 
 const CONNECTION = `http://${config.host}:${config.port}`;
-const WATCH_MONITOR = 30000;
 const WATCH_TIMER = 7000;
 const EVENT_BLOCK_START = 8640;
 
-const web3 = new Web3();
-
-let coinbase;
+let version;
 
 let id = cluster.worker.id * 1000000;
-
-const blockName = function(methodAbi) {
-  if (!methodAbi.blockName) {
-    const types = _.map(methodAbi.inputs, (input) => {
-      return input.type;
-    });
-
-    methodAbi.blockName = `${methodAbi.name}(${types})`;
-  }
-
-  methodAbi.blockTopic = `0x${sha3(methodAbi.blockName)}`;
-  return methodAbi.blockName;
-};
 
 const rpc = function(method, params) {
   id++;
@@ -48,43 +31,56 @@ const rpc = function(method, params) {
     },
     json: true
   }).then((data) => {
+    if (data.error) {
+      throw data.error;
+    }
+
     return data;
   }).catch((error) => {
     logger.error('Geth', method, error);
+
     throw error;
   });
 };
 
-const getCoinbase = function() {
-  return coinbase;
+const attachAbi = function(contract) {
+  const methods = {};
+
+  _.each(contract.abi, (method) => {
+    const types = _.map(method.inputs, (input) => {
+      return input.type;
+    });
+
+    method.blockName = `${method.name}(${types})`;
+    method.blockTopic = `0x${sha3(method.blockName)}`;
+
+    if (method.type === 'function') {
+      methods[method.name] = function() {
+        return rpc('eth_call', [{
+          to: contract.addr,
+          data: method.blockTopic.substr(0, 10)
+        }, 'latest']).then((data) => {
+          const result = [];
+
+          _.each(data.result.substr(2).match(/.{1,64}/g), (value, idx) => {
+            if (method.outputs[idx].type === 'address') {
+              result.push(`0x${value.slice(-40)}`);
+            } else {
+              result.push(new BigNumber(`0x${value}`));
+            }
+          });
+
+          return result.length > 1 ? result : result[0];
+        });
+      };
+    }
+  });
+
+  return methods;
 };
 
-const getBalance = function(address) {
-  return web3.eth.getBalance(address || coinbase);
-};
-
-const call = function(object) {
-  object.from = object.from || coinbase;
-
-  return web3.eth.call(object);
-};
-
-const sendTransaction = function(object) {
-  object.from = object.from || coinbase;
-
-  return web3.eth.sendTransaction(object);
-};
-
-const getContract = function(contract) {
-  return web3.eth.contract(contract.abi).at(contract.addr);
-};
-
-const toHex = function(number) {
-  return web3.toHex(number.toString());
-};
-
-const toWei = function(number, unit) {
-  return web3.toWei(number, unit);
+const getVersion = function() {
+  return version;
 };
 
 const toTime = function(number) {
@@ -102,10 +98,12 @@ const ethGetLogs = function(fromBlock, addr) {
   }]);
 };
 
+const web3ClientVersion = function() {
+  return rpc('web3_clientVersion');
+};
+
 const startEvents = function(contract, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
-
-  _.each(contract.abi, blockName);
 
   const callbackLogs = function(logs) {
     _.each(logs, (log) => {
@@ -140,7 +138,7 @@ const startEvents = function(contract, handleEvents) {
             }
           });
 
-          handleEvents(null, log);
+          handleEvents(log);
         }
       });
     });
@@ -168,57 +166,37 @@ const startEvents = function(contract, handleEvents) {
   watch(EVENT_BLOCK_START);
 };
 
-const init = function() {
-  const waitGeth = function(callback) {
-    if (web3.isConnected()) {
-      callback();
-      return;
-    }
-
-    setTimeout(() => {
-      waitGeth(callback);
-    }, 100 + Math.ceil(Math.random() * 100));
-  };
-
-  const monitor = function() {
-    if (web3.isConnected()) {
-      setTimeout(monitor, WATCH_MONITOR + Math.ceil(Math.random() * WATCH_MONITOR));
-      return;
-    }
-
-    logger.log('Geth', 'init', 'connection lost, re-initializing');
-
-    process.exit(1);
-  };
-
+const waitGeth = function() {
   return new Promise((resolve) => {
-    logger.log('Geth', 'init', `initializing on ${CONNECTION}`);
-    web3.setProvider(new web3.providers.HttpProvider(CONNECTION));
+    const timeout = function(callback) {
+      web3ClientVersion()
+        .then((data) => {
+          version = data.result;
+          resolve();
+        })
+        .catch(() => {
+          setTimeout(() => {
+            timeout(callback);
+          }, 100 + Math.ceil(Math.random() * 100));
+        });
+    };
 
-    waitGeth(() => {
-      coinbase = web3.eth.coinbase;
+    timeout();
+  });
+};
 
-      rpc('web3_clientVersion').then((data) => {
-        logger.log('rpc', 'data=', data);
-      });
+const init = function() {
+  logger.log('Geth', 'init', `waiting on ${CONNECTION}`);
 
-      // monitor();
-
-      logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
-      resolve();
-    });
+  return waitGeth().then(() => {
+    logger.log('Geth', 'init', `found, version ${version}`);
   });
 };
 
 module.exports = {
   init: init,
-  call: call,
-  getContract: getContract,
-  sendTransaction: sendTransaction,
-  getCoinbase: getCoinbase,
-  getBalance: getBalance,
+  attachAbi: attachAbi,
+  getVersion: getVersion,
   startEvents: startEvents,
-  toHex: toHex,
-  toWei: toWei,
   toTime: toTime
 };
