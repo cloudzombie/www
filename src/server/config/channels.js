@@ -1,7 +1,4 @@
 module.exports = {
-  box: {
-    player: 'game/box/player'
-  },
   dice: {
     player: 'game/dice/player'
   },
@@ -11,5 +8,8 @@ module.exports = {
   lottery: {
     player: 'game/lottery/player',
     winner: 'game/lottery/winner'
+  },
+  strangers: {
+    player: 'game/strangers/player'
   }
 };

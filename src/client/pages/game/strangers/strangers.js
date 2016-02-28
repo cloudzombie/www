@@ -1,7 +1,7 @@
 (function() {
   window.xyz = window.xyz || {};
 
-  window.xyz.GameBox = {
+  window.xyz.GameStrangers = {
     properties: {
     },
 
@@ -16,11 +16,13 @@
           };
         }
 
+        player.payout = player.sender !== player.receiver;
+        player.sender = this.sliceAddr(player.sender);
+        player.receiver = this.sliceAddr(player.receiver);
+
         if (player.paid && (!this.winner || player.txs > this.winner.txs)) {
           this.winner = player;
         }
-
-        player.payout = player.sender !== player.receiver;
 
         for (let idx = 0; idx < this.players.length; idx++) {
           const _player = this.players[idx];
@@ -50,7 +52,7 @@
     },
 
     subscribe: function() {
-      this.$.pubsub.subscribe('game/box/player', (player) => {
+      this.$.pubsub.subscribe('game/strangers/player', (player) => {
         if (!player.txs) {
           return;
         }
@@ -62,7 +64,7 @@
 
     getGame: function() {
       this.$.api
-        .get('game/box')
+        .get('game/strangers')
         .then((game) => {
           console.log('game', game);
 
@@ -87,7 +89,7 @@
   };
 
   Polymer({ // eslint-disable-line new-cap
-    is: 'xyz-game-box',
-    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameBox]
+    is: 'xyz-game-strangers',
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameStrangers]
   });
 })();

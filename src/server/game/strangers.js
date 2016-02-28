@@ -1,31 +1,31 @@
 const _ = require('lodash');
 
-const channels = require('../config/channels').box;
-const contract = require('../config/contracts').box;
+const channels = require('../config/channels').strangers;
+const contract = require('../config/contracts').strangers;
 const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const box = contract.addr ? geth.getContract(contract) : null;
+const strangers = contract.addr ? geth.getContract(contract) : null;
 
-if (!box) {
-  logger.error('Box', 'init', 'invalid contract value, address not set');
+if (!strangers) {
+  logger.error('strangers', 'init', 'invalid contract value, address not set');
   module.exports = {
     init: function() { return {}; },
     get: function() { return {}; }
   };
 } else {
-  const CONFIG_NUM_PARTICIPANTS = box.CONFIG_NUM_PARTICIPANTS(); // eslint-disable-line new-cap
-  const CONFIG_MIN_VALUE = box.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_MAX_VALUE = box.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_FEES_DIV = box.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
+  const CONFIG_NUM_PARTICIPANTS = strangers.CONFIG_NUM_PARTICIPANTS(); // eslint-disable-line new-cap
+  const CONFIG_MIN_VALUE = strangers.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
+  const CONFIG_MAX_VALUE = strangers.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
+  const CONFIG_FEES_DIV = strangers.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = 1.0 / CONFIG_FEES_DIV; // eslint-disable-line new-cap
   const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
     addr: contract.addr,
     min: CONFIG_MIN_VALUE.toString(),
     max: CONFIG_MAX_VALUE.toString(),
-    boxes: CONFIG_NUM_PARTICIPANTS.toNumber(),
+    strangerses: CONFIG_NUM_PARTICIPANTS.toNumber(),
     edge: CONFIG_FEES_EDGE,
     abi: CONFIG_ABI
   };
@@ -44,13 +44,13 @@ if (!box) {
   };
 
   const getGame = function() {
-    const txs = box.txs().toNumber();
+    const txs = strangers.txs().toNumber();
 
     return {
       txs: txs,
       paid: Math.max(0, txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
-      turnover: box.turnover().toString(),
-      pool: box.pool().toString()
+      turnover: strangers.turnover().toString(),
+      pool: strangers.pool().toString()
     };
   };
 
@@ -88,14 +88,14 @@ if (!box) {
   const init = function() {
     geth.startEvents(contract, (error, data) => {
       if (error) {
-        logger.error('Box', 'watch', error);
+        logger.error('Strangers', 'watch', error);
         return;
       }
 
       switch (data.event) {
         case 'Player': eventPlayer(data); break;
         default:
-          logger.error('Box', 'watch', `Unknown event ${data.event}`);
+          logger.error('Strangers', 'watch', `Unknown event ${data.event}`);
       }
     });
   };

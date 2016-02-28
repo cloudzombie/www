@@ -3,20 +3,17 @@ xyz-page-section.hidden(class$="[[visibleClass(config, 'min')]]")
     tr.entry
       td.sender
         iron-icon(icon="icons:perm-identity")
-        span [[item.addr]]
-      td.input
+        span [[item.sender]]
+      td.sender
         iron-icon(icon="icons:input")
         xyz-number-wei(number="[[item.input]]")
-      td.win
-        iron-icon(icon="icons:help-outline")
-        span [[item.play]] ([[item.chance]]%)
-      td.win
-        iron-icon(icon="icons:gesture")
-        span [[item.dicea]] + [[item.diceb]] = [[item.sum]]
       td.output
-        span(class$="[[hideZero(item.output)]]")
+        span(class$="[[hideZero(item.payout)]]")
           iron-icon(icon="icons:account-balance")
           xyz-number-wei(number="[[item.output]]" max)
+          iron-icon(icon="icons:arrow-forward")
+          iron-icon(icon="icons:perm-identity")
+          span [[item.receiver]]
       td.when
         iron-icon(icon="icons:history")
         xyz-datetime-elapsed(datetime="[[item.at]]")
