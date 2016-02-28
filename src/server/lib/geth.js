@@ -18,6 +18,7 @@ const EVENT_BLOCK_START = 8640;
 const web3 = new Web3();
 
 let coinbase;
+let version;
 
 let id = cluster.worker.id * 1000000;
 
@@ -35,9 +36,14 @@ const rpc = function(method, params) {
     },
     json: true
   }).then((data) => {
+    if (data.error) {
+      throw data.error;
+    }
+
     return data;
   }).catch((error) => {
     logger.error('Geth', method, error);
+
     throw error;
   });
 };
@@ -191,39 +197,25 @@ const startEvents = function(contract, handleEvents) {
 
 const init = function() {
   const waitGeth = function(callback) {
-    if (web3.isConnected()) {
-      callback();
-      return;
-    }
-
-    setTimeout(() => {
-      waitGeth(callback);
-    }, 100 + Math.ceil(Math.random() * 100));
+    rpc('web3_clientVersion')
+      .then((data) => {
+        version = data.result;
+        callback();
+        return;
+      })
+      .catch(() => {
+        setTimeout(() => {
+          waitGeth(callback);
+        }, 100 + Math.ceil(Math.random() * 100));
+      });
   };
 
-  const monitor = function() {
-    if (web3.isConnected()) {
-      setTimeout(monitor, WATCH_MONITOR + Math.ceil(Math.random() * WATCH_MONITOR));
-      return;
-    }
-
-    logger.log('Geth', 'init', 'connection lost, re-initializing');
-
-    process.exit(1);
-  };
+  logger.log('Geth', 'init', `initializing on ${CONNECTION}`);
+  web3.setProvider(new web3.providers.HttpProvider(CONNECTION));
 
   return new Promise((resolve) => {
-    logger.log('Geth', 'init', `initializing on ${CONNECTION}`);
-    web3.setProvider(new web3.providers.HttpProvider(CONNECTION));
-
     waitGeth(() => {
       coinbase = web3.eth.coinbase;
-
-      rpc('web3_clientVersion').then((data) => {
-        logger.log('rpc', 'data=', data);
-      });
-
-      // monitor();
 
       logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
       resolve();
