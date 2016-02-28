@@ -58,7 +58,19 @@ const attachAbi = function(contract) {
         return rpc('eth_call', [{
           to: contract.addr,
           data: method.blockTopic.substr(0, 10)
-        }, 'latest']);
+        }, 'latest']).then((data) => {
+          const result = [];
+
+          _.each(data.result.substr(2).match(/.{1,64}/g), (value, idx) => {
+            if (method.outputs[idx].type === 'address') {
+              result.push(`0x${value.slice(-40)}`);
+            } else {
+              result.push(new BigNumber(`0x${value}`));
+            }
+          });
+
+          return result.length > 1 ? result : result[0];
+        });
       };
     }
   });

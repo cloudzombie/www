@@ -43,16 +43,19 @@ if (!methods) {
   const getGame = function() {
     return Promise
       .all([
-        methods.txs(), methods.wins(), methods.losses(),
-        methods.turnover(), methods.funds()
+        methods.txs(),
+        methods.wins(),
+        methods.losses(),
+        methods.turnover(),
+        methods.funds()
       ])
       .then((data) => {
         return {
-          txs: new BigNumber(data[0].result).toNumber(),
-          wins: new BigNumber(data[1].result).toNumber(),
-          losses: new BigNumber(data[2].result).toNumber(),
-          turnover: new BigNumber(data[3].result).toString(),
-          funds: new BigNumber(data[4].result).toString()
+          txs: data[0].toNumber(),
+          wins: data[1].toNumber(),
+          losses: data[2].toNumber(),
+          turnover: data[3].toString(),
+          funds: data[4].toString()
         };
       });
   };
@@ -120,13 +123,15 @@ if (!methods) {
   const initConfig = function() {
     return Promise
       .all([
-        methods.CONFIG_MIN_VALUE(), methods.CONFIG_MAX_VALUE(), // eslint-disable-line
-        methods.CONFIG_FEES_MUL(), methods.CONFIG_FEES_DIV() // eslint-disable-line
+        methods.CONFIG_MIN_VALUE(), // eslint-disable-line
+        methods.CONFIG_MAX_VALUE(), // eslint-disable-line
+        methods.CONFIG_FEES_MUL(), // eslint-disable-line
+        methods.CONFIG_FEES_DIV() // eslint-disable-line
       ])
       .then((data) => {
-        CONFIG.min = (new BigNumber(data[0].result)).toString();
-        CONFIG.max = (new BigNumber(data[1].result)).toString();
-        CONFIG.edge = (new BigNumber(data[2].result)).toNumber() / (new BigNumber(data[3].result)).toNumber();
+        CONFIG.min = data[0].toString();
+        CONFIG.max = data[1].toString();
+        CONFIG.edge = data[2].toNumber() / data[3].toNumber();
       });
   };
 
