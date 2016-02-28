@@ -130,14 +130,14 @@ const initConfig = function() {
 };
 
 const init = function() {
-  initConfig();
-
-  geth.startEvents(contract, (data) => {
-    switch (data.event) {
-      case 'Player': eventPlayer(data); break;
-      default:
-        logger.error('Dice', 'watch', `Unknown event ${data.event}`);
-    }
+  initConfig().then(() => {
+    geth.startEvents(contract, (data) => {
+      switch (data.event) {
+        case 'Player': eventPlayer(data); break;
+        default:
+          logger.error('Dice', 'watch', `Unknown event ${data.event}`);
+      }
+    });
   });
 };
 
