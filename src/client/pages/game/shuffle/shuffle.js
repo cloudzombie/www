@@ -1,7 +1,7 @@
 (function() {
   window.xyz = window.xyz || {};
 
-  window.xyz.GameStrangers = {
+  window.xyz.GameShuffle = {
     properties: {
     },
 
@@ -52,7 +52,7 @@
     },
 
     subscribe: function() {
-      this.$.pubsub.subscribe('game/strangers/player', (player) => {
+      this.$.pubsub.subscribe('game/shuffle/player', (player) => {
         if (!player.txs) {
           return;
         }
@@ -64,7 +64,7 @@
 
     getGame: function() {
       this.$.api
-        .get('game/strangers')
+        .get('game/shuffle')
         .then((game) => {
           console.log('game', game);
 
@@ -89,7 +89,7 @@
   };
 
   Polymer({ // eslint-disable-line new-cap
-    is: 'xyz-game-strangers',
-    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameStrangers]
+    is: 'xyz-game-shuffle',
+    behaviors: [window.xyz.Page, window.xyz.Game, window.xyz.GameShuffle]
   });
 })();

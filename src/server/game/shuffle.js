@@ -1,24 +1,24 @@
 const _ = require('lodash');
 
-const channels = require('../config/channels').strangers;
-const contract = require('../config/contracts').strangers;
+const channels = require('../config/channels').shuffle;
+const contract = require('../config/contracts').shuffle;
 const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const strangers = contract.addr ? geth.getContract(contract) : null;
+const shuffle = contract.addr ? geth.getContract(contract) : null;
 
-if (!strangers) {
-  logger.error('strangers', 'init', 'invalid contract value, address not set');
+if (!shuffle) {
+  logger.error('Shuffle', 'init', 'invalid contract value, address not set');
   module.exports = {
     init: function() { return {}; },
     get: function() { return {}; }
   };
 } else {
-  const CONFIG_NUM_PARTICIPANTS = strangers.CONFIG_NUM_PARTICIPANTS(); // eslint-disable-line new-cap
-  const CONFIG_MIN_VALUE = strangers.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_MAX_VALUE = strangers.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_FEES_DIV = strangers.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
+  const CONFIG_NUM_PARTICIPANTS = shuffle.CONFIG_NUM_PARTICIPANTS(); // eslint-disable-line new-cap
+  const CONFIG_MIN_VALUE = shuffle.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
+  const CONFIG_MAX_VALUE = shuffle.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
+  const CONFIG_FEES_DIV = shuffle.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
   const CONFIG_FEES_EDGE = 1.0 / CONFIG_FEES_DIV; // eslint-disable-line new-cap
   const CONFIG_ABI = JSON.stringify(contract.abi);
   const CONFIG = {
@@ -44,13 +44,13 @@ if (!strangers) {
   };
 
   const getGame = function() {
-    const txs = strangers.txs().toNumber();
+    const txs = shuffle.txs().toNumber();
 
     return {
       txs: txs,
       paid: Math.max(0, txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
-      turnover: strangers.turnover().toString(),
-      pool: strangers.pool().toString()
+      turnover: shuffle.turnover().toString(),
+      pool: shuffle.pool().toString()
     };
   };
 
@@ -88,14 +88,14 @@ if (!strangers) {
   const init = function() {
     geth.startEvents(contract, (error, data) => {
       if (error) {
-        logger.error('Strangers', 'watch', error);
+        logger.error('Shuffle', 'watch', error);
         return;
       }
 
       switch (data.event) {
         case 'Player': eventPlayer(data); break;
         default:
-          logger.error('Strangers', 'watch', `Unknown event ${data.event}`);
+          logger.error('Shuffle', 'watch', `Unknown event ${data.event}`);
       }
     });
   };

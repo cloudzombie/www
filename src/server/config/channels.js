@@ -1,15 +1,18 @@
-module.exports = {
-  dice: {
-    player: 'game/dice/player'
-  },
-  fifty: {
-    player: 'game/fifty/player'
-  },
-  lottery: {
-    player: 'game/lottery/player',
-    winner: 'game/lottery/winner'
-  },
-  strangers: {
-    player: 'game/strangers/player'
-  }
+const _ = require('lodash');
+
+const EVENTS = {
+  dice: ['player'],
+  fifty: ['player'],
+  lottery: ['player', 'winner'],
+  shuffle: ['player']
 };
+const EXPORTS = {};
+
+_.each(EVENTS, (channels, owner) => {
+  EXPORTS[owner] = {};
+  _.each(channels, (channel) => {
+    EXPORTS[owner][channel] = `game/${owner}/${channel}`;
+  });
+});
+
+module.exports = EXPORTS;
