@@ -9,7 +9,8 @@ const pubsub = require('../route/pubsub');
 
 const CONFIG = {
   addr: contract.addr,
-  abi: JSON.stringify(contract.abi)
+  abi: JSON.stringify(contract.abi),
+  version: geth.getVersion()
 };
 
 const methods = geth.attachAbi(contract);
@@ -130,7 +131,7 @@ const initConfig = function() {
 };
 
 const init = function() {
-  initConfig().then(() => {
+  return initConfig().then(() => {
     geth.startEvents(contract, (data) => {
       switch (data.event) {
         case 'Player': eventPlayer(data); break;
