@@ -3,7 +3,6 @@ const _ = require('lodash');
 const cluster = require('cluster');
 const Promise = require('bluebird');
 const request = require('request-promise');
-const Web3 = require('web3');
 const BigNumber = require('bignumber.js');
 
 const config = require('../config/geth');
@@ -11,13 +10,9 @@ const logger = require('./logger');
 const sha3 = require('./sha3');
 
 const CONNECTION = `http://${config.host}:${config.port}`;
-const WATCH_MONITOR = 30000;
 const WATCH_TIMER = 7000;
 const EVENT_BLOCK_START = 8640;
 
-const web3 = new Web3();
-
-let coinbase;
 let version;
 
 let id = cluster.worker.id * 1000000;
@@ -84,36 +79,8 @@ const attachAbi = function(contract) {
   return methods;
 };
 
-const getCoinbase = function() {
-  return coinbase;
-};
-
-const getBalance = function(address) {
-  return web3.eth.getBalance(address || coinbase);
-};
-
-const call = function(object) {
-  object.from = object.from || coinbase;
-
-  return web3.eth.call(object);
-};
-
-const sendTransaction = function(object) {
-  object.from = object.from || coinbase;
-
-  return web3.eth.sendTransaction(object);
-};
-
-const getContract = function(contract) {
-  return web3.eth.contract(contract.abi).at(contract.addr);
-};
-
-const toHex = function(number) {
-  return web3.toHex(number.toString());
-};
-
-const toWei = function(number, unit) {
-  return web3.toWei(number, unit);
+const getVersion = function() {
+  return version;
 };
 
 const toTime = function(number) {
@@ -195,8 +162,8 @@ const startEvents = function(contract, handleEvents) {
   watch(EVENT_BLOCK_START);
 };
 
-const init = function() {
-  const waitGeth = function(callback) {
+const waitGeth = function() {
+  const timeout = function(callback) {
     rpc('web3_clientVersion')
       .then((data) => {
         version = data.result;
@@ -205,34 +172,30 @@ const init = function() {
       })
       .catch(() => {
         setTimeout(() => {
-          waitGeth(callback);
+          timeout(callback);
         }, 100 + Math.ceil(Math.random() * 100));
       });
   };
 
-  logger.log('Geth', 'init', `initializing on ${CONNECTION}`);
-  web3.setProvider(new web3.providers.HttpProvider(CONNECTION));
-
   return new Promise((resolve) => {
-    waitGeth(() => {
-      coinbase = web3.eth.coinbase;
-
-      logger.log('Geth', 'init', `initialized with coinbase ${coinbase}`);
+    timeout(() => {
       resolve();
     });
   });
 };
 
+const init = function() {
+  logger.log('Geth', 'init', `waiting on ${CONNECTION}`);
+
+  return waitGeth().then(() => {
+    logger.log('Geth', 'init', `found, version ${version}`);
+  });
+};
+
 module.exports = {
   init: init,
-  call: call,
   attachAbi: attachAbi,
-  getContract: getContract,
-  sendTransaction: sendTransaction,
-  getCoinbase: getCoinbase,
-  getBalance: getBalance,
+  getVersion: getVersion,
   startEvents: startEvents,
-  toHex: toHex,
-  toWei: toWei,
   toTime: toTime
 };
