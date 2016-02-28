@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
 
 const channels = require('../config/channels').lottery;
 const contract = require('../config/contracts').lottery;
@@ -11,160 +12,146 @@ const CONFIG = {
   abi: JSON.stringify(contract.abi)
 };
 
-const lottery = contract.addr ? geth.getContract(contract) : null;
 const methods = geth.attachAbi(contract);
 
-if (!lottery) {
-  logger.error('Lottery', 'init', 'invalid contract value, address not set');
-  module.exports = {
-    init: function() { return {}; },
-    get: function() { return {}; }
-  };
-} else {
-  let winner;
-  let players = [];
+let winner;
+let players = [];
 
-  const getConfig = function() {
-    return CONFIG;
-  };
+const getRound = function() {
+  return Promise
+    .all([
+      methods.txs(),
+      methods.round(),
+      methods.numplayers(),
+      methods.numtickets(),
+      methods.start(),
+      methods.end()
+    ])
+    .then((data) => {
+      return {
+        txs: data[0].toNumber(),
+        round: data[1].toNumber(),
+        players: data[2].toNumber(),
+        tickets: data[3].toNumber(),
+        value: data[3].times(CONFIG.price).toString(),
+        start: geth.toTime(data[4]),
+        end: geth.toTime(data[5])
+      };
+    });
+};
 
-  const getRound = function() {
-    const numplayers = lottery.numplayers().toNumber();
-    const numtickets = lottery.numtickets().toNumber();
-
+const get = function() {
+  return getRound().then((round) => {
     return {
-      txs: lottery.txs().toNumber(),
-      round: lottery.round().toNumber(),
-      players: numplayers,
-      tickets: numtickets,
-      value: CONFIG_PRICE.times(numtickets).toString(),
-      start: geth.toTime(lottery.start()),
-      end: geth.toTime(lottery.end())
-    };
-  };
-
-  const get = function() {
-    return {
-      config: getConfig(),
-      round: getRound(),
+      config: CONFIG,
+      round: round,
       players: players,
       winner: winner
     };
-  };
+  });
+};
 
-  const getBalance = function() {
-    const balance = geth.getBalance(contract.addr);
-    const returns = CONFIG_RETURN.times(lottery.numtickets());
+const addPlayer = function(player) {
+  if (_.find(players, { tktotal: player.tktotal })) {
+    return;
+  }
 
-    return {
-      balance: balance.toString(),
-      fees: balance.minus(returns).toString()
-    };
-  };
+  pubsub.publish(channels.player, player);
 
-  const addPlayer = function(player) {
-    if (_.find(players, { tktotal: player.tktotal })) {
-      return;
+  let found = false;
+
+  for (let idx = 0; !found && idx < players.length; idx++) {
+    const _player = players[idx];
+    const newround = player.round > _player.round;
+    const newplayer = (player.round === _player.round) && (player.tktotal > _player.tktotal);
+
+    if (newround || newplayer) {
+      players.splice(idx, 0, player);
+      found = true;
     }
+  }
 
-    pubsub.publish(channels.player, player);
+  if (!found) {
+    players.splice(players.length, 0, player);
+  }
 
-    let found = false;
+  players = players.slice(0, 15);
+};
 
-    for (let idx = 0; !found && idx < players.length; idx++) {
-      const _player = players[idx];
-      const newround = player.round > _player.round;
-      const newplayer = (player.round === _player.round) && (player.tktotal > _player.tktotal);
+const eventPlayer = function(data) {
+  const round = data.args.round && data.args.round.toNumber();
 
-      if (newround || newplayer) {
-        players.splice(idx, 0, player);
-        found = true;
-      }
-    }
+  if (!round) {
+    return;
+  }
 
-    if (!found) {
-      players.splice(players.length, 0, player);
-    }
-
-    players = players.slice(0, 15);
+  const _player = {
+    addr: data.args.addr,
+    at: geth.toTime(data.args.at),
+    round: round,
+    tickets: data.args.tickets.toNumber(),
+    numtickets: data.args.numtickets.toNumber(),
+    tktotal: data.args.tktotal.toNumber(),
+    turnover: data.args.turnover.toString(),
+    txhash: data.transactionHash
   };
 
-  const ownerWithdraw = function(owner) {
-    return lottery.ownerWithdraw.sendTransaction({ from: owner, to: contract.addr });
+  addPlayer(_player);
+};
+
+const eventWinner = function(data) {
+  const round = data.args.round && data.args.round.toNumber();
+
+  if (!round) {
+    return;
+  }
+
+  const _winner = {
+    addr: data.args.addr,
+    at: geth.toTime(data.args.at),
+    round: round,
+    numtickets: data.args.numtickets.toNumber(),
+    output: data.args.output.toString(),
+    txhash: data.transactionHash
   };
 
-  const eventPlayer = function(data) {
-    const round = data.args.round && data.args.round.toNumber();
+  if (!winner || (_winner.round > winner.round)) {
+    winner = _winner;
+  }
 
-    if (!round) {
-      return;
-    }
+  pubsub.publish(channels.winner, _winner);
+};
 
-    const _player = {
-      addr: data.args.addr,
-      at: geth.toTime(data.args.at),
-      round: round,
-      tickets: data.args.tickets.toNumber(),
-      numtickets: data.args.numtickets.toNumber(),
-      tktotal: data.args.tktotal.toNumber(),
-      turnover: data.args.turnover.toString(),
-      txhash: data.transactionHash
-    };
+const initConfig = function() {
+  return Promise
+    .all([
+      methods.CONFIG_PRICE(), // eslint-disable-line new-cap
+      methods.CONFIG_FEES(), // eslint-disable-line new-cap
+      methods.CONFIG_RETURN(), // eslint-disable-line new-cap
+      methods.CONFIG_MIN_VALUE(), // eslint-disable-line new-cap
+      methods.CONFIG_MAX_VALUE(), // eslint-disable-line new-cap
+      methods.CONFIG_DURATION(), // eslint-disable-line new-cap
+      methods.CONFIG_MIN_PLAYERS(), // eslint-disable-line new-cap
+      methods.CONFIG_MAX_PLAYERS(), // eslint-disable-line new-cap
+      methods.CONFIG_MAX_TICKETS() // eslint-disable-line new-cap
+    ])
+    .then((data) => {
+      CONFIG.price = data[0].toString();
+      CONFIG.fees = data[1].toString();
+      CONFIG.return = data[2].toString();
+      CONFIG.min = data[3].toString();
+      CONFIG.max = data[4].toString();
+      CONFIG.duration = geth.toTime(data[5]);
+      CONFIG.minplayers = data[6].toNumber();
+      CONFIG.maxplayers = data[7].toNumber();
+      CONFIG.maxtickets = data[8].toNumber();
 
-    addPlayer(_player);
-  };
+      return CONFIG;
+    });
+};
 
-  const eventWinner = function(data) {
-    const round = data.args.round && data.args.round.toNumber();
-
-    if (!round) {
-      return;
-    }
-
-    const _winner = {
-      addr: data.args.addr,
-      at: geth.toTime(data.args.at),
-      round: round,
-      numtickets: data.args.numtickets.toNumber(),
-      output: data.args.output.toString(),
-      txhash: data.transactionHash
-    };
-
-    if (!winner || (_winner.round > winner.round)) {
-      winner = _winner;
-    }
-
-    pubsub.publish(channels.winner, _winner);
-  };
-
-  const initConfig = function() {
-    const CONFIG_MIN_PLAYERS = lottery.CONFIG_MIN_PLAYERS(); // eslint-disable-line new-cap
-    const CONFIG_MAX_PLAYERS = lottery.CONFIG_MAX_PLAYERS(); // eslint-disable-line new-cap
-    const CONFIG_MAX_TICKETS = lottery.CONFIG_MAX_TICKETS(); // eslint-disable-line new-cap
-    const CONFIG_PRICE = lottery.CONFIG_PRICE(); // eslint-disable-line new-cap
-    const CONFIG_FEES = lottery.CONFIG_FEES(); // eslint-disable-line new-cap
-    const CONFIG_MIN_VALUE = lottery.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
-    const CONFIG_MAX_VALUE = lottery.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-    const CONFIG_RETURN = lottery.CONFIG_RETURN(); // eslint-disable-line new-cap
-    const CONFIG_DURATION = lottery.CONFIG_DURATION(); // eslint-disable-line new-cap
-    const CONFIG = {
-      addr: contract.addr,
-      price: CONFIG_PRICE.toString(),
-      fees: CONFIG_FEES.toString(),
-      return: CONFIG_RETURN.toString(),
-      min: CONFIG_MIN_VALUE.toString(),
-      max: CONFIG_MAX_VALUE.toString(),
-      duration: geth.toTime(CONFIG_DURATION),
-      minplayers: CONFIG_MIN_PLAYERS.toNumber(),
-      maxplayers: CONFIG_MAX_PLAYERS.toNumber(),
-      maxtickets: CONFIG_MAX_TICKETS.toNumber(),
-      abi: CONFIG_ABI
-    };
-  };
-
-  const init = function() {
-    initConfig();
-
+const init = function() {
+  initConfig().then(() => {
     geth.startEvents(contract, (data) => {
       switch (data.event) {
         case 'Player': eventPlayer(data); break;
@@ -173,13 +160,11 @@ if (!lottery) {
           logger.error('Lottery', 'watch', `Unknown event ${data.event}`);
       }
     });
-  };
+  });
+};
 
-  module.exports = {
-    get: get,
-    getBalance: getBalance,
-    getRound: getRound,
-    ownerWithdraw: ownerWithdraw,
-    init: init
-  };
-}
+module.exports = {
+  get: get,
+  getRound: getRound,
+  init: init
+};
