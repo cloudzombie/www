@@ -98,6 +98,10 @@ const ethGetLogs = function(fromBlock, addr) {
   }]);
 };
 
+const web3ClientVersion = function() {
+  return rpc('web3_clientVersion');
+}
+
 const startEvents = function(contract, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
 
@@ -163,24 +167,21 @@ const startEvents = function(contract, handleEvents) {
 };
 
 const waitGeth = function() {
-  const timeout = function(callback) {
-    rpc('web3_clientVersion')
-      .then((data) => {
-        version = data.result;
-        callback();
-        return;
-      })
-      .catch(() => {
-        setTimeout(() => {
-          timeout(callback);
-        }, 100 + Math.ceil(Math.random() * 100));
-      });
-  };
-
   return new Promise((resolve) => {
-    timeout(() => {
-      resolve();
-    });
+    const timeout = function(callback) {
+      web3ClientVersion()
+        .then((data) => {
+          version = data.result;
+          resolve();
+        })
+        .catch(() => {
+          setTimeout(() => {
+            timeout(callback);
+          }, 100 + Math.ceil(Math.random() * 100));
+        });
+    };
+
+    timeout();
   });
 };
 
