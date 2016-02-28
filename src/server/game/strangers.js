@@ -25,7 +25,7 @@ if (!strangers) {
     addr: contract.addr,
     min: CONFIG_MIN_VALUE.toString(),
     max: CONFIG_MAX_VALUE.toString(),
-    strangerses: CONFIG_NUM_PARTICIPANTS.toNumber(),
+    strangers: CONFIG_NUM_PARTICIPANTS.toNumber(),
     edge: CONFIG_FEES_EDGE,
     abi: CONFIG_ABI
   };

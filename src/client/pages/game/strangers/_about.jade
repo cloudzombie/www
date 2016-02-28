@@ -2,8 +2,16 @@ extends ../_template_about.jade
 
 block about
   p.
-    &nbsp;
+    Any amount sent into the contract gets <span class="bold">shuffled</span> and with each input a recipient is selected to receive a <span class="bold">random amount</span> previously placed in the pool by a random stranger.
+  p.
+    Any entry will always get a random value returned to it at some point <span class="bold">in the future</span>, like playing secret santa, you never know what it will be or when it will be. Likewise any value sent will always be <span class="bold">distributed to another</span> player in the pool along the way.
+  p.
+    If you are wondering about the kindness of strangers or simply want to pay it forward in a looney way, then this is the place for you.
   
 block details
   p.
-    &nbsp;
+    Any value that is smaller than the <span class="bold">minium 0.01 ether</span> or <span class="bold">maximum 9.99 ether</span> will not trigger the contract and return the input to the player. 
+  p.
+    When an input is received, the player-selected random value is allocated to a member of the pool and a random member of the pool (provided there are at least 12 players already) will receive a <span class="bold">payout from the previous values</span> entered. The current player then takes up a position in the pool, waiting to be randomly selected, receiving a payout in the future.
+  p.
+    Rules and technical operation are covered in the <span class="bold">operation and rules</span> section at the bottom of this page.

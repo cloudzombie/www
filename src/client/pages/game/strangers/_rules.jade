@@ -4,6 +4,16 @@ block rules
   ol
     li To enter, send between <xyz-number-wei number="[[config.min]]" class="bold" ether></xyz-number-wei> and <xyz-number-wei number="[[config.max]]" class="bold" ether></xyz-number-wei> to <span class="bold">[[config.addr]]</span>
     
+    li Payouts will only commence once there has been at least <span class="bold">[[config.strangers]] entries</span> made - from this point forward each entry will result in a payout to a previous entrant
+    
+    li There is no guarantee as to when you will receive a payout, <span class="bold">recipients are randomly selected</span> for each round
+    
+    li There is no guarentee as to the amount you will receive, <span class="bold">input values are randomly distributed</span> as outputs among the pool of players
+    
+    li Once a player receives a payout, his/her spot is <span class="bold">freed and occupied</span> by the player triggering the payout
+    
+    li The game operates on a <span class="bold">[[config.edge]]% commission</span>, this is subtracted from the amounts paid to the recipient
+    
     li To add the contract to your wallet, either to watch or interact with directly, use the <a on-click="toggleAbi">provided ABI</a>
   
   include ../_template_abi.jade
