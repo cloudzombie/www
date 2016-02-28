@@ -43,6 +43,55 @@ const rpc = function(method, params) {
   });
 };
 
+const parseValues = function(input, types) {
+  const values = input.substr(2).match(/.{1,64}/g);
+  const result = [];
+
+  let offset = 0;
+
+  _.each(types, (type) => {
+    if (type.type === 'address') {
+      result.push(`0x${values[offset].slice(-40)}`);
+    } else if (type.type === 'string') {
+      const length = (new BigNumber(`0x${values[offset]}`)).toNumber();
+      const blocks = Math.ceil(length / 64);
+
+      let str = '';
+
+      _.each(_.range(0, blocks), () => {
+        offset++;
+
+        _.each(values[offset].match(/.{1,2}/g), (byte) => {
+          str = `${str}${String.fromCharCode(parseInt(byte, 10))}`;
+        });
+      });
+
+      result.push(str);
+    } else if (type.type === 'bytes') {
+      const length = (new BigNumber(`0x${values[offset]}`)).toNumber();
+      const blocks = Math.ceil(length / 64);
+
+      const bytes = [];
+
+      _.each(_.range(0, blocks), () => {
+        offset++;
+
+        _.each(values[offset].match(/.{1,2}/g), (byte) => {
+          bytes.push(parseInt(byte, 10));
+        });
+      });
+
+      result.push(bytes);
+    } else {
+      result.push(new BigNumber(`0x${values[offset]}`));
+    }
+
+    offset++;
+  });
+
+  return result;
+};
+
 const attachAbi = function(contract) {
   const methods = {};
 
@@ -60,15 +109,7 @@ const attachAbi = function(contract) {
           to: contract.addr,
           data: method.blockTopic.substr(0, 10)
         }, 'latest']).then((data) => {
-          const result = [];
-
-          _.each(data.result.substr(2).match(/.{1,64}/g), (value, idx) => {
-            if (method.outputs[idx].type === 'address') {
-              result.push(`0x${value.slice(-40)}`);
-            } else {
-              result.push(new BigNumber(`0x${value}`));
-            }
-          });
+          const result = parseValues(data.result, method.outputs);
 
           return result.length > 1 ? result : result[0];
         });
@@ -107,35 +148,21 @@ const startEvents = function(contract, handleEvents) {
 
   const callbackLogs = function(logs) {
     _.each(logs, (log) => {
-      const values = log.data.substr(2).match(/.{1,64}/g);
-
       _.each(log.topics, (topic) => {
-        const data = [];
         const abiTopic = _.find(contract.abi, { blockTopic: topic });
 
         if (!abiTopic) {
           return;
         }
 
-        let vidx = 0;
-
-        _.each(abiTopic.inputs, () => {
-          data.push(values[vidx]);
-          vidx++;
-        });
-
         if (abiTopic.type === 'event') {
           log.event = abiTopic.name;
           log.args = {};
 
-          _.each(data, (value, idx) => {
-            const input = abiTopic.inputs[idx];
+          const values = parseValues(log.data, abiTopic.inputs);
 
-            if (input.type === 'address') {
-              log.args[input.name] = `0x${value.slice(-40)}`;
-            } else {
-              log.args[input.name] = new BigNumber(`0x${value}`);
-            }
+          _.each(abiTopic.inputs, (input, idx) => {
+            log.args[input.name] = values[idx];
           });
 
           handleEvents(log);
