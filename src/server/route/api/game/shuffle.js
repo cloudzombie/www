@@ -4,7 +4,7 @@ const responder = require('../../../lib/responder');
 const shuffle = require('../../../game/shuffle');
 
 router.get('/', (req, res, next) => {
-  responder.guard(res, next, shuffle.get);
+  responder.promise(res, next, shuffle.get);
 });
 
 module.exports = router;

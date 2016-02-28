@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
 
 const channels = require('../config/channels').shuffle;
 const contract = require('../config/contracts').shuffle;
@@ -6,102 +7,108 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
-const shuffle = contract.addr ? geth.getContract(contract) : null;
+const CONFIG = {
+  addr: contract.addr,
+  abi: JSON.stringify(contract.abi),
+  version: geth.getVersion()
+};
 
-if (!shuffle) {
-  logger.error('Shuffle', 'init', 'invalid contract value, address not set');
-  module.exports = {
-    init: function() { return {}; },
-    get: function() { return {}; }
-  };
-} else {
-  const CONFIG_NUM_PARTICIPANTS = shuffle.CONFIG_NUM_PARTICIPANTS(); // eslint-disable-line new-cap
-  const CONFIG_MIN_VALUE = shuffle.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_MAX_VALUE = shuffle.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_FEES_DIV = shuffle.CONFIG_FEES_DIV().toNumber(); // eslint-disable-line new-cap
-  const CONFIG_FEES_EDGE = 1.0 / CONFIG_FEES_DIV; // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.abi);
-  const CONFIG = {
-    addr: contract.addr,
-    min: CONFIG_MIN_VALUE.toString(),
-    max: CONFIG_MAX_VALUE.toString(),
-    strangers: CONFIG_NUM_PARTICIPANTS.toNumber(),
-    edge: CONFIG_FEES_EDGE,
-    abi: CONFIG_ABI
-  };
+const methods = geth.attachAbi(contract);
 
-  let players = [];
+let players = [];
 
-  const addPlayer = function(player) {
-    if (_.find(players, { txs: player.txs })) {
-      return;
-    }
+const addPlayer = function(player) {
+  if (_.find(players, { txs: player.txs })) {
+    return;
+  }
 
-    pubsub.publish(channels.player, player);
+  pubsub.publish(channels.player, player);
 
-    players.unshift(player);
-    players = players.slice(0, 15);
-  };
+  players.unshift(player);
+  players = players.slice(0, 15);
+};
 
-  const getGame = function() {
-    const txs = shuffle.txs().toNumber();
+const getGame = function() {
+  return Promise
+    .all([
+      methods.txs(),
+      methods.turnover(),
+      methods.pool()
+    ])
+    .then((data) => {
+      return {
+        txs: data[0].toNumber(),
+        paid: Math.max(0, data[0].minus(CONFIG.strangers).toNumber()),
+        turnover: data[1].toString(),
+        pool: data[2].toString()
+      };
+    });
+};
 
-    return {
-      txs: txs,
-      paid: Math.max(0, txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
-      turnover: shuffle.turnover().toString(),
-      pool: shuffle.pool().toString()
-    };
-  };
-
-  const get = function() {
+const get = function() {
+  return getGame().then((game) => {
     return {
       config: CONFIG,
       players: players,
-      current: getGame()
+      current: game
     };
+  });
+};
+
+const eventPlayer = function(data) {
+  const txs = data.args.txs.toNumber();
+
+  if (!_.isNumber(txs) || !txs) {
+    return;
+  }
+
+  const player = {
+    at: geth.toTime(data.args.at),
+    sender: data.args.sender,
+    input: data.args.input.toString(),
+    receiver: data.args.receiver,
+    output: data.args.output.toString(),
+    turnover: data.args.turnover.toString(),
+    pool: data.args.pool.toString(),
+    txs: txs,
+    paid: Math.max(0, txs - CONFIG.strangers),
+    txhash: data.transactionHash
   };
 
-  const eventPlayer = function(data) {
-    const txs = data.args.txs.toNumber();
+  addPlayer(player);
+};
 
-    if (!_.isNumber(txs) || !txs) {
-      return;
-    }
+const initConfig = function() {
+  return Promise
+    .all([
+      methods.CONFIG_MIN_VALUE(), // eslint-disable-line new-cap
+      methods.CONFIG_MAX_VALUE(), // eslint-disable-line new-cap
+      methods.CONFIG_NUM_PARTICIPANTS(), // eslint-disable-line new-cap
+      methods.CONFIG_FEES_DIV() // eslint-disable-line new-cap
+    ])
+    .then((data) => {
+      CONFIG.min = data[0].toString();
+      CONFIG.max = data[1].toString();
+      CONFIG.strangers = data[3].toNumber();
+      CONFIG.edge = 1.0 / data[4].toNumber();
 
-    const player = {
-      at: geth.toTime(data.args.at),
-      sender: data.args.sender,
-      input: data.args.input.toString(),
-      receiver: data.args.receiver,
-      output: data.args.output.toString(),
-      turnover: data.args.turnover.toString(),
-      pool: data.args.pool.toString(),
-      txs: txs,
-      paid: Math.max(0, txs - CONFIG_NUM_PARTICIPANTS.toNumber()),
-      txhash: data.transactionHash
-    };
+      return CONFIG;
+    });
+};
 
-    addPlayer(player);
-  };
-
-  const init = function() {
-    geth.startEvents(contract, (error, data) => {
-      if (error) {
-        logger.error('Shuffle', 'watch', error);
-        return;
-      }
-
+const init = function() {
+  return initConfig().then(() => {
+    geth.startEvents(contract, (data) => {
       switch (data.event) {
         case 'Player': eventPlayer(data); break;
         default:
           logger.error('Shuffle', 'watch', `Unknown event ${data.event}`);
       }
     });
-  };
+  });
+};
 
-  module.exports = {
-    init: init,
-    get: get
-  };
-}
+module.exports = {
+  init: init,
+  get: get
+};
