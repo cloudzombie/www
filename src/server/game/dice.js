@@ -124,6 +124,8 @@ const initConfig = function() {
       CONFIG.min = data[0].toString();
       CONFIG.max = data[1].toString();
       CONFIG.edge = data[2].toNumber() / data[3].toNumber();
+
+      return CONFIG;
     });
 };
 
