@@ -32,8 +32,19 @@ const guard = function(res, next, func) {
   }
 };
 
+const promise = function(res, next, func) {
+  func()
+    .then((data) => {
+      success(res, data);
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
+
 module.exports = {
   error: error,
   success: success,
-  guard: guard
+  guard: guard,
+  promise: promise
 };

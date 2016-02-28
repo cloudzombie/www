@@ -13,10 +13,9 @@ const CONFIG = {
   abi: JSON.stringify(contract.abi)
 };
 
-const dice = contract.addr ? geth.getContract(contract) : null;
 const methods = geth.attachAbi(contract);
 
-if (!dice) {
+if (!methods) {
   logger.error('Dice', 'init', 'invalid contract value, address not set');
   module.exports = {
     init: function() { return {}; },
@@ -42,22 +41,31 @@ if (!dice) {
   };
 
   const getGame = function() {
-    return {
-      wins: dice.wins().toNumber(),
-      losses: dice.losses().toNumber(),
-      txs: dice.txs().toNumber(),
-      turnover: dice.turnover().toString(),
-      funds: dice.funds().toString()
-    };
+    return Promise
+      .all([
+        methods.txs(), methods.wins(), methods.losses(),
+        methods.turnover(), methods.funds()
+      ])
+      .then((data) => {
+        return {
+          txs: new BigNumber(data[0].result).toNumber(),
+          wins: new BigNumber(data[1].result).toNumber(),
+          losses: new BigNumber(data[2].result).toNumber(),
+          turnover: new BigNumber(data[3].result).toString(),
+          funds: new BigNumber(data[4].result).toString()
+        };
+      });
   };
 
   const get = function() {
-    return {
-      config: CONFIG,
-      winner: winner,
-      players: players,
-      current: getGame()
-    };
+    return getGame().then((game) => {
+      return {
+        config: CONFIG,
+        winner: winner,
+        players: players,
+        current: game
+      };
+    });
   };
 
   const eventPlayer = function(data) {
