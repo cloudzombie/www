@@ -100,7 +100,7 @@ const ethGetLogs = function(fromBlock, addr) {
 
 const web3ClientVersion = function() {
   return rpc('web3_clientVersion');
-}
+};
 
 const startEvents = function(contract, handleEvents) {
   logger.log('Geth', 'startEvents', 'starting event watch');
