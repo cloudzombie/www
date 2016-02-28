@@ -109,6 +109,7 @@ const attachAbi = function(contract) {
           to: contract.addr,
           data: method.blockTopic.substr(0, 10)
         }, 'latest']).then((data) => {
+          console.log(data, data.result, method.outputs);
           const result = parseValues(data.result, method.outputs);
 
           return result.length > 1 ? result : result[0];
