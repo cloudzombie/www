@@ -6,7 +6,13 @@ const geth = require('../lib/geth');
 const logger = require('../lib/logger');
 const pubsub = require('../route/pubsub');
 
+const CONFIG = {
+  addr: contract.addr,
+  abi: JSON.stringify(contract.abi)
+};
+
 const lottery = contract.addr ? geth.getContract(contract) : null;
+const methods = geth.attachAbi(contract);
 
 if (!lottery) {
   logger.error('Lottery', 'init', 'invalid contract value, address not set');
@@ -15,32 +21,6 @@ if (!lottery) {
     get: function() { return {}; }
   };
 } else {
-  geth.attachAbi(contract);
-
-  const CONFIG_MIN_PLAYERS = lottery.CONFIG_MIN_PLAYERS(); // eslint-disable-line new-cap
-  const CONFIG_MAX_PLAYERS = lottery.CONFIG_MAX_PLAYERS(); // eslint-disable-line new-cap
-  const CONFIG_MAX_TICKETS = lottery.CONFIG_MAX_TICKETS(); // eslint-disable-line new-cap
-  const CONFIG_PRICE = lottery.CONFIG_PRICE(); // eslint-disable-line new-cap
-  const CONFIG_FEES = lottery.CONFIG_FEES(); // eslint-disable-line new-cap
-  const CONFIG_MIN_VALUE = lottery.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_MAX_VALUE = lottery.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
-  const CONFIG_RETURN = lottery.CONFIG_RETURN(); // eslint-disable-line new-cap
-  const CONFIG_DURATION = lottery.CONFIG_DURATION(); // eslint-disable-line new-cap
-  const CONFIG_ABI = JSON.stringify(contract.abi);
-  const CONFIG = {
-    addr: contract.addr,
-    price: CONFIG_PRICE.toString(),
-    fees: CONFIG_FEES.toString(),
-    return: CONFIG_RETURN.toString(),
-    min: CONFIG_MIN_VALUE.toString(),
-    max: CONFIG_MAX_VALUE.toString(),
-    duration: geth.toTime(CONFIG_DURATION),
-    minplayers: CONFIG_MIN_PLAYERS.toNumber(),
-    maxplayers: CONFIG_MAX_PLAYERS.toNumber(),
-    maxtickets: CONFIG_MAX_TICKETS.toNumber(),
-    abi: CONFIG_ABI
-  };
-
   let winner;
   let players = [];
 
@@ -157,7 +137,34 @@ if (!lottery) {
     pubsub.publish(channels.winner, _winner);
   };
 
+  const initConfig = function() {
+    const CONFIG_MIN_PLAYERS = lottery.CONFIG_MIN_PLAYERS(); // eslint-disable-line new-cap
+    const CONFIG_MAX_PLAYERS = lottery.CONFIG_MAX_PLAYERS(); // eslint-disable-line new-cap
+    const CONFIG_MAX_TICKETS = lottery.CONFIG_MAX_TICKETS(); // eslint-disable-line new-cap
+    const CONFIG_PRICE = lottery.CONFIG_PRICE(); // eslint-disable-line new-cap
+    const CONFIG_FEES = lottery.CONFIG_FEES(); // eslint-disable-line new-cap
+    const CONFIG_MIN_VALUE = lottery.CONFIG_MIN_VALUE(); // eslint-disable-line new-cap
+    const CONFIG_MAX_VALUE = lottery.CONFIG_MAX_VALUE(); // eslint-disable-line new-cap
+    const CONFIG_RETURN = lottery.CONFIG_RETURN(); // eslint-disable-line new-cap
+    const CONFIG_DURATION = lottery.CONFIG_DURATION(); // eslint-disable-line new-cap
+    const CONFIG = {
+      addr: contract.addr,
+      price: CONFIG_PRICE.toString(),
+      fees: CONFIG_FEES.toString(),
+      return: CONFIG_RETURN.toString(),
+      min: CONFIG_MIN_VALUE.toString(),
+      max: CONFIG_MAX_VALUE.toString(),
+      duration: geth.toTime(CONFIG_DURATION),
+      minplayers: CONFIG_MIN_PLAYERS.toNumber(),
+      maxplayers: CONFIG_MAX_PLAYERS.toNumber(),
+      maxtickets: CONFIG_MAX_TICKETS.toNumber(),
+      abi: CONFIG_ABI
+    };
+  };
+
   const init = function() {
+    initConfig();
+
     geth.startEvents(contract, (data) => {
       switch (data.event) {
         case 'Player': eventPlayer(data); break;
